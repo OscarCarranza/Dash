@@ -53,25 +53,41 @@ action code
 /*--------- 2da Area: Declaraciones---------*/
 
 //---------> Declaraciones de terminales
-terminal TYPE, INT, INTPTR, CHAR, CHARPTR, BOOL, BOOLPTR, STRING, READ, PRINT, IF, ELSE, FOR, WHILE, ID, MULT_OP, DIV_OP, ADD_OP, MINUS_OP, ASSIGN;
-terminal ADD_ASSIGN, MINUS_ASSIGN, MULT_ASSIGN, DIV_ASSIGN, EQUAL_OP, COMMMA, AND_OP, OR_OP, LESSTHAN_OP, GREATERTHAN_OP, LESSEQUAL_OP, GREATEREQUAL_OP;
+terminal TYPE, INT, INTPTR, CHAR, CHARPTR, BOOL, BOOLPTR, STRING, ARROW, FUNCTION, MAIN, READ, PRINT, IF, ELSE, FOR, WHILE, ID, MULT_OP, DIV_OP, ADD_OP, MINUS_OP, ASSIGN;
+terminal ADD_ASSIGN, MINUS_ASSIGN, MULT_ASSIGN, DIV_ASSIGN, EQUAL_OP, COMMA, AND_OP, OR_OP, LESSTHAN_OP, GREATERTHAN_OP, LESSEQUAL_OP, GREATEREQUAL_OP;
 terminal NOTEQUAL_OP, LPAR, RPAR, LBRAC, RBRAC, LKEY, RKEY, SEMICOLON, COLON, DOT, DASH, LETTER, INTEGER, TRUE, FALSE, BLANK, SIMCOM, DOBCOM;
 
 //---------> Declaraciones de no terminales
-non terminal String INICIO, spaces, spacesOpcional, declaracion, instanciacionIntPtr, integerLista, instanciacionCharPtr, charLista, bool, instanciacionBoolPtr, boolLista;
+non terminal INIT, spaces, spacesOpcional, declaracion, instanciacionIntPtr, integerLista, instanciacionCharPtr, charLista, bool, instanciacionBoolPtr, boolLista;
+non terminal dec_function, parameters, params_type; 
 
 //---------> Precedencia de menor a mayor
 
-start with INICIO;
+start with INIT;
 
 /*--------- 3ra Area: Reglas Semanticas---------*/
-INICIO ::= declaracion:a {: System.out.println("declaracion="+a); :};
+INIT ::= declaracion:a {: System.out.println("declaracion="+a); :}
+    | dec_function;
 
 spaces ::= BLANK
     | spaces BLANK;
 
 spacesOpcional ::= spaces
     | ;
+
+dec_function ::= FUNCTION BLANK ID spacesOpcional ARROW spacesOpcional LPAR spacesOpcional parameters spacesOpcional RPAR;
+ 
+parameters ::= parameters spacesOpcional COMMA spacesOpcional params_type BLANK ID
+    | params_type BLANK ID;
+
+params_type ::= INT 
+    | INTPTR
+    | CHAR
+    | CHARPTR
+    | BOOL
+    | BOOLPTR
+    | STRING;
+
 
 declaracion ::= INT:a spaces ID:b spacesOpcional DASH:c {: System.out.println("INT="+a+" ID="+b+" DASH="+c); :}
     | INT:a spaces ID:b spaces ASSIGN spaces INTEGER:c spacesOpcional DASH {: System.out.println("INT="+a+" ID="+b+" DASH="+c); :}
@@ -92,13 +108,13 @@ instanciacionIntPtr ::= LBRAC spacesOpcional RBRAC {::}
     | LBRAC spacesOpcional integerLista spacesOpcional RBRAC;
 
 integerLista ::= INTEGER {::}
-    | integerLista COMMMA spacesOpcional INTEGER;
+    | integerLista COMMA spacesOpcional INTEGER;
 
 instanciacionCharPtr ::= LBRAC spacesOpcional RBRAC {::}
     | LBRAC spacesOpcional charLista spacesOpcional RBRAC;
 
 charLista ::= LETTER {::}
-    | charLista COMMMA spacesOpcional LETTER;
+    | charLista COMMA spacesOpcional LETTER;
 
 bool ::= TRUE | FALSE;
 
@@ -106,4 +122,4 @@ instanciacionBoolPtr ::= LBRAC spacesOpcional RBRAC {::}
     | LBRAC spacesOpcional boolLista spacesOpcional RBRAC;
 
 boolLista ::= bool {::}
-    | boolLista COMMMA spacesOpcional bool;
+    | boolLista COMMA spacesOpcional bool;

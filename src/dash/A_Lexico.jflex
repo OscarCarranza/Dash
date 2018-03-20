@@ -49,6 +49,9 @@ charptr = "char["{number}"]"
 bool = "bool"
 boolptr = "bool["{number}"]"
 string = "string"
+arrow = "=>"
+function = "func"
+main = "main"
 declaration = {type}" "({id}|{id}{space}*"="{space}*({number}|{id}))(", "({id}|{id}{space}*"="{space}*({number}|{id})))*
 mult_operator = "*"
 div_operator = "/"
@@ -124,9 +127,21 @@ false = "false"
                                 System.out.println("<boolptr> " + yytext());
                                 return new Symbol(Simbolos.BOOLPTR, yycolumn, yyline, yytext());
                             }
-    {string}                  {
+    {string}                {
                                 System.out.println("<string> " + yytext());
                                 return new Symbol(Simbolos.STRING, yycolumn, yyline, yytext());
+                            }
+    {arrow}                 {
+                                System.out.println("<arrow> " + yytext());
+                                return new Symbol(Simbolos.ARROW, yycolumn, yyline, yytext());
+                            }
+    {function}                {
+                                System.out.println("<function> " + yytext());
+                                return new Symbol(Simbolos.FUNCTION, yycolumn, yyline, yytext());
+                            }
+    {main}                  {
+                                System.out.println("<main> " + yytext());
+                                return new Symbol(Simbolos.MAIN, yycolumn, yyline, yytext());
                             }
     {read}                  {
                                 System.out.println("<read> " + yytext());
@@ -198,7 +213,7 @@ false = "false"
                             }
     {comma}                 {
                                 System.out.println("<comma> " + yytext());
-                                return new Symbol(Simbolos.COMMMA, yycolumn, yyline, yytext());
+                                return new Symbol(Simbolos.COMMA, yycolumn, yyline, yytext());
                             }
     {and_operator}          {
                                 System.out.println("<and_operator> " + yytext());
