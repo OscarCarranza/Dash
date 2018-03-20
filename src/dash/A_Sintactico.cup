@@ -1,0 +1,109 @@
+/*--------- 1ra Area: Codigo de Usuario---------*/
+
+//---------> Paquetes, importaciones
+package dash;
+import java_cup.runtime.Symbol;
+import java.util.LinkedList;
+
+//---------> Codigo para el parser, variables, metodos
+parser code
+{:
+    public String resultado="";
+    public static LinkedList<MyError> listaErrorSintacticos = new LinkedList<MyError>();
+
+    //Metodo al que se llama automaticamente ante algun error sintactico
+    public void syntax_error(Symbol s)
+    {        
+        String lexema = s.value.toString();
+        int fila = s.right;
+        int columna = s.left;
+        
+        System.out.println("!!!!!!! Error Sintactico Recuperado !!!!!!!");
+        System.out.println("\t\tLexema: "+lexema);
+        System.out.println("\t\tFila: "+fila);
+        System.out.println("\t\tColumna: "+columna);
+        
+        MyError datos = new MyError(lexema, fila, columna, "Error Sintactico", "Caracter no esperado");
+        listaErrorSintacticos.add(datos);
+    }
+
+    //Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
+    {        
+        String lexema = s.value.toString();
+        int fila = s.right;
+        int columna = s.left;
+        
+        System.out.println("!!!!!!! Error Sintactico, Panic Mode !!!!!!! ");
+        System.out.println("\t\tLexema: "+lexema);
+        System.out.println("\t\tFila: "+fila);
+        System.out.println("\t\tColumna: "+columna);
+
+        MyError datos = new MyError(lexema, fila, columna, "Error Sintactico", "Simbolo no esperado, Panic Mode");
+        listaErrorSintacticos.add(datos);
+    }
+
+:}
+
+//---------> Codigo para las acciones gramaticales
+action code
+{:
+:}
+
+/*--------- 2da Area: Declaraciones---------*/
+
+//---------> Declaraciones de terminales
+terminal TYPE, INT, INTPTR, CHAR, CHARPTR, BOOL, BOOLPTR, STRING, READ, PRINT, IF, ELSE, FOR, WHILE, ID, MULT_OP, DIV_OP, ADD_OP, MINUS_OP, ASSIGN;
+terminal ADD_ASSIGN, MINUS_ASSIGN, MULT_ASSIGN, DIV_ASSIGN, EQUAL_OP, COMMMA, AND_OP, OR_OP, LESSTHAN_OP, GREATERTHAN_OP, LESSEQUAL_OP, GREATEREQUAL_OP;
+terminal NOTEQUAL_OP, LPAR, RPAR, LBRAC, RBRAC, LKEY, RKEY, SEMICOLON, COLON, DOT, DASH, LETTER, INTEGER, TRUE, FALSE, BLANK, SIMCOM, DOBCOM;
+
+//---------> Declaraciones de no terminales
+non terminal String INICIO, spaces, spacesOpcional, declaracion, instanciacionIntPtr, integerLista, instanciacionCharPtr, charLista, bool, instanciacionBoolPtr, boolLista;
+
+//---------> Precedencia de menor a mayor
+
+start with INICIO;
+
+/*--------- 3ra Area: Reglas Semanticas---------*/
+INICIO ::= declaracion:a {: System.out.println("declaracion="+a); :};
+
+spaces ::= BLANK
+    | spaces BLANK;
+
+spacesOpcional ::= spaces
+    | ;
+
+declaracion ::= INT:a spaces ID:b spacesOpcional DASH:c {: System.out.println("INT="+a+" ID="+b+" DASH="+c); :}
+    | INT:a spaces ID:b spaces ASSIGN spaces INTEGER:c spacesOpcional DASH {: System.out.println("INT="+a+" ID="+b+" DASH="+c); :}
+    | INTPTR:a spaces ID:b spacesOpcional DASH
+    | INTPTR:a spaces ID:b spaces ASSIGN spaces instanciacionIntPtr:c spacesOpcional DASH {: System.out.println("INT="+a+" ID="+b+" DASH="+c); :}
+    | CHAR spaces ID spacesOpcional DASH
+    | CHAR spaces ID spaces ASSIGN spaces SIMCOM spaces LETTER spaces SIMCOM spacesOpcional DASH
+    | CHAR spaces ID spaces ASSIGN spaces DOBCOM spaces LETTER spaces DOBCOM spacesOpcional DASH
+    | CHARPTR spaces ID spacesOpcional DASH
+    | CHARPTR spaces ID spaces ASSIGN spaces instanciacionCharPtr spacesOpcional DASH
+    | BOOL spaces ID spacesOpcional DASH
+    | BOOL spaces ID spaces ASSIGN spaces bool spacesOpcional DASH
+    | BOOLPTR spaces ID spacesOpcional DASH
+    | BOOLPTR spaces ID spaces ASSIGN spaces instanciacionBoolPtr spacesOpcional DASH
+    | STRING spaces ID spacesOpcional DASH;
+
+instanciacionIntPtr ::= LBRAC spacesOpcional RBRAC {::}
+    | LBRAC spacesOpcional integerLista spacesOpcional RBRAC;
+
+integerLista ::= INTEGER {::}
+    | integerLista COMMMA spacesOpcional INTEGER;
+
+instanciacionCharPtr ::= LBRAC spacesOpcional RBRAC {::}
+    | LBRAC spacesOpcional charLista spacesOpcional RBRAC;
+
+charLista ::= LETTER {::}
+    | charLista COMMMA spacesOpcional LETTER;
+
+bool ::= TRUE | FALSE;
+
+instanciacionBoolPtr ::= LBRAC spacesOpcional RBRAC {::}
+    | LBRAC spacesOpcional boolLista spacesOpcional RBRAC;
+
+boolLista ::= bool {::}
+    | boolLista COMMMA spacesOpcional bool;
