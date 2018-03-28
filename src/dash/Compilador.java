@@ -139,7 +139,8 @@ public class Compilador extends javax.swing.JFrame {
             if (ta_codigo.getText().length() > 0) {
                 datos = ta_codigo.getText();
             } else{
-                br = new BufferedReader(new FileReader("./file.txt"));
+                br = new BufferedReader(new FileReader("file.txt"));
+                
                 
                 StringBuilder sb = new StringBuilder();
                 String line = br.readLine();
@@ -150,8 +151,6 @@ public class Compilador extends javax.swing.JFrame {
                     line = br.readLine();
                 }
                 datos = sb.toString();
-                int x;
-                x = 2+1;
             }
             
             Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader(new StringReader(datos)));

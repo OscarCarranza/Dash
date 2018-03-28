@@ -1,4 +1,4 @@
-int x1, a2-
+﻿int x1, a2-
 func hola => (int a, int b){
 	for (int a = 1; a<=1; i++){
 		int q-
@@ -14,11 +14,17 @@ func hola => (int a, int b){
 		}
 	}
 	a = 5+10-1*(1)-
+<<<<<<< HEAD
 
 	if(a){
 		for (int a = 1; a<=1; i++){
 			int q-
 		}
 	}
+=======
+	Conta=>(int y, char b)-
+	dash.in(num)-
+	dash.print(“Hola mundo”)-
+>>>>>>> 827215d29ab1df6fc1ff10a139c41af5c265404f
 	ret 1-
 }

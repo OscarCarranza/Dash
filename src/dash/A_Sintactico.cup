@@ -61,7 +61,7 @@ terminal GREATEREQUAL_OP, NOTEQUAL_OP, LPAR, RPAR, LBRAC, RBRAC, LKEY, RKEY, SEM
 non terminal String INICIO, declaracion, asignacionInteger, instanciacionInteger, iniciacionInteger, instanciacionIntPtr, integerLista, instanciacionCharPtr;
 non terminal asignacionChar, instanciacionChar, iniciacionChar, charComillas, charLista, asignacionBool, instanciacionBool, iniciacionBool, bool, instanciacionBoolPtr, boolLista;
 non terminal asignacionString, instanciacionString, iniciacionString, contenidoString, asignacionIntegerPtr, instanciacionIntegerPtr, iniciacionIntegerPtr;
-non terminal asignacionCharPtr, instanciacionCharPointer, iniciacionCharPtr, asignacionBoolPtr, instanciacionBoolPointer, iniciacionBoolPtr;
+non terminal asignacionCharPtr, instanciacionCharPointer, iniciacionCharPtr, asignacionBoolPtr, instanciacionBoolPointer, iniciacionBoolPtr, core;
 
 non terminal body, body_dec;
 
@@ -71,7 +71,7 @@ non terminal conditionalExpr, andORor, logicalExpr, logicalExprComp, logicalExpr
 //Iteraciones DEC
 non terminal while, doWhile, for, autoAssign, declaracionFor, instanciacionIntegerFor, switch, caseExist, case, declaracionCase, varCase, caseBreak, default;
 non terminal dec_function, parameters, params_type, varRet, dec_main, arithmetic_exp, term, factor, var_type, read, func, assign_var, entry, salida;
-non terminal content_print, more_content, var_entry, id_text, declaracion_ptrs_iniciacion, dec_id;
+non terminal content_print, more_content, var_entry, id_text, declaracion_ptrs_iniciacion, dec_id, ids, moreIds;
 
 non terminal linea;
 
@@ -266,19 +266,27 @@ body ::= body declaracion {::}
     | body assign_var
     | body entry
     | body salida
+    | body func
+    | body dec_function
     | ;
 
 /*------------------- Declaracion de funciones -----------------------*/
-dec_function ::= FUNCTION func LKEY body RETURN varRet DASH RKEY
+dec_function ::= FUNCTION ID ARROW LPAR parameters RPAR LKEY body RETURN varRet DASH RKEY DASH
 ; 
 
-func ::= ID ARROW LPAR parameters RPAR;
+func ::= ID ARROW LPAR ids RPAR DASH;
 
 dec_main ::= MAIN ID ARROW LPAR parameters RPAR LKEY body RETURN varRet DASH RKEY
 ;
  
 parameters ::= parameters COMMA params_type ID
     | params_type ID;
+
+ids ::= moreIds ID;
+
+moreIds ::= moreIds ID COMMA 
+    | ;
+
 
 params_type ::= INT 
     | INTPTR
@@ -320,10 +328,10 @@ entry ::= READ LPAR ID RPAR DASH;
 
 salida ::= PRINT LPAR content_print RPAR DASH;
 
-content_print ::= ID more_content
-    | TEXT more_content;
+content_print ::= id_text more_content;
 
-more_content ::= ADD_OP id_text;
+more_content ::= ADD_OP id_text more_content
+    | ;
 
-id_text ::= ID  
-    | TEXT;
+id_text ::= ID 
+    | TEXT ;
