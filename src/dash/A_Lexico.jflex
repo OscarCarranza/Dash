@@ -352,7 +352,7 @@ multFor = "**"
                                 System.out.println("<false> " + yytext());
                                 return new Symbol(Simbolos.FALSE, yycolumn, yyline, yytext());
                             }
-    {comments}              {
+    {short_comment}              {
                                 System.out.println("<comment>");
                             }
     {blankSpace}            {
