@@ -1,5 +1,21 @@
 int x1, a2-
-for(int a; i+=){
+func hola => (int a, int b){
+	for (int a = 1; a<=1; i++){
+		int q-
+	}
+	switch(valor){
+		case 1: if(a <= b){
+				int a-
+			}
+	}
+	if(a){
+		for (int a = 1; a<=1; i++){
+			int q-
+		}
+	}
+	a = 5+10-1*(1)-
+	//x = Contar =>(int y, char b)-
+	dash.in(num)-
+	//dash.print(“Hola mundo”)-
+	ret 1-
 }
-
-5+10-1*(1)

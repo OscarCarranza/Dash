@@ -31,6 +31,7 @@ import java.util.LinkedList;
 lineEnd = \r|\n|\r\n
 inputChar = [^\r\n]
 blankSpace = {lineEnd} | [ \t\f]
+space = [ \t\f]
 
 lineComment = "//" {inputChar}* {lineEnd}?
 blockComment = "/*" [^*] ~"*/"
@@ -84,17 +85,33 @@ IF = "if"
 ELSE = "else"
 FOR = "for"
 WHILE = "while"
+DO = "do"
+SWITCH = "switch"
+CASE = "case"
+DEFAULT = "default"
+BREAK = "break"
 short_comment = "//" ~"\n"
 long_comment = "/*" ~"*/"
 sim_comilla = "'"
 dob_comilla = "\""
-read = "read"
-print = "println"
+read = "dash.in"
+print = "dash.print"
+read = "dash.in"
+print = "dash.print"
 comma = ","
 space = [ \t\r\n]
 
+return = "ret" 
+
+symbs = "°"|"|"|"¬"|"!"|"#"|"%"|"&"|"/"|"("|")"|"="|"+"|"*"|"-"|"_"|"["|"]"|"{"|"}"|"@"|"?"|"¡"|"¿"|"^"|"."|";"|","|":"|blankSpace|"$"
+text = {dob_comilla}({letter}|{digit}|{symbs})+{dob_comilla}
+
 true = "true"
 false = "false"
+
+addFor = "++"
+minusFor = "--"
+multFor = "**"
 //---------> Estados
 
 %%
@@ -123,7 +140,7 @@ false = "false"
                                 System.out.println("<bool> " + yytext());
                                 return new Symbol(Simbolos.BOOL, yycolumn, yyline, yytext());
                             }
-    {boolptr}                  {
+    {boolptr}               {
                                 System.out.println("<boolptr> " + yytext());
                                 return new Symbol(Simbolos.BOOLPTR, yycolumn, yyline, yytext());
                             }
@@ -135,13 +152,17 @@ false = "false"
                                 System.out.println("<arrow> " + yytext());
                                 return new Symbol(Simbolos.ARROW, yycolumn, yyline, yytext());
                             }
-    {function}                {
+    {function}              {
                                 System.out.println("<function> " + yytext());
                                 return new Symbol(Simbolos.FUNCTION, yycolumn, yyline, yytext());
                             }
     {main}                  {
                                 System.out.println("<main> " + yytext());
                                 return new Symbol(Simbolos.MAIN, yycolumn, yyline, yytext());
+                            }
+    {return}                {
+                                System.out.println("<return> " + yytext());
+                                return new Symbol(Simbolos.RETURN, yycolumn, yyline, yytext());
                             }
     {read}                  {
                                 System.out.println("<read> " + yytext());
@@ -167,10 +188,42 @@ false = "false"
                                 System.out.println("<while> " + yytext());
                                 return new Symbol(Simbolos.WHILE, yycolumn, yyline, yytext());
                             }
+    {DO}                    {
+                                System.out.println("<do> " + yytext());
+                                return new Symbol(Simbolos.DO, yycolumn, yyline, yytext());
+                            }
+    {SWITCH}                {
+                                System.out.println("<switch> " + yytext());
+                                return new Symbol(Simbolos.SWITCH, yycolumn, yyline, yytext());
+                            }
+    {CASE}                  {
+                                System.out.println("<case> " + yytext());
+                                return new Symbol(Simbolos.CASE, yycolumn, yyline, yytext());
+                            }
+    {DEFAULT}               {
+                                System.out.println("<default> " + yytext());
+                                return new Symbol(Simbolos.DEFAULT, yycolumn, yyline, yytext());
+                            }
+    {BREAK}                 {
+                                System.out.println("<break> " + yytext());
+                                return new Symbol(Simbolos.BREAK, yycolumn, yyline, yytext());
+                            }
     {id}                    {
                                 System.out.println("<id> " + yytext());
                                 return new Symbol(Simbolos.ID, yycolumn, yyline, yytext());
-                            } 
+                            }
+    {addFor}                    {
+                                System.out.println("<addFor> " + yytext());
+                                return new Symbol(Simbolos.ADDFOR, yycolumn, yyline, yytext());
+                            }
+    {minusFor}                    {
+                                System.out.println("<minusFor> " + yytext());
+                                return new Symbol(Simbolos.MINUSFOR, yycolumn, yyline, yytext());
+                            }
+    {multFor}                    {
+                                System.out.println("<multFor> " + yytext());
+                                return new Symbol(Simbolos.MULTFOR, yycolumn, yyline, yytext());
+                            }
     {mult_operator}         {
                                 System.out.println("<mult_operator> " + yytext());
                                 return new Symbol(Simbolos.MULT_OP, yycolumn, yyline, yytext());
@@ -303,7 +356,10 @@ false = "false"
                                 System.out.println("<comment>");
                             }
     {blankSpace}            {
-                                return new Symbol(Simbolos.BLANK, yycolumn, yyline, yytext());
+                                System.out.println("<blankSpace> " + yytext());
+                            }
+    {space}                 {
+                                System.out.println("<space> " + yytext());
                             }
     {sim_comilla}           {
                                 System.out.println("<sim_comilla> " + yytext());
@@ -312,6 +368,14 @@ false = "false"
     {dob_comilla}           {
                                 System.out.println("<dob_comilla> " + yytext());
                                 return new Symbol(Simbolos.DOBCOM, yycolumn, yyline, yytext());
+                            }
+    {symbs}                  {
+                                    System.out.println("<symbols> " + yytext());
+                                    return new Symbol(Simbolos.SYMBS, yycolumn, yyline, yytext());
+                            }
+    {text}                  { 
+                                    System.out.println("<text> " + yytext());
+                                    return new Symbol(Simbolos.TEXT, yycolumn, yyline, yytext());
                             }
     //---------> Errores Lexicos
     .                       {

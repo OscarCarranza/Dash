@@ -8,6 +8,7 @@ package dash;
 import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.logging.Level;
@@ -132,12 +133,31 @@ public class Compilador extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        String datos = ta_codigo.getText();
-        Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader(new StringReader(datos)));
-        Sintactico sintactico = new Sintactico(lexico);
+        String datos = "";
+        BufferedReader br;
         try{
+            if (ta_codigo.getText().length() > 0) {
+                datos = ta_codigo.getText();
+            } else{
+                br = new BufferedReader(new FileReader("./file.txt"));
+                
+                StringBuilder sb = new StringBuilder();
+                String line = br.readLine();
+
+                while (line != null) {
+                    sb.append(line);
+                    sb.append(System.lineSeparator());
+                    line = br.readLine();
+                }
+                datos = sb.toString();
+                int x;
+                x = 2+1;
+            }
+            
+            Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader(new StringReader(datos)));
+            Sintactico sintactico = new Sintactico(lexico);
             sintactico.parse();
-            ta_result.setText(sintactico.resultado);
+            ta_result.setText(sintactico.parse().toString());
         } catch(Exception e){
             //
         }
