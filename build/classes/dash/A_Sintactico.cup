@@ -53,32 +53,240 @@ action code
 /*--------- 2da Area: Declaraciones---------*/
 
 //---------> Declaraciones de terminales
-terminal TYPE, INT, INTPTR, CHAR, CHARPTR, BOOL, BOOLPTR, STRING, ARROW, FUNCTION, MAIN, READ, PRINT, IF, ELSE, FOR, WHILE, ID, MULT_OP, DIV_OP, ADD_OP, MINUS_OP, ASSIGN;
-terminal ADD_ASSIGN, MINUS_ASSIGN, MULT_ASSIGN, DIV_ASSIGN, EQUAL_OP, COMMA, AND_OP, OR_OP, LESSTHAN_OP, GREATERTHAN_OP, LESSEQUAL_OP, GREATEREQUAL_OP;
-terminal NOTEQUAL_OP, LPAR, RPAR, LBRAC, RBRAC, LKEY, RKEY, SEMICOLON, COLON, DOT, DASH, LETTER, INTEGER, TRUE, FALSE, BLANK, SIMCOM, DOBCOM;
+terminal TYPE, INT, INTPTR, CHAR, CHARPTR, BOOL, BOOLPTR, STRING, ARROW, FUNCTION, MAIN, RETURN, READ, PRINT, IF, ELSE, FOR, WHILE, DO, SWITCH, CASE, DEFAULT, BREAK, ID, ADDFOR, MINUSFOR, MULTFOR;
+terminal MULT_OP, DIV_OP, ADD_OP, MINUS_OP, ASSIGN, ADD_ASSIGN, MINUS_ASSIGN, MULT_ASSIGN, DIV_ASSIGN, EQUAL_OP, COMMA, AND_OP, OR_OP, LESSTHAN_OP, GREATERTHAN_OP, LESSEQUAL_OP;
+terminal GREATEREQUAL_OP, NOTEQUAL_OP, LPAR, RPAR, LBRAC, RBRAC, LKEY, RKEY, SEMICOLON, COLON, DOT, DASH, LETTER, INTEGER, TRUE, FALSE, SIMCOM, DOBCOM, SYMBS, TEXT;
 
 //---------> Declaraciones de no terminales
-non terminal INIT, spaces, spacesOpcional, declaracion, instanciacionIntPtr, integerLista, instanciacionCharPtr, charLista, bool, instanciacionBoolPtr, boolLista;
-non terminal dec_function, parameters, params_type; 
+non terminal String INICIO, declaracion, asignacionInteger, instanciacionInteger, iniciacionInteger, instanciacionIntPtr, integerLista, instanciacionCharPtr;
+non terminal asignacionChar, instanciacionChar, iniciacionChar, charComillas, charLista, asignacionBool, instanciacionBool, iniciacionBool, bool, instanciacionBoolPtr, boolLista;
+non terminal asignacionString, instanciacionString, iniciacionString, contenidoString, asignacionIntegerPtr, instanciacionIntegerPtr, iniciacionIntegerPtr;
+non terminal asignacionCharPtr, instanciacionCharPointer, iniciacionCharPtr, asignacionBoolPtr, instanciacionBoolPointer, iniciacionBoolPtr, core;
+
+non terminal body, body_dec;
+
+//if DEC
+non terminal conditionalExpr, andORor, logicalExpr, logicalExprComp, logicalExprID, comparator, if, else, ifElse, ifSinElse;
+
+//Iteraciones DEC
+non terminal while, doWhile, for, autoAssign, declaracionFor, instanciacionIntegerFor, switch, caseExist, case, declaracionCase, varCase, caseBreak, default;
+non terminal dec_function, parameters, params_type, varRet, dec_main, arithmetic_exp, term, factor, var_type, read, func, assign_var, entry, salida;
+non terminal content_print, more_content, var_entry, id_text, declaracion_ptrs_iniciacion, dec_id, ids, moreIds;
+
+non terminal linea;
 
 //---------> Precedencia de menor a mayor
+precedence left ADD_OP, MINUS_OP;
+precedence left MULT_OP, DIV_OP;
 
-start with INIT;
+start with INICIO;
 
 /*--------- 3ra Area: Reglas Semanticas---------*/
-INIT ::= declaracion:a {: System.out.println("declaracion="+a); :}
-    | dec_function;
+INICIO ::= INICIO linea
+    | linea;
 
-spaces ::= BLANK
-    | spaces BLANK;
+linea ::= dec_function
+    | dec_main
+    | declaracion;
 
-spacesOpcional ::= spaces
+declaracion ::= asignacionInteger DASH {::}
+    | asignacionIntegerPtr DASH {::}
+    | asignacionChar DASH
+    | asignacionCharPtr DASH
+    | asignacionBool DASH
+    | asignacionBoolPtr DASH
+    | asignacionString DASH;
+
+/*------------------- INT GRAMATICA -----------------------*/
+asignacionInteger ::= asignacionInteger COMMA instanciacionInteger {::} 
+    | INT instanciacionInteger;
+
+instanciacionInteger ::= ID iniciacionInteger ;
+
+iniciacionInteger ::= ASSIGN INTEGER
     | ;
 
-dec_function ::= FUNCTION BLANK ID spacesOpcional ARROW spacesOpcional LPAR spacesOpcional parameters spacesOpcional RPAR;
+integerLista ::= INTEGER {::}
+    | integerLista COMMA INTEGER;
+
+asignacionIntegerPtr ::= asignacionIntegerPtr COMMA instanciacionIntegerPtr {::} 
+    | INTPTR instanciacionIntegerPtr;
+
+instanciacionIntegerPtr ::= ID iniciacionIntegerPtr ;
+
+iniciacionIntegerPtr ::= ASSIGN instanciacionIntPtr
+    | ;
+
+instanciacionIntPtr ::= LBRAC RBRAC {::}
+    | LBRAC integerLista RBRAC;
+
+/*------------------- CHAR GRAMATICA -----------------------*/
+asignacionChar ::= asignacionChar COMMA instanciacionChar {::} 
+    | CHAR instanciacionChar;
+
+instanciacionChar ::= ID iniciacionChar ;
+
+iniciacionChar ::= ASSIGN charComillas
+    | ;
+
+charComillas ::= SIMCOM LETTER SIMCOM
+    | DOBCOM LETTER DOBCOM;
+
+charLista ::= LETTER {::}
+    | charLista COMMA LETTER;
+
+asignacionCharPtr ::= asignacionCharPtr COMMA instanciacionCharPointer {::} 
+    | CHARPTR instanciacionCharPointer;
+
+instanciacionCharPointer ::= ID iniciacionCharPtr ;
+
+iniciacionCharPtr ::= ASSIGN instanciacionCharPtr
+    | ;
+
+instanciacionCharPtr ::= LBRAC RBRAC {::}
+    | LBRAC charComillas RBRAC;
+
+/*------------------- BOOL GRAMATICA -----------------------*/
+asignacionBool ::= asignacionBool COMMA instanciacionBool {::}
+    | BOOL instanciacionBool;
+
+instanciacionBool ::= ID iniciacionBool ;
+
+iniciacionBool ::= ASSIGN bool
+    | ;
+
+bool ::= TRUE | FALSE;
+
+asignacionBoolPtr ::= asignacionBoolPtr COMMA instanciacionBoolPtr {::}
+    | BOOLPTR instanciacionBoolPtr;
+
+instanciacionBoolPtr ::= ID iniciacionBoolPtr ;
+
+iniciacionBoolPtr ::= ASSIGN instanciacionBoolPtr
+    | ;
+
+instanciacionBoolPtr ::= LBRAC RBRAC {::}
+    | LBRAC boolLista RBRAC;
+
+boolLista ::= bool {::}
+    | boolLista COMMA bool;
+
+/*------------------- STRING GRAMATICA -----------------------*/
+asignacionString ::= asignacionString COMMA instanciacionString {::} 
+    | STRING instanciacionString;
+
+instanciacionString ::= ID iniciacionString ;
+
+iniciacionString ::= ASSIGN DOBCOM contenidoString DOBCOM
+    | ;
+
+contenidoString ::= contenidoString ID
+    | ID;
+
+/*------------------- if GRAMATICA -----------------------*/
+conditionalExpr ::= conditionalExpr andORor logicalExpr {::}
+    | logicalExpr
+    | conditionalExpr andORor LPAR logicalExpr RPAR;
+
+andORor ::= AND_OP {::}
+    | OR_OP;
+
+logicalExpr ::= ID logicalExprComp {::}
+    | INTEGER comparator logicalExprID
+    | TRUE
+    | FALSE;
+
+logicalExprComp ::= comparator logicalExprID {::}
+    | ;
+
+logicalExprID ::= ID {::}
+    | INTEGER;
+
+comparator ::= EQUAL_OP {::}
+    | LESSTHAN_OP
+    | GREATERTHAN_OP
+    | LESSEQUAL_OP
+    | GREATEREQUAL_OP
+    | NOTEQUAL_OP;
+
+if ::= IF LPAR conditionalExpr RPAR LKEY body RKEY else {::};
+
+else ::= else ELSE ifSinElse {::}
+    | ;
+
+ifSinElse ::= IF LPAR conditionalExpr RPAR LKEY body RKEY {::};
+
+/*------------------- While GRAMATICA -----------------------*/
+while ::= WHILE LPAR conditionalExpr RPAR LKEY body RKEY {::};
+
+/*------------------- Do While GRAMATICA -----------------------*/
+doWhile ::= DO LKEY body RKEY WHILE LPAR conditionalExpr RPAR DASH {::};
+
+/*------------------- For GRAMATICA -----------------------*/
+for ::= FOR LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body RKEY {::};
+
+autoAssign ::= ADDFOR
+    | MINUSFOR
+    | MULTFOR;
+
+declaracionFor ::= declaracionFor COMMA instanciacionIntegerFor {::}
+    | INT instanciacionIntegerFor
+    | ;
+
+instanciacionIntegerFor ::= ID ASSIGN INTEGER  {::};
+
+/*------------------- Switch GRAMATICA -----------------------*/
+
+switch ::= SWITCH LPAR ID RPAR LKEY caseExist default RKEY {::};
+
+caseExist ::= case {::}
+    | ;
+
+case ::= case declaracionCase {::}
+    | declaracionCase;
+
+declaracionCase ::= CASE varCase COLON body caseBreak {::};
+
+varCase ::= INTEGER {::}
+    | SIMCOM LETTER SIMCOM;
+
+caseBreak ::= BREAK {::}
+    | ;
+
+default ::= DEFAULT COLON body caseBreak {::}
+    | ;
+
+/*------------------- BODY -----------------------*/
+body ::= body declaracion {::}
+    | body if
+    | body while
+    | body doWhile
+    | body for
+    | body switch
+    | body assign_var
+    | body entry
+    | body salida
+    | body func
+    | body dec_function
+    | ;
+
+/*------------------- Declaracion de funciones -----------------------*/
+dec_function ::= FUNCTION ID ARROW LPAR parameters RPAR LKEY body RETURN varRet DASH RKEY DASH
+; 
+
+func ::= ID ARROW LPAR ids RPAR DASH;
+
+dec_main ::= MAIN ID ARROW LPAR parameters RPAR LKEY body RETURN varRet DASH RKEY
+;
  
-parameters ::= parameters spacesOpcional COMMA spacesOpcional params_type BLANK ID
-    | params_type BLANK ID;
+parameters ::= parameters COMMA params_type ID
+    | params_type ID;
+
+ids ::= moreIds ID;
+
+moreIds ::= moreIds ID COMMA 
+    | ;
+
 
 params_type ::= INT 
     | INTPTR
@@ -88,38 +296,42 @@ params_type ::= INT
     | BOOLPTR
     | STRING;
 
+varRet ::= ID
+    | TRUE
+    | FALSE
+    | INTEGER;
 
-declaracion ::= INT:a spaces ID:b spacesOpcional DASH:c {: System.out.println("INT="+a+" ID="+b+" DASH="+c); :}
-    | INT:a spaces ID:b spaces ASSIGN spaces INTEGER:c spacesOpcional DASH {: System.out.println("INT="+a+" ID="+b+" DASH="+c); :}
-    | INTPTR:a spaces ID:b spacesOpcional DASH
-    | INTPTR:a spaces ID:b spaces ASSIGN spaces instanciacionIntPtr:c spacesOpcional DASH {: System.out.println("INT="+a+" ID="+b+" DASH="+c); :}
-    | CHAR spaces ID spacesOpcional DASH
-    | CHAR spaces ID spaces ASSIGN spaces SIMCOM spaces LETTER spaces SIMCOM spacesOpcional DASH
-    | CHAR spaces ID spaces ASSIGN spaces DOBCOM spaces LETTER spaces DOBCOM spacesOpcional DASH
-    | CHARPTR spaces ID spacesOpcional DASH
-    | CHARPTR spaces ID spaces ASSIGN spaces instanciacionCharPtr spacesOpcional DASH
-    | BOOL spaces ID spacesOpcional DASH
-    | BOOL spaces ID spaces ASSIGN spaces bool spacesOpcional DASH
-    | BOOLPTR spaces ID spacesOpcional DASH
-    | BOOLPTR spaces ID spaces ASSIGN spaces instanciacionBoolPtr spacesOpcional DASH
-    | STRING spaces ID spacesOpcional DASH;
 
-instanciacionIntPtr ::= LBRAC spacesOpcional RBRAC {::}
-    | LBRAC spacesOpcional integerLista spacesOpcional RBRAC;
+/* --------------------- Operaciones Aritmeticas ---------------------------*/
+assign_var ::= ID ASSIGN arithmetic_exp DASH;
 
-integerLista ::= INTEGER {::}
-    | integerLista COMMA spacesOpcional INTEGER;
+arithmetic_exp ::= term:term                                                           
+            |arithmetic_exp:se1 ADD_OP:pl term:term      
+            |arithmetic_exp:se1 MINUS_OP:min term:term                                        
+            |ADD_OP term:term                                                   
+            |MINUS_OP:min term:term;    
 
-instanciacionCharPtr ::= LBRAC spacesOpcional RBRAC {::}
-    | LBRAC spacesOpcional charLista spacesOpcional RBRAC;
+term ::= factor:fact                                                           
+         |term:term MULT_OP:tim factor:fact  
+         |term:term DIV_OP:div factor:fact;
 
-charLista ::= LETTER {::}
-    | charLista COMMA spacesOpcional LETTER;
+factor ::= INTEGER
+    | ID
+    | TRUE
+    | FALSE
+    | LPAR arithmetic_exp RPAR;                                                       
+       
+    
+/* -------------------- Lectura y Escritura ---------------------------*/
 
-bool ::= TRUE | FALSE;
+entry ::= READ LPAR ID RPAR DASH;
 
-instanciacionBoolPtr ::= LBRAC spacesOpcional RBRAC {::}
-    | LBRAC spacesOpcional boolLista spacesOpcional RBRAC;
+salida ::= PRINT LPAR content_print RPAR DASH;
 
-boolLista ::= bool {::}
-    | boolLista COMMA spacesOpcional bool;
+content_print ::= id_text more_content;
+
+more_content ::= ADD_OP id_text more_content
+    | ;
+
+id_text ::= ID 
+    | TEXT ;
