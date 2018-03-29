@@ -90,29 +90,41 @@ linea ::= dec_function
     | declaracion;
 
 declaracion ::= asignacionInteger DASH {::}
-    | asignacionIntegerPtr DASH {::}
+    | asignacionInteger error {: System.out.println("Expected - (dash)."); :}
+    | asignacionIntegerPtr DASH {::} 
+    | asignacionIntegerPtr error {: System.out.println("Expected - (dash)."); :}
     | asignacionChar DASH
+    | asignacionChar error {: System.out.println("Expected - (dash)."); :}
     | asignacionCharPtr DASH
+    | asignacionCharPtr error {: System.out.println("Expected - (dash)."); :}
     | asignacionBool DASH
+    | asignacionBool error {: System.out.println("Expected - (dash)."); :}
     | asignacionBoolPtr DASH
-    | asignacionString DASH;
+    | asignacionBoolPtr error {: System.out.println("Expected - (dash)."); :}
+    | asignacionString DASH
+    | asignacionString error {: System.out.println("Expected - (dash)."); :};
 
 /*------------------- INT GRAMATICA -----------------------*/
 asignacionInteger ::= asignacionInteger COMMA instanciacionInteger {::} 
     | INT instanciacionInteger;
 
-instanciacionInteger ::= ID iniciacionInteger ;
+instanciacionInteger ::= ID iniciacionInteger 
+    | error iniciacionInteger {: System.out.println("Expected an id."); :};
 
 iniciacionInteger ::= ASSIGN INTEGER
+    | ASSIGN error {: System.out.println("Expected a number."); :}
     | ;
 
 integerLista ::= INTEGER {::}
-    | integerLista COMMA INTEGER;
+    | integerLista COMMA INTEGER
+    | integerLista COMMA error {: System.out.println("Expected a number."); :}
+    | error {: System.out.println("Expected a number."); :};
 
 asignacionIntegerPtr ::= asignacionIntegerPtr COMMA instanciacionIntegerPtr {::} 
     | INTPTR instanciacionIntegerPtr;
 
-instanciacionIntegerPtr ::= ID iniciacionIntegerPtr ;
+instanciacionIntegerPtr ::= ID iniciacionIntegerPtr 
+    | error iniciacionIntegerPtr {: System.out.println("Expected an id."); :};
 
 iniciacionIntegerPtr ::= ASSIGN instanciacionIntPtr
     | ;
@@ -124,21 +136,31 @@ instanciacionIntPtr ::= LBRAC RBRAC {::}
 asignacionChar ::= asignacionChar COMMA instanciacionChar {::} 
     | CHAR instanciacionChar;
 
-instanciacionChar ::= ID iniciacionChar ;
+instanciacionChar ::= ID iniciacionChar 
+    | error iniciacionChar {: System.out.println("Expected an id."); :};
 
 iniciacionChar ::= ASSIGN charComillas
     | ;
 
 charComillas ::= SIMCOM LETTER SIMCOM
-    | DOBCOM LETTER DOBCOM;
+    | error LETTER SIMCOM {: System.out.println("Expected a '."); :}
+    | SIMCOM LETTER error {: System.out.println("Expected a '."); :}
+    | SIMCOM error SIMCOM {: System.out.println("Expected a char."); :}
+    | DOBCOM LETTER DOBCOM 
+    | error LETTER DOBCOM {: System.out.println("Expected a "."); :}
+    | DOBCOM LETTER error {: System.out.println("Expected a "."); :}
+    | DOBCOM error DOBCOM {: System.out.println("Expected a char."); :};
 
 charLista ::= LETTER {::}
-    | charLista COMMA LETTER;
+    | charLista COMMA LETTER
+    | charLista COMMA error {: System.out.println("Expected a char."); :}
+    | error {: System.out.println("Expected a char."); :};
 
 asignacionCharPtr ::= asignacionCharPtr COMMA instanciacionCharPointer {::} 
     | CHARPTR instanciacionCharPointer;
 
-instanciacionCharPointer ::= ID iniciacionCharPtr ;
+instanciacionCharPointer ::= ID iniciacionCharPtr 
+    | error iniciacionCharPtr {: System.out.println("Expected an id."); :};
 
 iniciacionCharPtr ::= ASSIGN instanciacionCharPtr
     | ;
@@ -150,17 +172,20 @@ instanciacionCharPtr ::= LBRAC RBRAC {::}
 asignacionBool ::= asignacionBool COMMA instanciacionBool {::}
     | BOOL instanciacionBool;
 
-instanciacionBool ::= ID iniciacionBool ;
+instanciacionBool ::= ID iniciacionBool 
+    | error iniciacionBool {: System.out.println("Expected an id."); :};
 
 iniciacionBool ::= ASSIGN bool
     | ;
 
-bool ::= TRUE | FALSE;
+bool ::= TRUE | FALSE
+    | error {: System.out.println("Expected either true/false."); :};
 
 asignacionBoolPtr ::= asignacionBoolPtr COMMA instanciacionBoolPtr {::}
     | BOOLPTR instanciacionBoolPtr;
 
-instanciacionBoolPtr ::= ID iniciacionBoolPtr ;
+instanciacionBoolPtr ::= ID iniciacionBoolPtr 
+    | error iniciacionBoolPtr {: System.out.println("Expected an id."); :};
 
 iniciacionBoolPtr ::= ASSIGN instanciacionBoolPtr
     | ;
@@ -175,13 +200,16 @@ boolLista ::= bool {::}
 asignacionString ::= asignacionString COMMA instanciacionString {::} 
     | STRING instanciacionString;
 
-instanciacionString ::= ID iniciacionString ;
+instanciacionString ::= ID iniciacionString 
+    | error iniciacionString {: System.out.println("Expected an id."); :};
 
 iniciacionString ::= ASSIGN DOBCOM contenidoString DOBCOM
     | ;
 
 contenidoString ::= contenidoString ID
-    | ID;
+    | ID
+    | contenidoString COMMA error {: System.out.println("Expected an id."); :}
+    | error {: System.out.println("Expected an id."); :};
 
 /*------------------- if GRAMATICA -----------------------*/
 conditionalExpr ::= conditionalExpr andORor logicalExpr {::}
@@ -189,18 +217,21 @@ conditionalExpr ::= conditionalExpr andORor logicalExpr {::}
     | conditionalExpr andORor LPAR logicalExpr RPAR;
 
 andORor ::= AND_OP {::}
-    | OR_OP;
+    | OR_OP
+    | error {: System.out.println("Unknown character."); :};
 
 logicalExpr ::= ID logicalExprComp {::}
     | INTEGER comparator logicalExprID
     | TRUE
-    | FALSE;
+    | FALSE
+    | error {: System.out.println("Unexpected character."); :};
 
 logicalExprComp ::= comparator logicalExprID {::}
     | ;
 
 logicalExprID ::= ID {::}
-    | INTEGER;
+    | INTEGER
+    | error {: System.out.println("Unexpected character."); :};
 
 comparator ::= EQUAL_OP {::}
     | LESSTHAN_OP
@@ -250,7 +281,7 @@ declaracionCase ::= CASE varCase COLON body caseBreak {::};
 varCase ::= INTEGER {::}
     | SIMCOM LETTER SIMCOM;
 
-caseBreak ::= BREAK {::}
+caseBreak ::= BREAK DASH {::}
     | ;
 
 default ::= DEFAULT COLON body caseBreak {::}
