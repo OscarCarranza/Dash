@@ -16,6 +16,6 @@ func hola => (int a, int b){
 	a = 5+10-1*(1)-
 	//Conta=>(int y, char b)-
 	dash.in(num)-
-	dash.print(“Hola mundo”)-
+	dash.print(“Gorfer”)-
 	ret 1-
-}
+}-

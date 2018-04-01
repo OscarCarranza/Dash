@@ -4,6 +4,7 @@
 package dash;
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
+import Nodos.Nodo;
 
 //---------> Codigo para el parser, variables, metodos
 parser code
@@ -86,10 +87,10 @@ INICIO ::= INICIO linea
     | linea;
 
 linea ::= dec_function
-    | dec_main
+    | dec_main {::}
     | declaracion;
 
-declaracion ::= asignacionInteger DASH {::}
+declaracion ::= asignacionInteger:a DASH {: RESULT = (String)a; :}
     | asignacionInteger error {: System.out.println("Expected - (dash)."); :}
     | asignacionIntegerPtr DASH {::} 
     | asignacionIntegerPtr error {: System.out.println("Expected - (dash)."); :}
@@ -143,12 +144,12 @@ iniciacionChar ::= ASSIGN charComillas
     | ;
 
 charComillas ::= SIMCOM LETTER SIMCOM
-    | error LETTER SIMCOM {: System.out.println("Expected a '."); :}
-    | SIMCOM LETTER error {: System.out.println("Expected a '."); :}
+    | error LETTER SIMCOM {: System.out.println("Expected a '.'"); :}
+    | SIMCOM LETTER error {: System.out.println("Expected a '.'"); :}
     | SIMCOM error SIMCOM {: System.out.println("Expected a char."); :}
     | DOBCOM LETTER DOBCOM 
-    | error LETTER DOBCOM {: System.out.println("Expected a "."); :}
-    | DOBCOM LETTER error {: System.out.println("Expected a "."); :}
+    | error LETTER DOBCOM {: System.out.println("Expected a '.'"); :}
+    | DOBCOM LETTER error {: System.out.println("Expected a '.'"); :}
     | DOBCOM error DOBCOM {: System.out.println("Expected a char."); :};
 
 charLista ::= LETTER {::}
@@ -240,7 +241,7 @@ comparator ::= EQUAL_OP {::}
     | GREATEREQUAL_OP
     | NOTEQUAL_OP;
 
-if ::= IF LPAR conditionalExpr RPAR LKEY body RKEY else {::};
+if ::= IF LPAR conditionalExpr RPAR LKEY body RKEY else {: RESULT = "if"; :};
 
 else ::= else ELSE ifSinElse {::}
     | ;
@@ -248,13 +249,13 @@ else ::= else ELSE ifSinElse {::}
 ifSinElse ::= IF LPAR conditionalExpr RPAR LKEY body RKEY {::};
 
 /*------------------- While GRAMATICA -----------------------*/
-while ::= WHILE LPAR conditionalExpr RPAR LKEY body RKEY {::};
+while ::= WHILE LPAR conditionalExpr RPAR LKEY body RKEY {: RESULT = "while"; :};
 
 /*------------------- Do While GRAMATICA -----------------------*/
-doWhile ::= DO LKEY body RKEY WHILE LPAR conditionalExpr RPAR DASH {::};
+doWhile ::= DO LKEY body RKEY WHILE LPAR conditionalExpr RPAR DASH {: RESULT = "do while"; :};
 
 /*------------------- For GRAMATICA -----------------------*/
-for ::= FOR LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body RKEY {::};
+for ::= FOR LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body RKEY {: RESULT = "for"; :};
 
 autoAssign ::= ADDFOR
     | MINUSFOR
@@ -268,7 +269,7 @@ instanciacionIntegerFor ::= ID ASSIGN INTEGER  {::};
 
 /*------------------- Switch GRAMATICA -----------------------*/
 
-switch ::= SWITCH LPAR ID RPAR LKEY caseExist default RKEY {::};
+switch ::= SWITCH LPAR ID RPAR LKEY caseExist default RKEY {: RESULT = "switch"; :};
 
 caseExist ::= case {::}
     | ;
@@ -289,25 +290,40 @@ default ::= DEFAULT COLON body caseBreak {::}
 
 /*------------------- BODY -----------------------*/
 body ::= body declaracion {::}
-    | body if
-    | body while
-    | body doWhile
-    | body for
-    | body switch
-    | body assign_var
-    | body entry
-    | body salida
-    | body func
-    | body dec_function
+    | body:b if:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
+    | body:b while:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
+    | body:b doWhile:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
+    | body:b for:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
+    | body:b switch:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
+    | body:b assign_var:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
+    | body:b entry:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
+    | body:b salida:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
     | ;
 
 /*------------------- Declaracion de funciones -----------------------*/
-dec_function ::= FUNCTION ID ARROW LPAR parameters RPAR LKEY body RETURN varRet DASH RKEY DASH
-; 
+dec_function ::= FUNCTION ID:nombre ARROW LPAR parameters RPAR LKEY body:b RETURN varRet DASH RKEY DASH {: Nodo raiz = new Nodo("funcion", nombre.toString());
+                            System.out.println("RESULT");
+                            System.out.println(RESULT);
+                            System.out.println("body");
+                            System.out.println(b);
+                            System.out.println(raiz); :};
 
-func ::= ID ARROW LPAR ids RPAR DASH;
+func ::= ID ARROW LPAR ids RPAR DASH
+    | ID error LPAR ids RPAR DASH           {: System.out.println("Expected '=>'"); :}
+    | ID ARROW error ids RPAR DASH          {: System.out.println("Expected '('"); :}
+    | ID ARROW LPAR ids error DASH          {: System.out.println("Expected ')'"); :}
+    | ID ARROW LPAR ids RPAR error          {: System.out.println("Expected '-' at end of line"); :}
+;
 
-dec_main ::= MAIN ID ARROW LPAR parameters RPAR LKEY body RETURN varRet DASH RKEY
+
+dec_main ::= MAIN ARROW LPAR parameters RPAR LKEY body RETURN varRet DASH RKEY
+    | MAIN error LPAR parameters RPAR LKEY body RETURN varRet DASH RKEY       {: System.out.println("Expected '=>'"); :}
+    | MAIN ARROW error parameters RPAR LKEY body RETURN varRet DASH RKEY      {: System.out.println("Expected '('"); :}
+    | MAIN ARROW LPAR parameters error LKEY body RETURN varRet DASH RKEY      {: System.out.println("Expected ')'"); :}
+    | MAIN ARROW LPAR parameters RPAR error body RETURN varRet DASH RKEY      {: System.out.println("Expected '{'"); :}
+    | MAIN ARROW LPAR parameters RPAR LKEY body error varRet DASH RKEY        {: System.out.println("Missing return statement"); :}
+    | MAIN ARROW LPAR parameters RPAR LKEY body RETURN varRet error RKEY      {: System.out.println("Expected '-' at end of line"); :}
+    | MAIN ARROW LPAR parameters RPAR LKEY body RETURN varRet DASH error      {: System.out.println("Expected ')'"); :}
 ;
  
 parameters ::= parameters COMMA params_type ID
@@ -325,16 +341,18 @@ params_type ::= INT
     | CHARPTR
     | BOOL
     | BOOLPTR
-    | STRING;
+    | STRING
+    | error         {: System.out.println("Expected type"); :};
 
 varRet ::= ID
     | TRUE
     | FALSE
-    | INTEGER;
+    | INTEGER
+    | error         {: System.out.println("Expected return variable"); :};
 
 
 /* --------------------- Operaciones Aritmeticas ---------------------------*/
-assign_var ::= ID ASSIGN arithmetic_exp DASH;
+assign_var ::= ID ASSIGN arithmetic_exp DASH {: RESULT = "assign"; :};
 
 arithmetic_exp ::= term:term                                                           
             |arithmetic_exp:se1 ADD_OP:pl term:term      
@@ -354,15 +372,27 @@ factor ::= INTEGER
        
     
 /* -------------------- Lectura y Escritura ---------------------------*/
+entry ::= READ LPAR ID RPAR DASH        {: RESULT = "entry"; :}
+    | READ error ID RPAR DASH           {: System.out.println("Expected '('"); :}
+    | READ LPAR error RPAR DASH         {: System.out.println("Expected in-variable"); :}
+    | READ LPAR ID error DASH           {: System.out.println("Expected ')'"); :}
+    | READ LPAR ID RPAR error            {: System.out.println("Expected '-' at end of line"); :}
+;
 
-entry ::= READ LPAR ID RPAR DASH;
+salida ::= PRINT LPAR content_print:c RPAR DASH    {: System.out.println("SALIDA");
+                                                    System.out.println(c);
+                                                    RESULT = "salida"; :}
+    | PRINT error content_print RPAR DASH           {: System.out.println("Expected '('"); :}
+    | PRINT LPAR content_print error DASH           {: System.out.println("Expected ')'"); :}
+    | PRINT LPAR content_print RPAR error            {: System.out.println("Expected '-' at end of line"); :}
+;
 
-salida ::= PRINT LPAR content_print RPAR DASH;
 
-content_print ::= id_text more_content;
+content_print ::= id_text:a more_content:b {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :};
 
-more_content ::= ADD_OP id_text more_content
+more_content ::= ADD_OP id_text:a more_content:b {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
     | ;
 
-id_text ::= ID 
-    | TEXT ;
+id_text ::= ID:id {: RESULT = id; :}
+    | TEXT:id {: RESULT = id; :}
+    | error            {: System.out.println("Expected printing content"); :};
