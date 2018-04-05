@@ -5,12 +5,14 @@ package dash;
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import Nodos.Nodo;
+import java.util.ArrayList;
 
 //---------> Codigo para el parser, variables, metodos
 parser code
 {:
     public String resultado="";
     public static LinkedList<MyError> listaErrorSintacticos = new LinkedList<MyError>();
+    public Nodo raiz;
 
     //Metodo al que se llama automaticamente ante algun error sintactico
     public void syntax_error(Symbol s)
@@ -74,7 +76,7 @@ non terminal while, doWhile, for, autoAssign, declaracionFor, instanciacionInteg
 non terminal dec_function, parameters, params_type, varRet, dec_main, arithmetic_exp, term, factor, var_type, read, func, assign_var, entry, salida;
 non terminal content_print, more_content, var_entry, id_text, declaracion_ptrs_iniciacion, dec_id, ids, moreIds;
 
-non terminal linea;
+non terminal linea, programa;
 
 //---------> Precedencia de menor a mayor
 precedence left ADD_OP, MINUS_OP;
@@ -83,10 +85,26 @@ precedence left MULT_OP, DIV_OP;
 start with INICIO;
 
 /*--------- 3ra Area: Reglas Semanticas---------*/
-INICIO ::= INICIO linea
-    | linea;
+INICIO ::= programa:funciones {: raiz = new Nodo("Programa", "");
+                        System.out.println("SIIIIIIIIIIU");
+                        ArrayList arregloNodos = (ArrayList) funciones;
+                        for(int i = 0; i < arregloNodos.size(); i++){
+                        Nodo temp = ((Nodo)arregloNodos.get(i));
+                            raiz.addHijo(temp);
+                        }  :};
 
-linea ::= dec_function
+programa ::= programa:prog linea:line {:if(prog != null){ 
+                                            ArrayList arregloNodos = (ArrayList) prog;
+                                            ArrayList arregloCommand = (ArrayList) line;
+                                            Nodo programa = (Nodo)arregloCommand.get(0);
+                                            arregloNodos.add( programa ); 
+                                            RESULT = arregloNodos; 
+                                        } else  if(line != null)
+                                            RESULT = line; :}
+    | linea:line {: RESULT = line; :};
+
+linea ::= dec_function:funcion {: System.out.println( ((Nodo)((ArrayList)funcion).get(0)).getTipo() );
+                                    RESULT = funcion; :}
     | dec_main {::}
     | declaracion;
 
@@ -241,7 +259,17 @@ comparator ::= EQUAL_OP {::}
     | GREATEREQUAL_OP
     | NOTEQUAL_OP;
 
-if ::= IF LPAR conditionalExpr RPAR LKEY body RKEY else {: RESULT = "if"; :};
+if ::= IF LPAR conditionalExpr RPAR LKEY body:body RKEY else {: Nodo nodo = new Nodo("if", "");
+                                                                ArrayList arregloBody = (ArrayList) body;
+                                                                if(arregloBody != null){
+                                                                    for(int i = 0; i < arregloBody.size(); i++){
+                                                                        Nodo temp = ((Nodo)arregloBody.get(i));
+                                                                        nodo.addHijo(temp);
+                                                                    }
+                                                                }
+                                                                ArrayList arregloNodos = new ArrayList();
+                                                                arregloNodos.add(nodo);
+                                                                RESULT = arregloNodos; :};
 
 else ::= else ELSE ifSinElse {::}
     | ;
@@ -249,13 +277,43 @@ else ::= else ELSE ifSinElse {::}
 ifSinElse ::= IF LPAR conditionalExpr RPAR LKEY body RKEY {::};
 
 /*------------------- While GRAMATICA -----------------------*/
-while ::= WHILE LPAR conditionalExpr RPAR LKEY body RKEY {: RESULT = "while"; :};
+while ::= WHILE LPAR conditionalExpr RPAR LKEY body:body RKEY {: Nodo nodo = new Nodo("while", "");
+                                                                ArrayList arregloBody = (ArrayList) body;
+                                                                if(arregloBody != null){
+                                                                    for(int i = 0; i < arregloBody.size(); i++){
+                                                                        Nodo temp = ((Nodo)arregloBody.get(i));
+                                                                        nodo.addHijo(temp);
+                                                                    }
+                                                                }
+                                                                ArrayList arregloNodos = new ArrayList();
+                                                                arregloNodos.add(nodo);
+                                                                RESULT = arregloNodos; :};
 
 /*------------------- Do While GRAMATICA -----------------------*/
-doWhile ::= DO LKEY body RKEY WHILE LPAR conditionalExpr RPAR DASH {: RESULT = "do while"; :};
+doWhile ::= DO LKEY body:body RKEY WHILE LPAR conditionalExpr RPAR DASH {: Nodo nodo = new Nodo("do while", "");
+                                                                        ArrayList arregloBody = (ArrayList) body;
+                                                                        if(arregloBody != null){
+                                                                            for(int i = 0; i < arregloBody.size(); i++){
+                                                                                Nodo temp = ((Nodo)arregloBody.get(i));
+                                                                                nodo.addHijo(temp);
+                                                                            }
+                                                                        }
+                                                                        ArrayList arregloNodos = new ArrayList();
+                                                                        arregloNodos.add(nodo);
+                                                                        RESULT = arregloNodos; :};
 
 /*------------------- For GRAMATICA -----------------------*/
-for ::= FOR LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body RKEY {: RESULT = "for"; :};
+for ::= FOR LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body:body RKEY {: Nodo nodo = new Nodo("for", "");
+                                                                                                            ArrayList arregloBody = (ArrayList) body;
+                                                                                                            if(arregloBody != null){
+                                                                                                                for(int i = 0; i < arregloBody.size(); i++){
+                                                                                                                    Nodo temp = ((Nodo)arregloBody.get(i));
+                                                                                                                    nodo.addHijo(temp);
+                                                                                                                }
+                                                                                                            }
+                                                                                                            ArrayList arregloNodos = new ArrayList();
+                                                                                                            arregloNodos.add(nodo);
+                                                                                                            RESULT = arregloNodos; :};
 
 autoAssign ::= ADDFOR
     | MINUSFOR
@@ -269,7 +327,10 @@ instanciacionIntegerFor ::= ID ASSIGN INTEGER  {::};
 
 /*------------------- Switch GRAMATICA -----------------------*/
 
-switch ::= SWITCH LPAR ID RPAR LKEY caseExist default RKEY {: RESULT = "switch"; :};
+switch ::= SWITCH LPAR ID RPAR LKEY caseExist default RKEY {: Nodo nodo = new Nodo("switch", "");
+                                                                ArrayList arregloNodos = new ArrayList();
+                                                                arregloNodos.add(nodo);
+                                                                RESULT = arregloNodos; :};
 
 caseExist ::= case {::}
     | ;
@@ -290,23 +351,126 @@ default ::= DEFAULT COLON body caseBreak {::}
 
 /*------------------- BODY -----------------------*/
 body ::= body declaracion {::}
-    | body:b if:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
-    | body:b while:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
-    | body:b doWhile:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
-    | body:b for:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
-    | body:b switch:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
-    | body:b assign_var:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
-    | body:b entry:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
-    | body:b salida:a {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
+    | body:b if:a {: if(b != null){
+                        ArrayList arregloNodos = (ArrayList) b;
+                        ArrayList arregloCommand = (ArrayList) a;
+                        Nodo ifVar = (Nodo)arregloCommand.get(0);
+                        arregloNodos.add( ifVar );
+                        System.out.println("a");
+                        System.out.println( ifVar.getTipo() );
+                        System.out.println("b");
+                        System.out.println( ((Nodo)((ArrayList) b).get(0)).getTipo() );
+                        System.out.println("arregloNodos");
+                        for(int i = 0; i < arregloNodos.size(); i++){
+                            System.out.println( ((Nodo)arregloNodos.get(i)).getTipo() );
+                        }
+                        RESULT = arregloNodos;
+                     } else {
+                        ArrayList arregloCommand = (ArrayList) a;
+                        Nodo ifVar = (Nodo)arregloCommand.get(0);
+                        System.out.println("a Solo");
+                        System.out.println(ifVar.getTipo());
+                        RESULT = a;} :}
+    | body:b while:a {: if(b != null){
+                        ArrayList arregloNodos = (ArrayList) b;
+                        ArrayList arregloCommand = (ArrayList) a;
+                        Nodo whileVar = (Nodo)arregloCommand.get(0);
+                        arregloNodos.add( whileVar );
+                        System.out.println("a");
+                        System.out.println( whileVar.getTipo() );
+                        System.out.println("b");
+                        System.out.println( ((Nodo)((ArrayList) b).get(0)).getTipo() );
+                        System.out.println("arregloNodos");
+                        for(int i = 0; i < arregloNodos.size(); i++){
+                            System.out.println( ((Nodo)arregloNodos.get(i)).getTipo() );
+                        }
+                        RESULT = arregloNodos;
+                     } else {
+                        ArrayList arregloCommand = (ArrayList) a;
+                        Nodo whileVar = (Nodo)arregloCommand.get(0);
+                        System.out.println("a Solo");
+                        System.out.println(whileVar.getTipo());
+                        RESULT = a;} :}
+    | body:b doWhile:a {: if(b != null){
+                        ArrayList arregloNodos = (ArrayList) b;
+                        ArrayList arregloCommand = (ArrayList) a;
+                        Nodo doWhile = (Nodo)arregloCommand.get(0);
+                        arregloNodos.add( doWhile );
+                        System.out.println("a");
+                        System.out.println( doWhile.getTipo() );
+                        System.out.println("b");
+                        System.out.println( ((Nodo)((ArrayList) b).get(0)).getTipo() );
+                        System.out.println("arregloNodos");
+                        for(int i = 0; i < arregloNodos.size(); i++){
+                            System.out.println( ((Nodo)arregloNodos.get(i)).getTipo() );
+                        }
+                        RESULT = arregloNodos;
+                     } else {
+                        ArrayList arregloCommand = (ArrayList) a;
+                        Nodo doWhile = (Nodo)arregloCommand.get(0);
+                        System.out.println("a Solo");
+                        System.out.println(doWhile.getTipo());
+                        RESULT = a;} :}
+    | body:b for:a {: if(b != null){
+                        ArrayList arregloNodos = (ArrayList) b;
+                        ArrayList arregloCommand = (ArrayList) a;
+                        Nodo forVar = (Nodo)arregloCommand.get(0);
+                        arregloNodos.add( forVar );
+                        System.out.println("a");
+                        System.out.println( forVar.getTipo() );
+                        System.out.println("b");
+                        System.out.println( ((Nodo)((ArrayList) b).get(0)).getTipo() );
+                        System.out.println("arregloNodos");
+                        for(int i = 0; i < arregloNodos.size(); i++){
+                            System.out.println( ((Nodo)arregloNodos.get(i)).getTipo() );
+                        }
+                        RESULT = arregloNodos;
+                     } else {
+                        ArrayList arregloCommand = (ArrayList) a;
+                        Nodo forVar = (Nodo)arregloCommand.get(0);
+                        System.out.println("a Solo");
+                        System.out.println(forVar.getTipo());
+                        RESULT = a;} :}
+    | body:b switch:a {: if(b != null){
+                        ArrayList arregloNodos = (ArrayList) b;
+                        ArrayList arregloCommand = (ArrayList) a;
+                        Nodo switchVar = (Nodo)arregloCommand.get(0);
+                        arregloNodos.add( switchVar );
+                        System.out.println("a");
+                        System.out.println( switchVar.getTipo() );
+                        System.out.println("b");
+                        System.out.println( ((Nodo)((ArrayList) b).get(0)).getTipo() );
+                        System.out.println("arregloNodos");
+                        for(int i = 0; i < arregloNodos.size(); i++){
+                            System.out.println( ((Nodo)arregloNodos.get(i)).getTipo() );
+                        }
+                        RESULT = arregloNodos;
+                     } else {
+                        ArrayList arregloCommand = (ArrayList) a;
+                        Nodo switchVar = (Nodo)arregloCommand.get(0);
+                        System.out.println("a Solo");
+                        System.out.println(switchVar.getTipo());
+                        RESULT = a;} :}
+    | body:b assign_var:a {: /*if(b != null) RESULT = (Nodo)a + ' ' + (Nodo)b; else RESULT = (Nodo)a;*/ :}
+    | body:b entry:a {: /*if(b != null) RESULT = (Nodo)a + ' ' + (Nodo)b; else RESULT = (Nodo)a;*/ :}
+    | body:b salida:a {: /*if(b != null) RESULT = (Nodo)a + ' ' + (Nodo)b; else RESULT = (Nodo)a;*/ :}
     | ;
 
 /*------------------- Declaracion de funciones -----------------------*/
-dec_function ::= FUNCTION ID:nombre ARROW LPAR parameters RPAR LKEY body:b RETURN varRet DASH RKEY DASH {: Nodo raiz = new Nodo("funcion", nombre.toString());
+dec_function ::= FUNCTION ID:nombre ARROW LPAR parameters RPAR LKEY body:body RETURN varRet DASH RKEY DASH {: Nodo nodo = new Nodo("funcion", nombre.toString());
                             System.out.println("RESULT");
                             System.out.println(RESULT);
                             System.out.println("body");
-                            System.out.println(b);
-                            System.out.println(raiz); :};
+                            ArrayList arregloNodos = (ArrayList) body;
+                            for(int i = 0; i < arregloNodos.size(); i++){
+                                Nodo temp = ((Nodo)arregloNodos.get(i));
+                                nodo.addHijo(temp);
+                                System.out.println( temp.getTipo() );
+                            }
+                            System.out.println(raiz);
+                            ArrayList arregloFuncion = new ArrayList();
+                            arregloFuncion.add(nodo);
+                            RESULT = arregloFuncion; :};
 
 func ::= ID ARROW LPAR ids RPAR DASH
     | ID error LPAR ids RPAR DASH           {: System.out.println("Expected '=>'"); :}

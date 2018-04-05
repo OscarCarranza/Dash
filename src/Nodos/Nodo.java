@@ -46,5 +46,17 @@ public class Nodo {
         this.hijos = hijos;
     }
     
+    public void addHijo(Nodo hijo) {
+        this.hijos.add(hijo);
+    }
     
+    public void print(int level) {
+        for (int i = 1; i < level; i++) {
+            System.out.print("\t");
+        }
+        System.out.println(Tipo);
+        for (Nodo child : hijos) {
+            child.print(level + 1);
+        }
+    }
 }
