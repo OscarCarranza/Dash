@@ -170,12 +170,8 @@ public class Compilador extends javax.swing.JFrame {
             
             Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader(new StringReader(datos)));
             Sintactico sintactico = new Sintactico(lexico);
-            System.out.println("ANTES");
             sintactico.parse();
-            System.out.println("DESPUES");
             //ta_result.setText(sintactico.parse().toString());
-            System.out.println("");
-            System.out.println("YII");
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
             DefaultMutableTreeNode nodoraiz = new DefaultMutableTreeNode(sintactico.raiz.getTipo());
@@ -224,11 +220,9 @@ public class Compilador extends javax.swing.JFrame {
     }
     
     private void print(Nodo nodo, DefaultMutableTreeNode arbolnodo){
-        System.out.print("\t");
-        System.out.println(nodo.getTipo());
+        //System.out.print("\t");
+        //System.out.println(nodo.getTipo());
         for (int i = 0; i < nodo.getHijos().size(); i++) {
-            System.out.println("Padre = " + nodo.getTipo());
-            System.out.println("Hijo = " + nodo.getHijos().get(i).getTipo());
             DefaultMutableTreeNode nodohijo = new DefaultMutableTreeNode(nodo.getHijos().get(i).getTipo());
             arbolnodo.add(nodohijo);
             print(nodo.getHijos().get(i), nodohijo);

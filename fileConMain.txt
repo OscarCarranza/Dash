@@ -19,16 +19,10 @@ func hola => (int a, int b){
 			int q-
 		}
 	}
-	ñ-
-
-	/* 
-	hola
-	*/
 	ret 1-
 }-
 
 main => (int a, int b){
-	a = a + 3 +b-
 	switch(valor){
 		case 1: if(a <= b){
 				int a-
@@ -50,16 +44,3 @@ main => (int a, int b){
 	}
 	ret 1-
 }
-
-func hola2 => (int a, int b){
-	for (int a = 1; a<=1; i++){
-		int q-
-	}
-	if(a){
-		for (int a = 1; a<=1; i++){
-			int q-
-		}
-	}
-	ret 1-
-}-
-
