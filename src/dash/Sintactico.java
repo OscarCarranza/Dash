@@ -1368,8 +1368,7 @@ class CUP$Sintactico$actions {
 		int funcionleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int funcionright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object funcion = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		 System.out.println( ((Nodo)((ArrayList)funcion).get(0)).getTipo() );
-                                    RESULT = funcion; 
+		 RESULT = funcion; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("linea",80, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1405,13 +1404,15 @@ class CUP$Sintactico$actions {
 		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
 		Object a = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
-		 /*Nodo declaracion = new Nodo("declaracion","");
+		 ArrayList declaracionArreglo = new ArrayList();
+                                            Nodo declaracion = new Nodo("declaracion","");
                                             ArrayList arregloNodos = (ArrayList) a;
                                             for(int i = 0; i < arregloNodos.size(); i++){
                                                 Nodo temp = ((Nodo)arregloNodos.get(i));
                                                 declaracion.addHijo(temp);
                                             }
-                                            RESULT = declaracion;*/ 
+                                            declaracionArreglo.add(declaracion);
+                                            RESULT = declaracionArreglo; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("declaracion",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1429,7 +1430,18 @@ class CUP$Sintactico$actions {
           case 9: // declaracion ::= asignacionIntegerPtr DASH 
             {
               Object RESULT =null;
-		
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		ArrayList declaracionArreglo = new ArrayList();
+                                    Nodo declaracion = new Nodo("declaracion","");
+                                    ArrayList arregloNodos = (ArrayList) a;
+                                    for(int i = 0; i < arregloNodos.size(); i++){
+                                        Nodo temp = ((Nodo)arregloNodos.get(i));
+                                        declaracion.addHijo(temp);
+                                    }
+                                    declaracionArreglo.add(declaracion);
+                                    RESULT = declaracionArreglo;
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("declaracion",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1447,7 +1459,18 @@ class CUP$Sintactico$actions {
           case 11: // declaracion ::= asignacionChar DASH 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		ArrayList declaracionArreglo = new ArrayList();
+                                    Nodo declaracion = new Nodo("declaracion","");
+                                    ArrayList arregloNodos = (ArrayList) a;
+                                    for(int i = 0; i < arregloNodos.size(); i++){
+                                        Nodo temp = ((Nodo)arregloNodos.get(i));
+                                        declaracion.addHijo(temp);
+                                    }
+                                    declaracionArreglo.add(declaracion);
+                                    RESULT = declaracionArreglo;
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("declaracion",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1465,7 +1488,18 @@ class CUP$Sintactico$actions {
           case 13: // declaracion ::= asignacionCharPtr DASH 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		ArrayList declaracionArreglo = new ArrayList();
+                                    Nodo declaracion = new Nodo("declaracion","");
+                                    ArrayList arregloNodos = (ArrayList) a;
+                                    for(int i = 0; i < arregloNodos.size(); i++){
+                                        Nodo temp = ((Nodo)arregloNodos.get(i));
+                                        declaracion.addHijo(temp);
+                                    }
+                                    declaracionArreglo.add(declaracion);
+                                    RESULT = declaracionArreglo;
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("declaracion",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1483,7 +1517,18 @@ class CUP$Sintactico$actions {
           case 15: // declaracion ::= asignacionBool DASH 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		ArrayList declaracionArreglo = new ArrayList();
+                                Nodo declaracion = new Nodo("declaracion","");
+                                ArrayList arregloNodos = (ArrayList) a;
+                                for(int i = 0; i < arregloNodos.size(); i++){
+                                    Nodo temp = ((Nodo)arregloNodos.get(i));
+                                    declaracion.addHijo(temp);
+                                }
+                                declaracionArreglo.add(declaracion);
+                                RESULT = declaracionArreglo;
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("declaracion",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1501,7 +1546,18 @@ class CUP$Sintactico$actions {
           case 17: // declaracion ::= asignacionBoolPtr DASH 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		ArrayList declaracionArreglo = new ArrayList();
+                                Nodo declaracion = new Nodo("declaracion","");
+                                ArrayList arregloNodos = (ArrayList) a;
+                                for(int i = 0; i < arregloNodos.size(); i++){
+                                    Nodo temp = ((Nodo)arregloNodos.get(i));
+                                    declaracion.addHijo(temp);
+                                }
+                                declaracionArreglo.add(declaracion);
+                                RESULT = declaracionArreglo;
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("declaracion",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1519,7 +1575,18 @@ class CUP$Sintactico$actions {
           case 19: // declaracion ::= asignacionString DASH 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		ArrayList declaracionArreglo = new ArrayList();
+                                Nodo declaracion = new Nodo("declaracion","");
+                                ArrayList arregloNodos = (ArrayList) a;
+                                for(int i = 0; i < arregloNodos.size(); i++){
+                                    Nodo temp = ((Nodo)arregloNodos.get(i));
+                                    declaracion.addHijo(temp);
+                                }
+                                declaracionArreglo.add(declaracion);
+                                RESULT = declaracionArreglo;
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("declaracion",1, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1543,16 +1610,16 @@ class CUP$Sintactico$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		 /*if(b != null){
-                                                                            ArrayList arregloNodos = (ArrayList) b;
-                                                                            Nodo newID = new Nodo(id.toString(), "");
-                                                                            arregloNodos.add( newID );
-                                                                            RESULT = arregloNodos;
-                                                                         } else {
-                                                                            ArrayList arregloInstancias = new ArrayList();
-                                                                            Nodo newID = new Nodo(id.toString(), "");
-                                                                            arregloInstancias.add(newID);
-                                                                            RESULT = arregloInstancias;} */
+		  if(b != null){
+                                                                                ArrayList arregloNodos = (ArrayList) b;
+                                                                                Nodo newID = new Nodo((String)id, "");
+                                                                                arregloNodos.add( newID );
+                                                                                RESULT = arregloNodos;
+                                                                             } else {
+                                                                                ArrayList arregloInstancias = new ArrayList();
+                                                                                Nodo newID = new Nodo((String)id, "");
+                                                                                arregloInstancias.add(newID);
+                                                                                RESULT = arregloInstancias;} 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionInteger",2, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1564,12 +1631,12 @@ class CUP$Sintactico$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		/*ArrayList arregloInstancias = new ArrayList();
+		ArrayList arregloInstancias = new ArrayList();
                                     Nodo newInt = new Nodo("int", "");
-                                    Nodo newID = new Nodo(id.toString(), "");
+                                    Nodo newID = new Nodo((String)id, "");
                                     arregloInstancias.add(newInt);
                                     arregloInstancias.add(newID);
-                                    RESULT = arregloInstancias;*/ 
+                                    RESULT = arregloInstancias; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionInteger",2, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1581,9 +1648,7 @@ class CUP$Sintactico$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
-		 /*ArrayList arregloInstancias = new ArrayList();
-                                                    arregloInstancias.add(id.toString());
-                                                    RESULT = arregloInstancias;*/ 
+		 RESULT = id.toString(); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instanciacionInteger",3, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1664,7 +1729,22 @@ class CUP$Sintactico$actions {
           case 32: // asignacionIntegerPtr ::= asignacionIntegerPtr COMMA instanciacionIntegerPtr 
             {
               Object RESULT =null;
-		
+		int bleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		if(b != null){
+                                                                                    ArrayList arregloNodos = (ArrayList) b;
+                                                                                    Nodo newID = new Nodo((String)id, "");
+                                                                                    arregloNodos.add( newID );
+                                                                                    RESULT = arregloNodos;
+                                                                                 } else {
+                                                                                    ArrayList arregloInstancias = new ArrayList();
+                                                                                    Nodo newID = new Nodo((String)id, "");
+                                                                                    arregloInstancias.add(newID);
+                                                                                    RESULT = arregloInstancias;}
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionIntegerPtr",23, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1673,7 +1753,15 @@ class CUP$Sintactico$actions {
           case 33: // asignacionIntegerPtr ::= INTPTR instanciacionIntegerPtr 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		ArrayList arregloInstancias = new ArrayList();
+                                    Nodo newInt = new Nodo("int ptr", "");
+                                    Nodo newID = new Nodo((String)id, "");
+                                    arregloInstancias.add(newInt);
+                                    arregloInstancias.add(newID);
+                                    RESULT = arregloInstancias; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionIntegerPtr",23, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1682,7 +1770,10 @@ class CUP$Sintactico$actions {
           case 34: // instanciacionIntegerPtr ::= ID iniciacionIntegerPtr 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		 RESULT = id.toString(); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instanciacionIntegerPtr",24, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1736,7 +1827,22 @@ class CUP$Sintactico$actions {
           case 40: // asignacionChar ::= asignacionChar COMMA instanciacionChar 
             {
               Object RESULT =null;
-		
+		int bleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 if(b != null){
+                                                                    ArrayList arregloNodos = (ArrayList) b;
+                                                                    Nodo newID = new Nodo((String)id, "");
+                                                                    arregloNodos.add( newID );
+                                                                    RESULT = arregloNodos;
+                                                                 } else {
+                                                                    ArrayList arregloInstancias = new ArrayList();
+                                                                    Nodo newID = new Nodo((String)id, "");
+                                                                    arregloInstancias.add(newID);
+                                                                    RESULT = arregloInstancias;} 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionChar",8, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1745,7 +1851,15 @@ class CUP$Sintactico$actions {
           case 41: // asignacionChar ::= CHAR instanciacionChar 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		ArrayList arregloInstancias = new ArrayList();
+                                    Nodo newChar = new Nodo("char", "");
+                                    Nodo newID = new Nodo((String)id, "");
+                                    arregloInstancias.add(newChar);
+                                    arregloInstancias.add(newID);
+                                    RESULT = arregloInstancias; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionChar",8, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1754,7 +1868,10 @@ class CUP$Sintactico$actions {
           case 42: // instanciacionChar ::= ID iniciacionChar 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		 RESULT = id.toString(); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instanciacionChar",9, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1898,7 +2015,22 @@ class CUP$Sintactico$actions {
           case 58: // asignacionCharPtr ::= asignacionCharPtr COMMA instanciacionCharPointer 
             {
               Object RESULT =null;
-		
+		int bleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 if(b != null){
+                                                                            ArrayList arregloNodos = (ArrayList) b;
+                                                                            Nodo newID = new Nodo((String)id, "");
+                                                                            arregloNodos.add( newID );
+                                                                            RESULT = arregloNodos;
+                                                                         } else {
+                                                                            ArrayList arregloInstancias = new ArrayList();
+                                                                            Nodo newID = new Nodo((String)id, "");
+                                                                            arregloInstancias.add(newID);
+                                                                            RESULT = arregloInstancias;}
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionCharPtr",26, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1907,7 +2039,15 @@ class CUP$Sintactico$actions {
           case 59: // asignacionCharPtr ::= CHARPTR instanciacionCharPointer 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		ArrayList arregloInstancias = new ArrayList();
+                                            Nodo newChar = new Nodo("char ptr", "");
+                                            Nodo newID = new Nodo((String)id, "");
+                                            arregloInstancias.add(newChar);
+                                            arregloInstancias.add(newID);
+                                            RESULT = arregloInstancias; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionCharPtr",26, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1916,7 +2056,10 @@ class CUP$Sintactico$actions {
           case 60: // instanciacionCharPointer ::= ID iniciacionCharPtr 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		 RESULT = id.toString(); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instanciacionCharPointer",27, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1970,7 +2113,22 @@ class CUP$Sintactico$actions {
           case 66: // asignacionBool ::= asignacionBool COMMA instanciacionBool 
             {
               Object RESULT =null;
-		
+		int bleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		if(b != null){
+                                                                    ArrayList arregloNodos = (ArrayList) b;
+                                                                    Nodo newID = new Nodo((String)id, "");
+                                                                    arregloNodos.add( newID );
+                                                                    RESULT = arregloNodos;
+                                                                 } else {
+                                                                    ArrayList arregloInstancias = new ArrayList();
+                                                                    Nodo newID = new Nodo((String)id, "");
+                                                                    arregloInstancias.add(newID);
+                                                                    RESULT = arregloInstancias;}
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionBool",13, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1979,7 +2137,15 @@ class CUP$Sintactico$actions {
           case 67: // asignacionBool ::= BOOL instanciacionBool 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		ArrayList arregloInstancias = new ArrayList();
+                                Nodo newChar = new Nodo("bool", "");
+                                Nodo newID = new Nodo((String)id, "");
+                                arregloInstancias.add(newChar);
+                                arregloInstancias.add(newID);
+                                RESULT = arregloInstancias; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionBool",13, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1988,7 +2154,10 @@ class CUP$Sintactico$actions {
           case 68: // instanciacionBool ::= ID iniciacionBool 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		 RESULT = id.toString(); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instanciacionBool",14, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2051,7 +2220,22 @@ class CUP$Sintactico$actions {
           case 75: // asignacionBoolPtr ::= asignacionBoolPtr COMMA instanciacionBoolPtr 
             {
               Object RESULT =null;
-		
+		int bleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		if(b != null){
+                                                                        ArrayList arregloNodos = (ArrayList) b;
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloNodos.add( newID );
+                                                                        RESULT = arregloNodos;
+                                                                     } else {
+                                                                        ArrayList arregloInstancias = new ArrayList();
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloInstancias.add(newID);
+                                                                        RESULT = arregloInstancias;}
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionBoolPtr",29, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2060,7 +2244,15 @@ class CUP$Sintactico$actions {
           case 76: // asignacionBoolPtr ::= BOOLPTR instanciacionBoolPtr 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		ArrayList arregloInstancias = new ArrayList();
+                                        Nodo newChar = new Nodo("bool ptr", "");
+                                        Nodo newID = new Nodo((String)id, "");
+                                        arregloInstancias.add(newChar);
+                                        arregloInstancias.add(newID);
+                                        RESULT = arregloInstancias; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionBoolPtr",29, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2069,7 +2261,10 @@ class CUP$Sintactico$actions {
           case 77: // instanciacionBoolPtr ::= ID iniciacionBoolPtr 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		 RESULT = id.toString(); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instanciacionBoolPtr",17, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2141,7 +2336,22 @@ class CUP$Sintactico$actions {
           case 85: // asignacionString ::= asignacionString COMMA instanciacionString 
             {
               Object RESULT =null;
-		
+		int bleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		if(b != null){
+                                                                        ArrayList arregloNodos = (ArrayList) b;
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloNodos.add( newID );
+                                                                        RESULT = arregloNodos;
+                                                                     } else {
+                                                                        ArrayList arregloInstancias = new ArrayList();
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloInstancias.add(newID);
+                                                                        RESULT = arregloInstancias;}
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionString",19, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2150,7 +2360,15 @@ class CUP$Sintactico$actions {
           case 86: // asignacionString ::= STRING instanciacionString 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		ArrayList arregloInstancias = new ArrayList();
+                                        Nodo newChar = new Nodo("string", "");
+                                        Nodo newID = new Nodo((String)id, "");
+                                        arregloInstancias.add(newChar);
+                                        arregloInstancias.add(newID);
+                                        RESULT = arregloInstancias; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionString",19, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2159,7 +2377,10 @@ class CUP$Sintactico$actions {
           case 87: // instanciacionString ::= ID iniciacionString 
             {
               Object RESULT =null;
-
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		 RESULT = id.toString(); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("instanciacionString",20, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2231,7 +2452,25 @@ class CUP$Sintactico$actions {
           case 95: // conditionalExpr ::= conditionalExpr andORor logicalExpr 
             {
               Object RESULT =null;
-		
+		int expr1left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int expr1right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Object expr1 = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int andorleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int andorright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object andor = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int expr2left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int expr2right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object expr2 = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 ArrayList expresion1 = (ArrayList)expr1;
+                                                                            Nodo expresion2 = (Nodo)expr2;
+                                                                            Nodo condition = new Nodo(andor.toString(), "");
+                                                                            if(expresion1.size() >= 2)
+                                                                                condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().get( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().size()-1 ) );
+                                                                            else
+                                                                                condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)) );
+                                                                            condition.addHijo(expresion2);
+                                                                            expresion1.add(condition);
+                                                                            RESULT =  expresion1;
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("conditionalExpr",35, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2240,7 +2479,13 @@ class CUP$Sintactico$actions {
           case 96: // conditionalExpr ::= logicalExpr 
             {
               Object RESULT =null;
-
+		int exprleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int exprright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object expr = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 ArrayList arregloCondiciones = new ArrayList();
+                            Nodo expresion = (Nodo)expr;
+                            arregloCondiciones.add(expresion);
+                            RESULT = arregloCondiciones; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("conditionalExpr",35, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2249,7 +2494,25 @@ class CUP$Sintactico$actions {
           case 97: // conditionalExpr ::= conditionalExpr andORor LPAR logicalExpr RPAR 
             {
               Object RESULT =null;
-
+		int expr1left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).left;
+		int expr1right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).right;
+		Object expr1 = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).value;
+		int andorleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).left;
+		int andorright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).right;
+		Object andor = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).value;
+		int expr2left = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int expr2right = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object expr2 = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		 ArrayList expresion1 = (ArrayList)expr1;
+                                                                        Nodo expresion2 = (Nodo)expr2;
+                                                                        Nodo condition = new Nodo(andor.toString(), "");
+                                                                        if(expresion1.size() >= 2)
+                                                                            condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().get( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().size()-1 ) );
+                                                                        else
+                                                                            condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)) );
+                                                                        condition.addHijo(expresion2);
+                                                                        expresion1.add(condition);
+                                                                        RESULT =  expresion1;
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("conditionalExpr",35, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2258,7 +2521,10 @@ class CUP$Sintactico$actions {
           case 98: // andORor ::= AND_OP 
             {
               Object RESULT =null;
-		
+		int andleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int andright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object and = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 RESULT = and.toString(); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("andORor",36, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2267,7 +2533,10 @@ class CUP$Sintactico$actions {
           case 99: // andORor ::= OR_OP 
             {
               Object RESULT =null;
-
+		int orleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int orright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object or = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 RESULT = or.toString(); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("andORor",36, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2285,7 +2554,22 @@ class CUP$Sintactico$actions {
           case 101: // logicalExpr ::= ID logicalExprComp 
             {
               Object RESULT =null;
-		
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int arregloleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int arregloright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object arreglo = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 Nodo expresion1 = new Nodo(id.toString(), "");
+                                                    ArrayList arregloExpresion = (ArrayList) arreglo;
+                                                    if(arregloExpresion.size() > 0){
+                                                        Nodo condition = new Nodo( ((Nodo)arregloExpresion.get(0)).getTipo(), "");
+                                                        Nodo expresion2 = new Nodo( ((Nodo)arregloExpresion.get(1)).getTipo(), "");
+                                                        condition.addHijo(expresion1);
+                                                        condition.addHijo(expresion2);
+                                                        RESULT = condition;
+                                                    } else
+                                                        RESULT = expresion1; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("logicalExpr",37, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2294,7 +2578,21 @@ class CUP$Sintactico$actions {
           case 102: // logicalExpr ::= INTEGER comparator logicalExprID 
             {
               Object RESULT =null;
-
+		int inteleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int interight = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Object inte = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
+		int compleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int compright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object comp = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int exprleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int exprright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object expr = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 Nodo expresion1 = new Nodo(inte.toString(), "");
+                                            Nodo expresion2 = new Nodo(expr.toString(), "");
+                                            Nodo condition = new Nodo(comp.toString(), "");
+                                            condition.addHijo(expresion1);
+                                            condition.addHijo(expresion2);
+                                            RESULT = condition; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("logicalExpr",37, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2303,7 +2601,7 @@ class CUP$Sintactico$actions {
           case 103: // logicalExpr ::= TRUE 
             {
               Object RESULT =null;
-
+		 Nodo tru = new Nodo("true", ""); RESULT = tru; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("logicalExpr",37, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2312,7 +2610,7 @@ class CUP$Sintactico$actions {
           case 104: // logicalExpr ::= FALSE 
             {
               Object RESULT =null;
-
+		 Nodo fal = new Nodo("false", "");RESULT = fal; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("logicalExpr",37, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2330,7 +2628,18 @@ class CUP$Sintactico$actions {
           case 106: // logicalExprComp ::= comparator logicalExprID 
             {
               Object RESULT =null;
-		
+		int compleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int compright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object comp = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int exprleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int exprright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object expr = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 ArrayList arregloExpresiones = new ArrayList();
+                                                            Nodo expresion = new Nodo(expr.toString(), "");
+                                                            Nodo condition = new Nodo(comp.toString(), "");
+                                                            arregloExpresiones.add(condition);
+                                                            arregloExpresiones.add(expresion);
+                                                            RESULT = arregloExpresiones;
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("logicalExprComp",38, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2339,7 +2648,8 @@ class CUP$Sintactico$actions {
           case 107: // logicalExprComp ::= 
             {
               Object RESULT =null;
-
+		ArrayList arregloExpresiones = new ArrayList();
+        RESULT = arregloExpresiones; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("logicalExprComp",38, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2348,7 +2658,10 @@ class CUP$Sintactico$actions {
           case 108: // logicalExprID ::= ID 
             {
               Object RESULT =null;
-		
+		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 RESULT = id; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("logicalExprID",39, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2357,7 +2670,10 @@ class CUP$Sintactico$actions {
           case 109: // logicalExprID ::= INTEGER 
             {
               Object RESULT =null;
-
+		int inteleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int interight = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object inte = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 RESULT = inte; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("logicalExprID",39, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2375,7 +2691,10 @@ class CUP$Sintactico$actions {
           case 111: // comparator ::= EQUAL_OP 
             {
               Object RESULT =null;
-		
+		int compleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int compright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object comp = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 RESULT = comp; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("comparator",40, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2384,7 +2703,10 @@ class CUP$Sintactico$actions {
           case 112: // comparator ::= LESSTHAN_OP 
             {
               Object RESULT =null;
-
+		int compleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int compright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object comp = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 RESULT = comp; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("comparator",40, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2393,7 +2715,10 @@ class CUP$Sintactico$actions {
           case 113: // comparator ::= GREATERTHAN_OP 
             {
               Object RESULT =null;
-
+		int compleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int compright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object comp = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 RESULT = comp; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("comparator",40, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2402,7 +2727,10 @@ class CUP$Sintactico$actions {
           case 114: // comparator ::= LESSEQUAL_OP 
             {
               Object RESULT =null;
-
+		int compleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int compright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object comp = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 RESULT = comp; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("comparator",40, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2411,7 +2739,10 @@ class CUP$Sintactico$actions {
           case 115: // comparator ::= GREATEREQUAL_OP 
             {
               Object RESULT =null;
-
+		int compleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int compright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object comp = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 RESULT = comp; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("comparator",40, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2420,7 +2751,10 @@ class CUP$Sintactico$actions {
           case 116: // comparator ::= NOTEQUAL_OP 
             {
               Object RESULT =null;
-
+		int compleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int compright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object comp = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 RESULT = comp; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("comparator",40, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2429,6 +2763,9 @@ class CUP$Sintactico$actions {
           case 117: // if ::= IF LPAR conditionalExpr RPAR LKEY body RKEY else 
             {
               Object RESULT =null;
+		int condleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-5)).left;
+		int condright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-5)).right;
+		Object cond = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-5)).value;
 		int bodyleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
 		int bodyright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
 		Object body = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
@@ -2436,36 +2773,62 @@ class CUP$Sintactico$actions {
 		int elseIfright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object elseIf = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		 if(elseIf != null){
-                                                                    Nodo nodo = new Nodo("if", "");
-                                                                    ArrayList arregloBody = (ArrayList) body;
-                                                                    if(arregloBody != null){
-                                                                        for(int i = 0; i < arregloBody.size(); i++){
-                                                                            Nodo temp = ((Nodo)arregloBody.get(i));
-                                                                            nodo.addHijo(temp);
-                                                                        }
-                                                                    }
-                                                                    ArrayList arregloNodos = new ArrayList();
-                                                                    arregloNodos.add(nodo);
-                                                                    ArrayList arregloElse = (ArrayList) elseIf;
-                                                                    if(arregloElse != null){
-                                                                        for(int i = 0; i < arregloElse.size(); i++){
-                                                                            Nodo temp = ((Nodo)arregloElse.get(i));
-                                                                            arregloNodos.add(temp);
-                                                                        }
-                                                                    }
-                                                                    RESULT = arregloNodos;
-                                                                } else {
-                                                                    Nodo nodo = new Nodo("if", "");
-                                                                    ArrayList arregloBody = (ArrayList) body;
-                                                                    if(arregloBody != null){
-                                                                        for(int i = 0; i < arregloBody.size(); i++){
-                                                                            Nodo temp = ((Nodo)arregloBody.get(i));
-                                                                            nodo.addHijo(temp);
-                                                                        }
-                                                                    }
-                                                                    ArrayList arregloNodos = new ArrayList();
-                                                                    arregloNodos.add(nodo);
-                                                                    RESULT = arregloNodos; } 
+                                                                            Nodo nodo = new Nodo("if", "");
+                                                                            Nodo cuerpo = new Nodo("cuerpo", "");
+                                                                            Nodo condicion = new Nodo("condicion", "");
+                                                                            ArrayList arregloCondicion = (ArrayList) cond;
+                                                                            if(arregloCondicion != null){
+                                                                                for(int i = 0; i < arregloCondicion.size(); i++){
+                                                                                    if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
+                                                                                        Nodo temp = ((Nodo)arregloCondicion.get(i));
+                                                                                        condicion.addHijo(temp);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            ArrayList arregloBody = (ArrayList) body;
+                                                                            if(arregloBody != null){
+                                                                                for(int i = 0; i < arregloBody.size(); i++){
+                                                                                    Nodo temp = ((Nodo)arregloBody.get(i));
+                                                                                    cuerpo.addHijo(temp);
+                                                                                }
+                                                                            }
+                                                                            nodo.addHijo(condicion);
+                                                                            nodo.addHijo(cuerpo);
+                                                                            ArrayList arregloNodos = new ArrayList();
+                                                                            arregloNodos.add(nodo);
+                                                                            ArrayList arregloElse = (ArrayList) elseIf;
+                                                                            if(arregloElse != null){
+                                                                                for(int i = 0; i < arregloElse.size(); i++){
+                                                                                    Nodo temp = ((Nodo)arregloElse.get(i));
+                                                                                    arregloNodos.add(temp);
+                                                                                }
+                                                                            }
+                                                                            RESULT = arregloNodos;
+                                                                        } else {
+                                                                            Nodo nodo = new Nodo("if", "");
+                                                                            Nodo cuerpo = new Nodo("cuerpo", "");
+                                                                            Nodo condicion = new Nodo("condicion", "");
+                                                                            ArrayList arregloCondicion = (ArrayList) cond;
+                                                                            if(arregloCondicion != null){
+                                                                                for(int i = 0; i < arregloCondicion.size(); i++){
+                                                                                    if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
+                                                                                        Nodo temp = ((Nodo)arregloCondicion.get(i));
+                                                                                        condicion.addHijo(temp);
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            ArrayList arregloBody = (ArrayList) body;
+                                                                            if(arregloBody != null){
+                                                                                for(int i = 0; i < arregloBody.size(); i++){
+                                                                                    Nodo temp = ((Nodo)arregloBody.get(i));
+                                                                                    cuerpo.addHijo(temp);
+                                                                                }
+                                                                            }
+                                                                            nodo.addHijo(condicion);
+                                                                            nodo.addHijo(cuerpo);
+                                                                            ArrayList arregloNodos = new ArrayList();
+                                                                            arregloNodos.add(nodo);
+                                                                            RESULT = arregloNodos; } 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("if",41, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-7)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2637,20 +3000,36 @@ class CUP$Sintactico$actions {
           case 131: // while ::= WHILE LPAR conditionalExpr RPAR LKEY body RKEY 
             {
               Object RESULT =null;
+		int condleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).left;
+		int condright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).right;
+		Object cond = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).value;
 		int bodyleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
 		int bodyright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
 		Object body = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
 		 Nodo nodo = new Nodo("while", "");
-                                                                ArrayList arregloBody = (ArrayList) body;
-                                                                if(arregloBody != null){
-                                                                    for(int i = 0; i < arregloBody.size(); i++){
-                                                                        Nodo temp = ((Nodo)arregloBody.get(i));
-                                                                        nodo.addHijo(temp);
+                                                                    Nodo condicion = new Nodo("condicion", "");
+                                                                    Nodo cuerpo = new Nodo("cuerpo", "");
+                                                                    ArrayList arregloBody = (ArrayList) body;
+                                                                    if(arregloBody != null){
+                                                                        for(int i = 0; i < arregloBody.size(); i++){
+                                                                            Nodo temp = ((Nodo)arregloBody.get(i));
+                                                                            cuerpo.addHijo(temp);
+                                                                        }
                                                                     }
-                                                                }
-                                                                ArrayList arregloNodos = new ArrayList();
-                                                                arregloNodos.add(nodo);
-                                                                RESULT = arregloNodos; 
+                                                                    ArrayList arregloCondicion = (ArrayList) cond;
+                                                                    if(arregloCondicion != null){
+                                                                        for(int i = 0; i < arregloCondicion.size(); i++){
+                                                                            if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
+                                                                                Nodo temp = ((Nodo)arregloCondicion.get(i));
+                                                                                condicion.addHijo(temp);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    nodo.addHijo(condicion);
+                                                                    nodo.addHijo(cuerpo);
+                                                                    ArrayList arregloNodos = new ArrayList();
+                                                                    arregloNodos.add(nodo);
+                                                                    RESULT = arregloNodos; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("while",45, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2710,14 +3089,30 @@ class CUP$Sintactico$actions {
 		int bodyleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-6)).left;
 		int bodyright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-6)).right;
 		Object body = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-6)).value;
+		int condleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
+		int condright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
+		Object cond = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
 		 Nodo nodo = new Nodo("do while", "");
+                                                                        Nodo condicion = new Nodo("condicion", "");
+                                                                        Nodo cuerpo = new Nodo("cuerpo", "");
                                                                         ArrayList arregloBody = (ArrayList) body;
                                                                         if(arregloBody != null){
                                                                             for(int i = 0; i < arregloBody.size(); i++){
                                                                                 Nodo temp = ((Nodo)arregloBody.get(i));
-                                                                                nodo.addHijo(temp);
+                                                                                cuerpo.addHijo(temp);
                                                                             }
                                                                         }
+                                                                        ArrayList arregloCondicion = (ArrayList) cond;
+                                                                        if(arregloCondicion != null){
+                                                                            for(int i = 0; i < arregloCondicion.size(); i++){
+                                                                                if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
+                                                                                    Nodo temp = ((Nodo)arregloCondicion.get(i));
+                                                                                    condicion.addHijo(temp);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        nodo.addHijo(condicion);
+                                                                        nodo.addHijo(cuerpo);
                                                                         ArrayList arregloNodos = new ArrayList();
                                                                         arregloNodos.add(nodo);
                                                                         RESULT = arregloNodos; 
@@ -2801,17 +3196,33 @@ class CUP$Sintactico$actions {
           case 143: // for ::= FOR LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body RKEY 
             {
               Object RESULT =null;
+		int condleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-7)).left;
+		int condright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-7)).right;
+		Object cond = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-7)).value;
 		int bodyleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
 		int bodyright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
 		Object body = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
 		 Nodo nodo = new Nodo("for", "");
+                                                                                                            Nodo condicion = new Nodo("condicion", "");
+                                                                                                            Nodo cuerpo = new Nodo("cuerpo", "");
                                                                                                             ArrayList arregloBody = (ArrayList) body;
                                                                                                             if(arregloBody != null){
                                                                                                                 for(int i = 0; i < arregloBody.size(); i++){
                                                                                                                     Nodo temp = ((Nodo)arregloBody.get(i));
-                                                                                                                    nodo.addHijo(temp);
+                                                                                                                    cuerpo.addHijo(temp);
                                                                                                                 }
                                                                                                             }
+                                                                                                            ArrayList arregloCondicion = (ArrayList) cond;
+                                                                                                            if(arregloCondicion != null){
+                                                                                                                for(int i = 0; i < arregloCondicion.size(); i++){
+                                                                                                                    if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
+                                                                                                                        Nodo temp = ((Nodo)arregloCondicion.get(i));
+                                                                                                                        condicion.addHijo(temp);
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                            nodo.addHijo(condicion);
+                                                                                                            nodo.addHijo(cuerpo);
                                                                                                             ArrayList arregloNodos = new ArrayList();
                                                                                                             arregloNodos.add(nodo);
                                                                                                             RESULT = arregloNodos; 
@@ -3166,7 +3577,22 @@ class CUP$Sintactico$actions {
           case 174: // body ::= body declaracion 
             {
               Object RESULT =null;
-		
+		int bleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
+		 if(b != null){
+                                ArrayList arregloNodos = (ArrayList) b;
+                                ArrayList arregloCommand = (ArrayList) a;
+                                Nodo declaracionVar = (Nodo)arregloCommand.get(0);
+                                arregloNodos.add( declaracionVar );
+                                RESULT = arregloNodos;
+                             } else {
+                                ArrayList arregloCommand = (ArrayList) a;
+                                Nodo declaracionVar = (Nodo)arregloCommand.get(0);
+                                RESULT = a;} 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("body",33, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -3188,19 +3614,10 @@ class CUP$Sintactico$actions {
                             Nodo temp = (Nodo)arregloCommand.get(i);
                             arregloNodos.add( temp );
                         }
-                        System.out.println("a");
-                        System.out.println("b");
-                        System.out.println( ((Nodo)((ArrayList) b).get(0)).getTipo() );
-                        System.out.println("arregloNodos");
-                        for(int i = 0; i < arregloNodos.size(); i++){
-                            System.out.println( ((Nodo)arregloNodos.get(i)).getTipo() );
-                        }
                         RESULT = arregloNodos;
                      } else {
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo ifVar = (Nodo)arregloCommand.get(0);
-                        System.out.println("a Solo");
-                        System.out.println(ifVar.getTipo());
                         RESULT = a;} 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("body",33, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -3221,20 +3638,10 @@ class CUP$Sintactico$actions {
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo whileVar = (Nodo)arregloCommand.get(0);
                         arregloNodos.add( whileVar );
-                        System.out.println("a");
-                        System.out.println( whileVar.getTipo() );
-                        System.out.println("b");
-                        System.out.println( ((Nodo)((ArrayList) b).get(0)).getTipo() );
-                        System.out.println("arregloNodos");
-                        for(int i = 0; i < arregloNodos.size(); i++){
-                            System.out.println( ((Nodo)arregloNodos.get(i)).getTipo() );
-                        }
                         RESULT = arregloNodos;
                      } else {
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo whileVar = (Nodo)arregloCommand.get(0);
-                        System.out.println("a Solo");
-                        System.out.println(whileVar.getTipo());
                         RESULT = a;} 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("body",33, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -3255,20 +3662,10 @@ class CUP$Sintactico$actions {
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo doWhile = (Nodo)arregloCommand.get(0);
                         arregloNodos.add( doWhile );
-                        System.out.println("a");
-                        System.out.println( doWhile.getTipo() );
-                        System.out.println("b");
-                        System.out.println( ((Nodo)((ArrayList) b).get(0)).getTipo() );
-                        System.out.println("arregloNodos");
-                        for(int i = 0; i < arregloNodos.size(); i++){
-                            System.out.println( ((Nodo)arregloNodos.get(i)).getTipo() );
-                        }
                         RESULT = arregloNodos;
                      } else {
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo doWhile = (Nodo)arregloCommand.get(0);
-                        System.out.println("a Solo");
-                        System.out.println(doWhile.getTipo());
                         RESULT = a;} 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("body",33, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -3289,20 +3686,10 @@ class CUP$Sintactico$actions {
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo forVar = (Nodo)arregloCommand.get(0);
                         arregloNodos.add( forVar );
-                        System.out.println("a");
-                        System.out.println( forVar.getTipo() );
-                        System.out.println("b");
-                        System.out.println( ((Nodo)((ArrayList) b).get(0)).getTipo() );
-                        System.out.println("arregloNodos");
-                        for(int i = 0; i < arregloNodos.size(); i++){
-                            System.out.println( ((Nodo)arregloNodos.get(i)).getTipo() );
-                        }
                         RESULT = arregloNodos;
                      } else {
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo forVar = (Nodo)arregloCommand.get(0);
-                        System.out.println("a Solo");
-                        System.out.println(forVar.getTipo());
                         RESULT = a;} 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("body",33, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -3323,20 +3710,10 @@ class CUP$Sintactico$actions {
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo switchVar = (Nodo)arregloCommand.get(0);
                         arregloNodos.add( switchVar );
-                        System.out.println("a");
-                        System.out.println( switchVar.getTipo() );
-                        System.out.println("b");
-                        System.out.println( ((Nodo)((ArrayList) b).get(0)).getTipo() );
-                        System.out.println("arregloNodos");
-                        for(int i = 0; i < arregloNodos.size(); i++){
-                            System.out.println( ((Nodo)arregloNodos.get(i)).getTipo() );
-                        }
                         RESULT = arregloNodos;
                      } else {
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo switchVar = (Nodo)arregloCommand.get(0);
-                        System.out.println("a Solo");
-                        System.out.println(switchVar.getTipo());
                         RESULT = a;} 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("body",33, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }

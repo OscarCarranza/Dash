@@ -1,8 +1,6 @@
 int x1, a2-
+int[1] b-
 func hola => (int a, int b){
-	for (int a = 1; a<=1; i++){
-		int q-
-	}
 	switch(valor){
 		case 1: if(a <= b){
 				int a-
@@ -14,16 +12,18 @@ func hola => (int a, int b){
 				int q-
 			}
 	}
-	if(a){
+	if(a <= b && c <= d || b){
 		for (int a = 1; a<=1; i++){
 			int q-
 		}
 	}
-	ñ-
-
-	/* 
-	hola
-	*/
+	for (int a = 1; a<=1; i++){
+		int q-
+		if(a){
+			char a-
+			char[2] a1, a2-
+		}
+	}
 	ret 1-
 }-
 
