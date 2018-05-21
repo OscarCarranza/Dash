@@ -1,5 +1,4 @@
 int[1] b-
-
 func hola => (int a, int b){
 	switch(valor){
 		case 1: if(a <= b){
@@ -16,7 +15,7 @@ func hola => (int a, int b){
 	if(a <= b && c <= d || b){
 		a = b * v - c-
 		dash.in(hello)-
-		dash.print(hello)-
+		dash.print("HOLA MUNDO" + hello)-
 		//suma=>(a)-
 		
 

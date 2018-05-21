@@ -928,7 +928,8 @@ entry ::= READ LPAR ID:id RPAR DASH     {:  ArrayList arreglo = new ArrayList();
 ;
 
 salida ::= PRINT LPAR content_print:c RPAR DASH    {: ArrayList arreglo = new ArrayList();
-                                                    Nodo salida = new Nodo("salida",c.toString());
+                                                    System.out.println("\u001B[32m" + c);
+                                                    Nodo salida = new Nodo("salida",c);
                                                     arreglo.add(salida);
                                                     RESULT = arreglo; 
                                                     System.out.println("Nodo print creado"); :}
@@ -939,12 +940,18 @@ salida ::= PRINT LPAR content_print:c RPAR DASH    {: ArrayList arreglo = new Ar
 ;
 
 
-content_print ::= id_text:a more_content:b {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :};
+content_print ::= id_text:a more_content:b {: String s = a + "|" + b;
+                                                RESULT = s; 
+                                           :};
 
-more_content ::= ADD_OP id_text:a more_content:b {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
-    | ;
+more_content ::= ADD_OP id_text:a more_content:b    {: String s = a + "|" + b;
+                                                        RESULT = s;                                                      
+                                                    :}
+    |                                               {: RESULT = ""; :};
 
-id_text ::= ID:id {: RESULT = id.toString(); :}
-    | TEXT:id {: RESULT = id.toString(); :}
-    | error            {: System.out.println("Expected printing content"); :};
+id_text ::= ID:id       {: RESULT = id.toString();  :}
+
+    | TEXT:id           {: RESULT = id.toString();  :}
+
+    | error             {: System.out.println("Expected printing content"); :};
 
