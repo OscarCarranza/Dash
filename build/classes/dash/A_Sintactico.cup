@@ -1,3 +1,4 @@
+
 /*--------- 1ra Area: Codigo de Usuario---------*/
 
 //---------> Paquetes, importaciones
@@ -5,6 +6,7 @@ package dash;
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import Nodos.Nodo;
+import Nodos.Variable;
 import java.util.ArrayList;
 
 //---------> Codigo para el parser, variables, metodos
@@ -13,7 +15,8 @@ parser code
     public String resultado="";
     public static LinkedList<MyError> listaErrorSintacticos = new LinkedList<MyError>();
     public Nodo raiz;
-
+    public ArrayList<Variable> variables = new ArrayList();
+    
     //Metodo al que se llama automaticamente ante algun error sintactico
     public void syntax_error(Symbol s)
     {        
@@ -85,12 +88,11 @@ precedence left MULT_OP, DIV_OP;
 start with INICIO;
 
 /*--------- 3ra Area: Reglas Semanticas---------*/
-INICIO ::= programa:funciones {: raiz = new Nodo("Programa", "");
-                        System.out.println("SIIIIIIIIIIU");
+INICIO ::= programa:funciones {: this.parser.raiz = new Nodo("Programa", "");
                         ArrayList arregloNodos = (ArrayList) funciones;
                         for(int i = 0; i < arregloNodos.size(); i++){
                         Nodo temp = ((Nodo)arregloNodos.get(i));
-                            raiz.addHijo(temp);
+                            this.parser.raiz.addHijo(temp);
                         }  :};
 
 programa ::= programa:prog linea:line {:if(prog != null){ 
@@ -763,9 +765,47 @@ body ::= body:b declaracion:a {: if(b != null){
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo switchVar = (Nodo)arregloCommand.get(0);
                         RESULT = a;} :}
-    | body:b assign_var:a {: /*if(b != null) RESULT = (Nodo)a + ' ' + (Nodo)b; else RESULT = (Nodo)a;*/ :}
-    | body:b entry:a {: /*if(b != null) RESULT = (Nodo)a + ' ' + (Nodo)b; else RESULT = (Nodo)a;*/ :}
-    | body:b salida:a {: /*if(b != null) RESULT = (Nodo)a + ' ' + (Nodo)b; else RESULT = (Nodo)a;*/ :}
+
+    | body:b func:a {: if(b != null){
+                                ArrayList arregloNodos = (ArrayList) b;
+                                ArrayList arregloCommand = (ArrayList) a;
+                                Nodo callFunc = (Nodo)arregloCommand.get(0);
+                                arregloNodos.add( callFunc );
+                                RESULT = arregloNodos;
+                             } else {
+                                ArrayList arregloCommand = (ArrayList) a;
+                                Nodo callFunc = (Nodo)arregloCommand.get(0);
+                                RESULT = a;} :}
+    | body:b entry:a {: if(b != null){
+                                ArrayList arregloNodos = (ArrayList) b;
+                                ArrayList arregloCommand = (ArrayList) a;
+                                Nodo entrada = (Nodo)arregloCommand.get(0);
+                                arregloNodos.add( entrada );
+                                RESULT = arregloNodos;
+                             } else {
+                                ArrayList arregloCommand = (ArrayList) a;
+                                Nodo entrada = (Nodo)arregloCommand.get(0);
+                                RESULT = a;} :}
+    | body:b salida:a {: if(b != null){
+                                ArrayList arregloNodos = (ArrayList) b;
+                                ArrayList arregloCommand = (ArrayList) a;
+                                Nodo salida = (Nodo)arregloCommand.get(0);
+                                arregloNodos.add( salida );
+                                RESULT = arregloNodos;
+                             } else {
+                                ArrayList arregloCommand = (ArrayList) a;
+                                Nodo salida = (Nodo)arregloCommand.get(0);
+                                RESULT = a;} :}
+    | body:b assign_var:a {: if(b != null){
+                                ArrayList arregloNodos = (ArrayList) b;
+                                ArrayList arregloCommand = (ArrayList) a;
+                                Nodo assign_var = (Nodo)arregloCommand.get(0);
+                                arregloNodos.add( assign_var );
+                                RESULT = arregloNodos;
+                             } else {
+                                ArrayList arregloCommand = (ArrayList) a;
+                                Nodo assign_var = (Nodo)arregloCommand.get(0);
+                                RESULT = a;} :}
     | ;
 
 /*------------------- Declaracion de funciones -----------------------*/
@@ -779,16 +819,22 @@ dec_function ::= FUNCTION ID:nombre ARROW LPAR parameters RPAR LKEY body:body RE
                                 nodo.addHijo(temp);
                                 System.out.println( temp.getTipo() );
                             }
-                            System.out.println(raiz);
+                            System.out.println(this.parser.raiz);
                             ArrayList arregloFuncion = new ArrayList();
                             arregloFuncion.add(nodo);
                             RESULT = arregloFuncion; :};
 
-func ::= ID ARROW LPAR ids RPAR DASH
+func ::= ID ARROW LPAR ids:id RPAR DASH        {:  ArrayList arreglo = new ArrayList();
+                                            Nodo func = new Nodo("FuncionCall",id.toString());
+                                            arreglo.add(func);
+                                            RESULT = arreglo; 
+                                            System.out.println("Nodo funcion creado"); :}
+
     | ID error LPAR ids RPAR DASH           {: System.out.println("Expected '=>'"); :}
     | ID ARROW error ids RPAR DASH          {: System.out.println("Expected '('"); :}
     | ID ARROW LPAR ids error DASH          {: System.out.println("Expected ')'"); :}
     | ID ARROW LPAR ids RPAR error          {: System.out.println("Expected '-' at end of line"); :}
+
 ;
 
 
@@ -813,59 +859,80 @@ dec_main ::= MAIN ARROW LPAR parameters RPAR LKEY body:body RETURN varRet DASH R
 parameters ::= parameters COMMA params_type ID
     | params_type ID;
 
-ids ::= moreIds ID;
+ids ::= moreIds:ids ID:id          {:System.out.println(ids.toString() + id.toString(); :};
 
-moreIds ::= moreIds ID COMMA 
-    | ;
+moreIds ::= moreIds ID:id COMMA         {: RESULT = id.toString(); :}
+    |;
 
 
-params_type ::= INT 
-    | INTPTR
-    | CHAR
-    | CHARPTR
-    | BOOL
-    | BOOLPTR
-    | STRING
-    | error         {: System.out.println("Expected type"); :};
+params_type ::= INT    
+    | INTPTR           
+    | CHAR             
+    | CHARPTR      
+    | BOOL          
+    | BOOLPTR       
+    | STRING        
+    | error            {: System.out.println("Expected type"); :};
 
-varRet ::= ID
-    | TRUE
-    | FALSE
-    | INTEGER
-    | error         {: System.out.println("Expected return variable"); :};
+varRet ::= ID        
+    | TRUE           
+    | FALSE         
+    | error          {: System.out.println("Expected return variable"); :};
 
 
 /* --------------------- Operaciones Aritmeticas ---------------------------*/
-assign_var ::= ID ASSIGN arithmetic_exp DASH {: RESULT = "assign"; :};
+assign_var ::= ID:id ASSIGN arithmetic_exp:ae DASH {:   String s = id.toString() + "=" + ae;
+                                                        System.out.println("\u001B[31m" + "------------>  " + s);
+                                                        ArrayList arreglo = new ArrayList();
+                                                        Nodo op_aritmetica= new Nodo("artimetica",s);
+                                                        arreglo.add(op_aritmetica);
+                                                        RESULT = arreglo; 
+                                                        System.out.println("Nodo Arithmetic creado"); :}
+;
 
-arithmetic_exp ::= term:term                                                           
-            |arithmetic_exp:se1 ADD_OP:pl term:term      
-            |arithmetic_exp:se1 MINUS_OP:min term:term                                        
-            |ADD_OP term:term                                                   
-            |MINUS_OP:min term:term;    
+arithmetic_exp ::= term:term                           {: RESULT = term; :} 
+                                      
+            |arithmetic_exp:se1 ADD_OP:pl term:term     {: String add = se1.toString() + "+" + term.toString(); 
+                                                           RESULT = add; :}                                                       
+            |arithmetic_exp:se1 MINUS_OP:min term:term  {: String sub = se1.toString() + "-" + term.toString(); 
+                                                           RESULT = sub; :}                                    
+;
 
-term ::= factor:fact                                                           
-         |term:term MULT_OP:tim factor:fact  
-         |term:term DIV_OP:div factor:fact;
+term ::= factor:fact                         {: RESULT = fact.toString();
+                                    :}                                                        
+         |term:term MULT_OP:tim factor:fact  {: String mult = term.toString() + "*" + fact.toString();
+                                                RESULT = mult;
+                                                :}
+         |term:term DIV_OP:div factor:fact  {: String div = term.toString() + "/" + fact.toString();
+                                                RESULT = div;
+                                                :};
 
-factor ::= INTEGER
-    | ID
-    | TRUE
-    | FALSE
+factor ::= INTEGER:id                  {: RESULT = id.toString(); :}
+    | ID:id                            {: RESULT = id.toString(); :}
+    | TRUE:id                          {: RESULT = id.toString(); :}
+    | FALSE:id                         {: RESULT = id.toString(); :}
     | LPAR arithmetic_exp RPAR;                                                       
        
     
 /* -------------------- Lectura y Escritura ---------------------------*/
-entry ::= READ LPAR ID RPAR DASH        {: RESULT = "entry"; :}
+entry ::= READ LPAR ID:id RPAR DASH     {:  ArrayList arreglo = new ArrayList();
+                                            Nodo entrada = new Nodo("entrada",id.toString());
+                                            arreglo.add(entrada);
+                                            RESULT = arreglo; 
+                                            System.out.println("Nodo entry creado"); :}
+
     | READ error ID RPAR DASH           {: System.out.println("Expected '('"); :}
     | READ LPAR error RPAR DASH         {: System.out.println("Expected in-variable"); :}
     | READ LPAR ID error DASH           {: System.out.println("Expected ')'"); :}
-    | READ LPAR ID RPAR error            {: System.out.println("Expected '-' at end of line"); :}
+    | READ LPAR ID RPAR error           {: System.out.println("Expected '-' at end of line"); :}
 ;
 
-salida ::= PRINT LPAR content_print:c RPAR DASH    {: System.out.println("SALIDA");
-                                                    System.out.println(c);
-                                                    RESULT = "salida"; :}
+salida ::= PRINT LPAR content_print:c RPAR DASH    {: ArrayList arreglo = new ArrayList();
+                                                    Nodo salida = new Nodo("salida",c.toString());
+                                                    arreglo.add(salida);
+                                                    RESULT = arreglo; 
+                                                    System.out.println("Nodo print creado"); :}
+                                                
     | PRINT error content_print RPAR DASH           {: System.out.println("Expected '('"); :}
     | PRINT LPAR content_print error DASH           {: System.out.println("Expected ')'"); :}
     | PRINT LPAR content_print RPAR error            {: System.out.println("Expected '-' at end of line"); :}
@@ -877,6 +944,7 @@ content_print ::= id_text:a more_content:b {: if(b != null) RESULT = (String)a +
 more_content ::= ADD_OP id_text:a more_content:b {: if(b != null) RESULT = (String)a + ' ' + (String)b; else RESULT = (String)a; :}
     | ;
 
-id_text ::= ID:id {: RESULT = id; :}
-    | TEXT:id {: RESULT = id; :}
+id_text ::= ID:id {: RESULT = id.toString(); :}
+    | TEXT:id {: RESULT = id.toString(); :}
     | error            {: System.out.println("Expected printing content"); :};
+

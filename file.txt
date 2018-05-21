@@ -1,5 +1,5 @@
-int x1, a2-
 int[1] b-
+
 func hola => (int a, int b){
 	switch(valor){
 		case 1: if(a <= b){
@@ -10,9 +10,16 @@ func hola => (int a, int b){
 			}
 			for (int a = 1; a<=1; i++){
 				int q-
+			
 			}
 	}
 	if(a <= b && c <= d || b){
+		a = b * v - c-
+		dash.in(hello)-
+		dash.print(hello)-
+		//suma=>(a)-
+		
+
 		for (int a = 1; a<=1; i++){
 			int q-
 		}
@@ -27,13 +34,14 @@ func hola => (int a, int b){
 	ret 1-
 }-
 
+
 main => (int a, int b){
-	a = a + 3 +b-
 	switch(valor){
 		case 1: if(a <= b){
 				int a-
 				for (int a = 1; a<=1; i++){
 					int q-
+
 				}
 			}
 			for (int a = 1; a<=1; i++){
@@ -47,6 +55,7 @@ main => (int a, int b){
 	}
 	for (int a = 1; a<=1; i++){
 		int q-
+
 	}
 	ret 1-
 }
@@ -62,4 +71,6 @@ func hola2 => (int a, int b){
 	}
 	ret 1-
 }-
+
+
 

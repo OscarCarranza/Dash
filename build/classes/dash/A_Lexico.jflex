@@ -78,7 +78,8 @@ right_brac = "]"
 left_key = "{"
 right_key = "}"
 semi_colon = ";"
-dash = "-"(\n)+
+space = [ \t\r\n]
+dash = {minus_operator}[\r|\n|\r\n]
 colon = ":"
 dot = "."
 IF = "if"
@@ -96,14 +97,12 @@ sim_comilla = "'"
 dob_comilla = "\""
 read = "dash.in"
 print = "dash.print"
-read = "dash.in"
-print = "dash.print"
 comma = ","
-space = [ \t\r\n]
+
 
 return = "ret" 
 
-symbs = "°"|"|"|"¬"|"!"|"#"|"%"|"&"|"/"|"("|")"|"="|"+"|"*"|"-"|"_"|"["|"]"|"{"|"}"|"@"|"?"|"¡"|"¿"|"^"|"."|";"|","|":"|{blankSpace}|"$"
+symbs = "°"|"|"|"¬"|"!"|"#"|"%"|"_"|"}"|"@"|"?"|"¡"|"¿"|"^"|","|":"|"$"
 text = {dob_comilla}({letter}|{digit}|{symbs})+{dob_comilla}
 
 true = "true"
@@ -211,6 +210,10 @@ multFor = "**"
     {id}                    {
                                 System.out.println("<id> " + yytext());
                                 return new Symbol(Simbolos.ID, yycolumn, yyline, yytext());
+                            }
+    {dash}                  {
+                                System.out.println("<dash> " + yytext());
+                                return new Symbol(Simbolos.DASH, yycolumn, yyline, yytext());
                             }
     {addFor}                    {
                                 System.out.println("<addFor> " + yytext());
@@ -332,10 +335,6 @@ multFor = "**"
                                 System.out.println("<dot> " + yytext());
                                 return new Symbol(Simbolos.DOT, yycolumn, yyline, yytext());
                             }
-    {dash}                  {
-                                System.out.println("<dash> " + yytext());
-                                return new Symbol(Simbolos.DASH, yycolumn, yyline, yytext());
-                            }
     {letter}                {
                                 System.out.println("<char> " + yytext());
                                 return new Symbol(Simbolos.LETTER, yycolumn, yyline, yytext());
@@ -352,14 +351,13 @@ multFor = "**"
                                 System.out.println("<false> " + yytext());
                                 return new Symbol(Simbolos.FALSE, yycolumn, yyline, yytext());
                             }
-    {short_comment}              {
-                                System.out.println("<comment>");
+    {short_comment}         {
                             }
     {blankSpace}            {
-                                System.out.println("<blankSpace> " + yytext());
+                               
                             }
     {space}                 {
-                                System.out.println("<space> " + yytext());
+                                
                             }
     {sim_comilla}           {
                                 System.out.println("<sim_comilla> " + yytext());

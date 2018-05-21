@@ -25,9 +25,7 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class Compilador extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Compilador
-     */
+    public Nodo raiz;
     public Compilador() {
         initComponents();
     }
