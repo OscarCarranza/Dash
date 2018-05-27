@@ -180,7 +180,7 @@ public class Compilador extends javax.swing.JFrame {
             System.out.println("Antes de Print");
             print(sintactico.raiz, nodoraiz);
             for (int i = 0; i < sintactico.tabla.size(); i++) {
-                System.out.println( i + " " + ((Tabla)sintactico.tabla.get(i)).getId() );
+                System.out.println( i + "\t" + ((Tabla)sintactico.tabla.get(i)).getId() + "\t" + ((Tabla)sintactico.tabla.get(i)).getTipo() + "\t" + ((Tabla)sintactico.tabla.get(i)).getAmbito() + "\t" + ((Tabla)sintactico.tabla.get(i)).getProfundidad() );
             }
             model.reload();
         } catch(Exception e){
@@ -233,6 +233,7 @@ public class Compilador extends javax.swing.JFrame {
             print(nodo.getHijos().get(i), nodohijo);
         }
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
