@@ -7,6 +7,7 @@ import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import Nodos.Nodo;
 import Nodos.Variable;
+import Nodos.Tabla;
 import java.util.ArrayList;
 
 //---------> Codigo para el parser, variables, metodos
@@ -16,6 +17,7 @@ parser code
     public static LinkedList<MyError> listaErrorSintacticos = new LinkedList<MyError>();
     public Nodo raiz;
     public ArrayList<Variable> variables = new ArrayList();
+    public ArrayList<Tabla> tabla = new ArrayList();
     
     //Metodo al que se llama automaticamente ante algun error sintactico
     public void syntax_error(Symbol s)
@@ -186,17 +188,24 @@ asignacionInteger ::= asignacionInteger:b COMMA instanciacionInteger:id {:  if(b
                                                                                 Nodo newID = new Nodo((String)id, "");
                                                                                 arregloNodos.add( newID );
                                                                                 RESULT = arregloNodos;
-                                                                             } else {
+                                                                                Tabla nuevaVar = new Tabla((String)id, "int", "", 0, 0);
+                                                                                tabla.add( nuevaVar );
+                                                                            } else {
                                                                                 ArrayList arregloInstancias = new ArrayList();
                                                                                 Nodo newID = new Nodo((String)id, "");
                                                                                 arregloInstancias.add(newID);
-                                                                                RESULT = arregloInstancias;} :} 
+                                                                                RESULT = arregloInstancias;
+                                                                                Tabla nuevaVar = new Tabla((String)id, "int", "", 0, 0);
+                                                                                tabla.add( nuevaVar );
+                                                                            } :} 
     | INT instanciacionInteger:id {:ArrayList arregloInstancias = new ArrayList();
                                     Nodo newInt = new Nodo("int", "");
                                     Nodo newID = new Nodo((String)id, "");
                                     arregloInstancias.add(newInt);
                                     arregloInstancias.add(newID);
-                                    RESULT = arregloInstancias; :} ;
+                                    RESULT = arregloInstancias;
+                                    Tabla nuevaVar = new Tabla((String)id, "int", "", 0, 0);
+                                    tabla.add( nuevaVar ); :} ;
 
 instanciacionInteger ::= ID:id iniciacionInteger {: RESULT = id.toString(); :}
     | error iniciacionInteger {: System.out.println("Expected an id."); :};
@@ -929,7 +938,7 @@ entry ::= READ LPAR ID:id RPAR DASH     {:  ArrayList arreglo = new ArrayList();
 
 salida ::= PRINT LPAR content_print:c RPAR DASH    {: ArrayList arreglo = new ArrayList();
                                                     System.out.println("\u001B[32m" + c);
-                                                    Nodo salida = new Nodo("salida",c);
+                                                    Nodo salida = new Nodo("salida",c.toString());
                                                     arreglo.add(salida);
                                                     RESULT = arreglo; 
                                                     System.out.println("Nodo print creado"); :}

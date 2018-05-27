@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import Nodos.Nodo;
+import Nodos.Tabla;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 /**
@@ -178,6 +179,9 @@ public class Compilador extends javax.swing.JFrame {
             root.add(nodoraiz);
             System.out.println("Antes de Print");
             print(sintactico.raiz, nodoraiz);
+            for (int i = 0; i < sintactico.tabla.size(); i++) {
+                System.out.println( i + " " + ((Tabla)sintactico.tabla.get(i)).getId() );
+            }
             model.reload();
         } catch(Exception e){
             //
