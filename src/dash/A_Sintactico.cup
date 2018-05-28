@@ -38,6 +38,16 @@ parser code
         }
         return tipo;
     }
+
+    public static boolean isNumeric(String str) {
+        try {
+            int d = Integer.parseInt(str);  
+        }
+        catch(NumberFormatException nfe) {
+            return false;
+        }
+        return true;  
+    }
     
     //Metodo al que se llama automaticamente ante algun error sintactico
     public void syntax_error(Symbol s)
@@ -252,21 +262,42 @@ integerLista ::= INTEGER {::}
     | error {: System.out.println("Expected a number."); :};
 
 asignacionIntegerPtr ::= asignacionIntegerPtr:b COMMA instanciacionIntegerPtr:id {:if(b != null){
-                                                                                    ArrayList arregloNodos = (ArrayList) b;
-                                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                                    arregloNodos.add( newID );
-                                                                                    RESULT = arregloNodos;
+                                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                                    if(agregarATabla){
+                                                                                        ArrayList arregloNodos = (ArrayList) b;
+                                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                                        arregloNodos.add( newID );
+                                                                                        RESULT = arregloNodos;
+                                                                                        Tabla nuevaVar = new Tabla((String)id, "int*", "", 0, 0);
+                                                                                        tabla.add( nuevaVar );
+                                                                                    } else
+                                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
                                                                                  } else {
-                                                                                    ArrayList arregloInstancias = new ArrayList();
-                                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                                    arregloInstancias.add(newID);
-                                                                                    RESULT = arregloInstancias;}:} 
-    | INTPTR instanciacionIntegerPtr:id {:ArrayList arregloInstancias = new ArrayList();
-                                    Nodo newInt = new Nodo("int ptr", "");
-                                    Nodo newID = new Nodo((String)id, "");
-                                    arregloInstancias.add(newInt);
-                                    arregloInstancias.add(newID);
-                                    RESULT = arregloInstancias; :} ;
+                                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                                    if(agregarATabla){
+                                                                                        ArrayList arregloInstancias = new ArrayList();
+                                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                                        arregloInstancias.add(newID);
+                                                                                        RESULT = arregloInstancias;
+                                                                                        Tabla nuevaVar = new Tabla((String)id, "int*", "", 0, 0);
+                                                                                        tabla.add( nuevaVar );
+                                                                                    } else
+                                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                                }:} 
+    | INTPTR instanciacionIntegerPtr:id {:
+                                    boolean agregarATabla = noExiste((String)id);
+                                    if(agregarATabla){
+                                        ArrayList arregloInstancias = new ArrayList();
+                                        Nodo newInt = new Nodo("int ptr", "");
+                                        Nodo newID = new Nodo((String)id, "");
+                                        arregloInstancias.add(newInt);
+                                        arregloInstancias.add(newID);
+                                        RESULT = arregloInstancias; 
+                                        Tabla nuevaVar = new Tabla((String)id, "int*", "", 0, 0);
+                                        tabla.add( nuevaVar );
+                                    } else
+                                        System.out.println("Error variable " + (String)id + " ya existe.");
+                                    :};
 
 instanciacionIntegerPtr ::= ID:id iniciacionIntegerPtr {: RESULT = id.toString(); :}
     | error iniciacionIntegerPtr {: System.out.println("Expected an id."); :};
@@ -279,21 +310,43 @@ instanciacionIntPtr ::= LBRAC RBRAC {::}
 
 /*------------------- CHAR GRAMATICA -----------------------*/
 asignacionChar ::= asignacionChar:b COMMA instanciacionChar:id {: if(b != null){
-                                                                    ArrayList arregloNodos = (ArrayList) b;
-                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                    arregloNodos.add( newID );
-                                                                    RESULT = arregloNodos;
+                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                    if(agregarATabla){
+                                                                        ArrayList arregloNodos = (ArrayList) b;
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloNodos.add( newID );
+                                                                        RESULT = arregloNodos;
+                                                                        Tabla nuevaVar = new Tabla((String)id, "char", "", 0, 0);
+                                                                        tabla.add( nuevaVar );
+                                                                    } else
+                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
                                                                  } else {
-                                                                    ArrayList arregloInstancias = new ArrayList();
-                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                    arregloInstancias.add(newID);
-                                                                    RESULT = arregloInstancias;} :} 
-    | CHAR instanciacionChar:id {:ArrayList arregloInstancias = new ArrayList();
-                                    Nodo newChar = new Nodo("char", "");
-                                    Nodo newID = new Nodo((String)id, "");
-                                    arregloInstancias.add(newChar);
-                                    arregloInstancias.add(newID);
-                                    RESULT = arregloInstancias; :};
+                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                    if(agregarATabla){
+                                                                        ArrayList arregloInstancias = new ArrayList();
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloInstancias.add(newID);
+                                                                        RESULT = arregloInstancias;
+                                                                        Tabla nuevaVar = new Tabla((String)id, "char", "", 0, 0);
+                                                                        tabla.add( nuevaVar );
+                                                                    } else
+                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                }:} 
+    | CHAR instanciacionChar:id {:
+                                    System.out.println("Error Error  Error Error Error Error");
+                                    boolean agregarATabla = noExiste((String)id);
+                                    if(agregarATabla){
+                                        ArrayList arregloInstancias = new ArrayList();
+                                        Nodo newChar = new Nodo("char", "");
+                                        Nodo newID = new Nodo((String)id, "");
+                                        arregloInstancias.add(newChar);
+                                        arregloInstancias.add(newID);
+                                        RESULT = arregloInstancias;
+                                        Tabla nuevaVar = new Tabla((String)id, "char", "", 0, 0);
+                                        tabla.add( nuevaVar );
+                                    } else
+                                        System.out.println("Error variable " + (String)id + " ya existe.");
+                                :};
 
 instanciacionChar ::= ID:id iniciacionChar {: RESULT = id.toString(); :}
     | error iniciacionChar {: System.out.println("Expected an id."); :};
@@ -316,21 +369,42 @@ charLista ::= LETTER {::}
     | error {: System.out.println("Expected a char."); :};
 
 asignacionCharPtr ::= asignacionCharPtr:b COMMA instanciacionCharPointer:id {: if(b != null){
-                                                                            ArrayList arregloNodos = (ArrayList) b;
-                                                                            Nodo newID = new Nodo((String)id, "");
-                                                                            arregloNodos.add( newID );
-                                                                            RESULT = arregloNodos;
+                                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                                    if(agregarATabla){
+                                                                                        ArrayList arregloNodos = (ArrayList) b;
+                                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                                        arregloNodos.add( newID );
+                                                                                        RESULT = arregloNodos;
+                                                                                        Tabla nuevaVar = new Tabla((String)id, "char*", "", 0, 0);
+                                                                                        tabla.add( nuevaVar );
+                                                                                    } else
+                                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
                                                                          } else {
-                                                                            ArrayList arregloInstancias = new ArrayList();
-                                                                            Nodo newID = new Nodo((String)id, "");
-                                                                            arregloInstancias.add(newID);
-                                                                            RESULT = arregloInstancias;}:} 
-    | CHARPTR instanciacionCharPointer:id {:ArrayList arregloInstancias = new ArrayList();
-                                            Nodo newChar = new Nodo("char ptr", "");
-                                            Nodo newID = new Nodo((String)id, "");
-                                            arregloInstancias.add(newChar);
-                                            arregloInstancias.add(newID);
-                                            RESULT = arregloInstancias; :};
+                                                                            boolean agregarATabla = noExiste((String)id);
+                                                                            if(agregarATabla){
+                                                                                ArrayList arregloInstancias = new ArrayList();
+                                                                                Nodo newID = new Nodo((String)id, "");
+                                                                                arregloInstancias.add(newID);
+                                                                                RESULT = arregloInstancias;
+                                                                                Tabla nuevaVar = new Tabla((String)id, "char*", "", 0, 0);
+                                                                                tabla.add( nuevaVar );
+                                                                            } else
+                                                                                System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                            }:} 
+    | CHARPTR instanciacionCharPointer:id {:
+                                            boolean agregarATabla = noExiste((String)id);
+                                            if(agregarATabla){
+                                                ArrayList arregloInstancias = new ArrayList();
+                                                Nodo newChar = new Nodo("char ptr", "");
+                                                Nodo newID = new Nodo((String)id, "");
+                                                arregloInstancias.add(newChar);
+                                                arregloInstancias.add(newID);
+                                                RESULT = arregloInstancias;
+                                                Tabla nuevaVar = new Tabla((String)id, "char*", "", 0, 0);
+                                                tabla.add( nuevaVar );
+                                            } else
+                                                System.out.println("Error variable " + (String)id + " ya existe.");
+                                            :};
 
 instanciacionCharPointer ::= ID:id iniciacionCharPtr {: RESULT = id.toString(); :}
     | error iniciacionCharPtr {: System.out.println("Expected an id."); :};
@@ -343,21 +417,42 @@ instanciacionCharPtr ::= LBRAC RBRAC {::}
 
 /*------------------- BOOL GRAMATICA -----------------------*/
 asignacionBool ::= asignacionBool:b COMMA instanciacionBool:id {:if(b != null){
-                                                                    ArrayList arregloNodos = (ArrayList) b;
-                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                    arregloNodos.add( newID );
-                                                                    RESULT = arregloNodos;
+                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                    if(agregarATabla){
+                                                                        ArrayList arregloNodos = (ArrayList) b;
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloNodos.add( newID );
+                                                                        RESULT = arregloNodos;
+                                                                        Tabla nuevaVar = new Tabla((String)id, "bool", "", 0, 0);
+                                                                        tabla.add( nuevaVar );
+                                                                    } else
+                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
                                                                  } else {
-                                                                    ArrayList arregloInstancias = new ArrayList();
-                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                    arregloInstancias.add(newID);
-                                                                    RESULT = arregloInstancias;}:}
-    | BOOL instanciacionBool:id {:ArrayList arregloInstancias = new ArrayList();
-                                Nodo newChar = new Nodo("bool", "");
-                                Nodo newID = new Nodo((String)id, "");
-                                arregloInstancias.add(newChar);
-                                arregloInstancias.add(newID);
-                                RESULT = arregloInstancias; :};
+                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                    if(agregarATabla){
+                                                                        ArrayList arregloInstancias = new ArrayList();
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloInstancias.add(newID);
+                                                                        RESULT = arregloInstancias;
+                                                                        Tabla nuevaVar = new Tabla((String)id, "bool", "", 0, 0);
+                                                                        tabla.add( nuevaVar );
+                                                                    } else
+                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                }
+                                                                :}
+    | BOOL instanciacionBool:id {:
+                                boolean agregarATabla = noExiste((String)id);
+                                if(agregarATabla){
+                                    ArrayList arregloInstancias = new ArrayList();
+                                    Nodo newChar = new Nodo("bool", "");
+                                    Nodo newID = new Nodo((String)id, "");
+                                    arregloInstancias.add(newChar);
+                                    arregloInstancias.add(newID);
+                                    RESULT = arregloInstancias;
+                                    Tabla nuevaVar = new Tabla((String)id, "bool", "", 0, 0);
+                                    tabla.add( nuevaVar );
+                                } else
+                                    System.out.println("Error variable " + (String)id + " ya existe.");:};
 
 instanciacionBool ::= ID:id iniciacionBool {: RESULT = id.toString(); :}
     | error iniciacionBool {: System.out.println("Expected an id."); :};
@@ -369,21 +464,42 @@ bool ::= TRUE | FALSE
     | error {: System.out.println("Expected either true/false."); :};
 
 asignacionBoolPtr ::= asignacionBoolPtr:b COMMA instanciacionBoolPtr:id {:if(b != null){
-                                                                        ArrayList arregloNodos = (ArrayList) b;
-                                                                        Nodo newID = new Nodo((String)id, "");
-                                                                        arregloNodos.add( newID );
-                                                                        RESULT = arregloNodos;
-                                                                     } else {
-                                                                        ArrayList arregloInstancias = new ArrayList();
-                                                                        Nodo newID = new Nodo((String)id, "");
-                                                                        arregloInstancias.add(newID);
-                                                                        RESULT = arregloInstancias;}:}
-    | BOOLPTR instanciacionBoolPtr:id {:ArrayList arregloInstancias = new ArrayList();
-                                        Nodo newChar = new Nodo("bool ptr", "");
-                                        Nodo newID = new Nodo((String)id, "");
-                                        arregloInstancias.add(newChar);
-                                        arregloInstancias.add(newID);
-                                        RESULT = arregloInstancias; :};
+                                                                            boolean agregarATabla = noExiste((String)id);
+                                                                            if(agregarATabla){
+                                                                                ArrayList arregloNodos = (ArrayList) b;
+                                                                                Nodo newID = new Nodo((String)id, "");
+                                                                                arregloNodos.add( newID );
+                                                                                RESULT = arregloNodos;
+                                                                                Tabla nuevaVar = new Tabla((String)id, "bool*", "", 0, 0);
+                                                                                tabla.add( nuevaVar );
+                                                                            } else
+                                                                                System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                        } else {
+                                                                            boolean agregarATabla = noExiste((String)id);
+                                                                            if(agregarATabla){
+                                                                                ArrayList arregloInstancias = new ArrayList();
+                                                                                Nodo newID = new Nodo((String)id, "");
+                                                                                arregloInstancias.add(newID);
+                                                                                RESULT = arregloInstancias;
+                                                                                Tabla nuevaVar = new Tabla((String)id, "bool*", "", 0, 0);
+                                                                                tabla.add( nuevaVar );
+                                                                            } else
+                                                                                System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                        }:}
+    | BOOLPTR instanciacionBoolPtr:id {:
+                                        boolean agregarATabla = noExiste((String)id);
+                                        if(agregarATabla){
+                                            ArrayList arregloInstancias = new ArrayList();
+                                            Nodo newChar = new Nodo("bool ptr", "");
+                                            Nodo newID = new Nodo((String)id, "");
+                                            arregloInstancias.add(newChar);
+                                            arregloInstancias.add(newID);
+                                            RESULT = arregloInstancias;
+                                            Tabla nuevaVar = new Tabla((String)id, "bool*", "", 0, 0);
+                                            tabla.add( nuevaVar );
+                                        } else
+                                            System.out.println("Error variable " + (String)id + " ya existe.");
+                                        :};
 
 instanciacionBoolPtr ::= ID:id iniciacionBoolPtr {: RESULT = id.toString(); :}
     | error iniciacionBoolPtr {: System.out.println("Expected an id."); :};
@@ -399,21 +515,42 @@ boolLista ::= bool {::}
 
 /*------------------- STRING GRAMATICA -----------------------*/
 asignacionString ::= asignacionString:b COMMA instanciacionString:id {:if(b != null){
-                                                                        ArrayList arregloNodos = (ArrayList) b;
-                                                                        Nodo newID = new Nodo((String)id, "");
-                                                                        arregloNodos.add( newID );
-                                                                        RESULT = arregloNodos;
+                                                                        boolean agregarATabla = noExiste((String)id);
+                                                                        if(agregarATabla){
+                                                                            ArrayList arregloNodos = (ArrayList) b;
+                                                                            Nodo newID = new Nodo((String)id, "");
+                                                                            arregloNodos.add( newID );
+                                                                            RESULT = arregloNodos;
+                                                                            Tabla nuevaVar = new Tabla((String)id, "string", "", 0, 0);
+                                                                            tabla.add( nuevaVar );
+                                                                        } else
+                                                                            System.out.println("Error variable " + (String)id + " ya existe.");
                                                                      } else {
-                                                                        ArrayList arregloInstancias = new ArrayList();
-                                                                        Nodo newID = new Nodo((String)id, "");
-                                                                        arregloInstancias.add(newID);
-                                                                        RESULT = arregloInstancias;}:}
-    | STRING instanciacionString:id {:ArrayList arregloInstancias = new ArrayList();
-                                        Nodo newChar = new Nodo("string", "");
-                                        Nodo newID = new Nodo((String)id, "");
-                                        arregloInstancias.add(newChar);
-                                        arregloInstancias.add(newID);
-                                        RESULT = arregloInstancias; :};
+                                                                        boolean agregarATabla = noExiste((String)id);
+                                                                        if(agregarATabla){
+                                                                            ArrayList arregloInstancias = new ArrayList();
+                                                                            Nodo newID = new Nodo((String)id, "");
+                                                                            arregloInstancias.add(newID);
+                                                                            RESULT = arregloInstancias;
+                                                                            Tabla nuevaVar = new Tabla((String)id, "string", "", 0, 0);
+                                                                            tabla.add( nuevaVar );
+                                                                        } else
+                                                                            System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                    }:}
+    | STRING instanciacionString:id {:
+                                        boolean agregarATabla = noExiste((String)id);
+                                        if(agregarATabla){
+                                            ArrayList arregloInstancias = new ArrayList();
+                                            Nodo newChar = new Nodo("string", "");
+                                            Nodo newID = new Nodo((String)id, "");
+                                            arregloInstancias.add(newChar);
+                                            arregloInstancias.add(newID);
+                                            RESULT = arregloInstancias;
+                                            Tabla nuevaVar = new Tabla((String)id, "string", "", 0, 0);
+                                            tabla.add( nuevaVar );
+                                        } else
+                                            System.out.println("Error variable " + (String)id + " ya existe.");
+                                    :};
 
 instanciacionString ::= ID:id iniciacionString {: RESULT = id.toString(); :}
     | error iniciacionString {: System.out.println("Expected an id."); :};
@@ -839,39 +976,60 @@ body ::= body:b declaracion:a {: if(b != null){
     | ;
 
 /*------------------- Declaracion de funciones -----------------------*/
-dec_function ::= FUNCTION ID:nombre ARROW LPAR parameters RPAR LKEY body:body RETURN varRet DASH RKEY DASH {: Nodo nodo = new Nodo("funcion", nombre.toString());
-                            System.out.println("RESULT");
-                            System.out.println(RESULT);
-                            System.out.println("body");
-                            ArrayList arregloNodos = (ArrayList) body;
-                            for(int i = 0; i < arregloNodos.size(); i++){
-                                Nodo temp = ((Nodo)arregloNodos.get(i));
-                                nodo.addHijo(temp);
-                                System.out.println( temp.getTipo() );
-                            }
-                            System.out.println(this.parser.raiz);
-                            ArrayList arregloFuncion = new ArrayList();
-                            arregloFuncion.add(nodo);
-                            RESULT = arregloFuncion; :};
+dec_function ::= FUNCTION ID:nombre ARROW LPAR parameters:params RPAR LKEY body:body RETURN varRet:ret DASH RKEY DASH {:
+                            String tipoRetorno = buscarTipo(ret.toString());
+                            if( tipoRetorno.length() == 0 )
+                                System.out.println("Variable de retorno "+ret.toString()+" no existe");
+                            else {
+                                Nodo nodo = new Nodo("funcion", nombre.toString());
+                                System.out.println("RESULT");
+                                System.out.println(RESULT);
+                                System.out.println("body");
+                                ArrayList arregloNodos = (ArrayList) body;
+                                for(int i = 0; i < arregloNodos.size(); i++){
+                                    Nodo temp = ((Nodo)arregloNodos.get(i));
+                                    nodo.addHijo(temp);
+                                    System.out.println( temp.getTipo() );
+                                }
+                                String tipoFunc = "";
+                                String parametrosFunc = "";
+                                ArrayList arregloParams = (ArrayList)params;
+                                for(int i = 0; i < arregloParams.size(); i++){
+                                    parametrosFunc+=((String)arregloParams.get(i));
+                                    if(i != arregloParams.size()-1)
+                                        parametrosFunc+=" x ";
+                                }
+                                tipoFunc+=parametrosFunc+ " -> " + tipoRetorno;
+                                Tabla nuevaVar = new Tabla(nombre.toString(), tipoFunc, "", 0, 0);
+                                tabla.add( nuevaVar );
+                                ArrayList arregloFuncion = new ArrayList();
+                                arregloFuncion.add(nodo);
+                                RESULT = arregloFuncion;
+                            }:};
 
-func ::= ID:id LPAR ids:ids RPAR        {:    ArrayList idsArray = (ArrayList)ids;
+func ::= ID:id LPAR ids:ids RPAR        {:      ArrayList idsArray = (ArrayList)ids;
                                                 String tipos = buscarTipo(id.toString());
-                                                String[] tiposParts = tipos.split(" x ");
+                                                String[] tiposParts = tipos.split(" x | -> ");
                                                 boolean llamadoValido = true;
-                                                if(idsArray.size() == tiposParts.length-1){
-                                                    for (int i = 0; i < idsArray.size(); i++) {
-                                                        if(tiposParts[i] == null)
-                                                            llamadoValido = false;
-                                                        else if( !idsArray.get(i).equals(tiposParts[i]))
-                                                            llamadoValido = false;
-                                                    }
-                                                    if(llamadoValido){
-                                                        RESULT = tiposParts[tiposParts.length-1];
-                                                        System.out.println("Nodo funcion creado");
-                                                    } else 
-                                                        System.out.println("Unexpected param. Expected: " + tipos);
+                                                if(tipos.length() > 0){
+                                                    if(idsArray.size() == tiposParts.length-1){
+                                                        String[] tiposLLamadoFuncion = new String[idsArray.size()];
+                                                        for (int i = 0; i < idsArray.size(); i++) {
+                                                            tiposLLamadoFuncion[i] = buscarTipo( ((String)idsArray.get(i)) );
+                                                            if(tiposParts[i] == null)
+                                                                llamadoValido = false;
+                                                            else if( !tiposLLamadoFuncion[i].equals(tiposParts[i]))
+                                                                llamadoValido = false;
+                                                        }
+                                                        if(llamadoValido){
+                                                            RESULT = tiposParts[tiposParts.length-1];
+                                                            System.out.println("Nodo funcion creado");
+                                                        } else 
+                                                            System.out.println("Unexpected param. Expected: " + tipos);
+                                                    } else
+                                                        System.out.println("Param number unexpected. Expected: " + tipos);
                                                 } else
-                                                    System.out.println("Param number unexpected. Expected: " + tipos);
+                                                    System.out.println("Function not declared.");
                                                 :}
     | ID error ID LPAR ids RPAR DASH           {: System.out.println("Expected '=>'"); :}
     | ID ARROW error LPAR ids RPAR DASH        {: System.out.println("Expected an id."); :}
@@ -953,23 +1111,65 @@ varRet ::= ID:id   {: RESULT = id.toString(); :}
 
 
 /* --------------------- Operaciones Aritmeticas ---------------------------*/
-assign_var ::= ID:id ASSIGN arithmetic_exp:ae DASH {:   String s = id.toString() + "=" + ae.toString();
-                                                        System.out.println("\u001B[31m" + "------------>  " + s);
-                                                        ArrayList arreglo = new ArrayList();
-                                                        Nodo op_aritmetica= new Nodo("artimetica",s);
-                                                        arreglo.add(op_aritmetica);
-                                                        RESULT = arreglo; 
-                                                        System.out.println("Nodo Arithmetic creado"); :}
+assign_var ::= ID:id ASSIGN arithmetic_exp:ae DASH {:   String tipoAsignado = buscarTipo(id.toString());
+                                                        if(tipoAsignado.length() > 0){
+                                                            boolean sonCompatibles = true;
+                                                            ArrayList retornos = (ArrayList)ae;
+                                                            for (int i = 0; i < ((String[])retornos.get(1)).length; i++) {
+                                                                if( isNumeric(((String[])retornos.get(1))[i]) && !tipoAsignado.equals("int") )
+                                                                    sonCompatibles = false;
+                                                                else if( !tipoAsignado.equals(((String[])retornos.get(1))[i]) && !isNumeric(((String[])retornos.get(1))[i]) && ((String[])retornos.get(1))[i].length()>0 )
+                                                                    sonCompatibles = false;
+                                                            }
+                                                            if(sonCompatibles){
+                                                                String s = id.toString() + "=" + ((String)retornos.get(0));
+                                                                System.out.println("\u001B[31m" + "------------>  " + s);
+                                                                ArrayList arreglo = new ArrayList();
+                                                                Nodo op_aritmetica= new Nodo("artimetica",s);
+                                                                arreglo.add(op_aritmetica);
+                                                                RESULT = arreglo;
+                                                                System.out.println("Nodo Arithmetic creado");
+                                                            } else
+                                                                System.out.println("La asignacion: "+ id.toString() +" no es compatible con el argumento.");
+                                                        } else
+                                                            System.out.println("No existe variable asignada: "+ id.toString() +"."); :}
 ;
 
 arithmetic_exp ::= term:term                           {: RESULT = term; :} 
                                       
-            |arithmetic_exp:se1 ADD_OP:pl term:term     {: String add = se1.toString() + "+" + term.toString(); 
-                                                           RESULT = add; :}                                                       
-            |arithmetic_exp:se1 MINUS_OP:min term:term  {: String sub = se1.toString() + "-" + term.toString(); 
-                                                           RESULT = sub; :}
+            |arithmetic_exp:se1 ADD_OP:pl term:term     {:  String add = se1.toString() + "+" + term.toString();
+                                                            String[] tokens = add.split("\\+|-|\\*|\\/");
+                                                            String[] tipos = new String[tokens.length];
+                                                            for (int i = 0; i < tokens.length; i++) {
+                                                                if( !isNumeric(tokens[i]) )
+                                                                    tipos[i] = buscarTipo(tokens[i]);
+                                                                else
+                                                                    tipos[i] = tokens[i];
+                                                            }
+                                                            ArrayList retorno = new ArrayList(); //primer objeto el string de la operacion, el segundo los tipos
+                                                            retorno.add(add);
+                                                            retorno.add(tipos);
+                                                            RESULT = retorno; :}
+            |arithmetic_exp:se1 MINUS_OP:min term:term  {:  String sub = se1.toString() + "-" + term.toString();
+                                                            String[] tokens = sub.split("\\+|-|\\*|\\/");
+                                                            String[] tipos = new String[tokens.length];
+                                                            for (int i = 0; i < tokens.length; i++) {
+                                                                if( !isNumeric(tokens[i]) )
+                                                                    tipos[i] = buscarTipo(tokens[i]);
+                                                                else
+                                                                    tipos[i] = tokens[i];
+                                                            }
+                                                            ArrayList retorno = new ArrayList(); //primer objeto el string de la operacion, el segundo los tipos
+                                                            retorno.add(sub);
+                                                            retorno.add(tipos);
+                                                            RESULT = retorno; :}
             |   func:ret    {:
-                                RESULT = ret;
+                                String[] tipos = new String[1];
+                                tipos[0] = ret.toString();
+                                ArrayList retorno = new ArrayList();
+                                retorno.add("");
+                                retorno.add(tipos);
+                                RESULT = retorno;
                             :};
 
 term ::= factor:fact                         {: RESULT = fact.toString();
@@ -982,7 +1182,10 @@ term ::= factor:fact                         {: RESULT = fact.toString();
                                                 :};
 
 factor ::= INTEGER:id                  {: RESULT = id.toString(); :}
-    | ID:id                            {: RESULT = id.toString(); :}
+    | ID:id                            {:   if( buscarTipo(id.toString()).length() == 0 )
+                                                System.out.println("No existe variable asignada: "+ id.toString() +".");
+                                            else
+                                                RESULT = id.toString(); :}
     | TRUE:id                          {: RESULT = id.toString(); :}
     | FALSE:id                         {: RESULT = id.toString(); :}
     | LPAR arithmetic_exp RPAR;                                                       

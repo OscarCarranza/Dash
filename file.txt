@@ -1,5 +1,10 @@
 int[1] b-
-func hola => (int a, int b){
+func suma => (int a){
+	char z-
+	ret z-
+}-
+
+func hola => (int a, int b, int[1] bd){
 	switch(valor){
 		case 1: if(a <= b){
 				int a1-
@@ -13,10 +18,11 @@ func hola => (int a, int b){
 			}
 	}
 	if(a <= b && c <= d || b){
-		a1 = b1 * v - c-
+		char a33-
+		a1 = q * q1 - 3-
 		dash.in(hello)-
 		dash.print("HOLA MUNDO" + hello)-
-		suma = a(b)-
+		a1 = suma(q)-
 		for (int a = 1; a<=1; i++){
 			int q2-
 		}

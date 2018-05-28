@@ -234,6 +234,15 @@ public class Compilador extends javax.swing.JFrame {
         }
     }
     
+    public static boolean isNumeric(String str) {
+        try {
+            int d = Integer.parseInt(str);  
+        }
+        catch(NumberFormatException nfe) {
+            return false;
+        }
+        return true;  
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

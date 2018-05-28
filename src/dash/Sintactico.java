@@ -1282,6 +1282,16 @@ public class Sintactico extends java_cup.runtime.lr_parser {
         }
         return tipo;
     }
+
+    public static boolean isNumeric(String str) {
+        try {
+            int d = Integer.parseInt(str);  
+        }
+        catch(NumberFormatException nfe) {
+            return false;
+        }
+        return true;  
+    }
     
     //Metodo al que se llama automaticamente ante algun error sintactico
     public void syntax_error(Symbol s)
@@ -1803,15 +1813,28 @@ class CUP$Sintactico$actions {
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		if(b != null){
-                                                                                    ArrayList arregloNodos = (ArrayList) b;
-                                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                                    arregloNodos.add( newID );
-                                                                                    RESULT = arregloNodos;
+                                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                                    if(agregarATabla){
+                                                                                        ArrayList arregloNodos = (ArrayList) b;
+                                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                                        arregloNodos.add( newID );
+                                                                                        RESULT = arregloNodos;
+                                                                                        Tabla nuevaVar = new Tabla((String)id, "int*", "", 0, 0);
+                                                                                        tabla.add( nuevaVar );
+                                                                                    } else
+                                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
                                                                                  } else {
-                                                                                    ArrayList arregloInstancias = new ArrayList();
-                                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                                    arregloInstancias.add(newID);
-                                                                                    RESULT = arregloInstancias;}
+                                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                                    if(agregarATabla){
+                                                                                        ArrayList arregloInstancias = new ArrayList();
+                                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                                        arregloInstancias.add(newID);
+                                                                                        RESULT = arregloInstancias;
+                                                                                        Tabla nuevaVar = new Tabla((String)id, "int*", "", 0, 0);
+                                                                                        tabla.add( nuevaVar );
+                                                                                    } else
+                                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                                }
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionIntegerPtr",23, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1823,12 +1846,20 @@ class CUP$Sintactico$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		ArrayList arregloInstancias = new ArrayList();
-                                    Nodo newInt = new Nodo("int ptr", "");
-                                    Nodo newID = new Nodo((String)id, "");
-                                    arregloInstancias.add(newInt);
-                                    arregloInstancias.add(newID);
-                                    RESULT = arregloInstancias; 
+		
+                                    boolean agregarATabla = noExiste((String)id);
+                                    if(agregarATabla){
+                                        ArrayList arregloInstancias = new ArrayList();
+                                        Nodo newInt = new Nodo("int ptr", "");
+                                        Nodo newID = new Nodo((String)id, "");
+                                        arregloInstancias.add(newInt);
+                                        arregloInstancias.add(newID);
+                                        RESULT = arregloInstancias; 
+                                        Tabla nuevaVar = new Tabla((String)id, "int*", "", 0, 0);
+                                        tabla.add( nuevaVar );
+                                    } else
+                                        System.out.println("Error variable " + (String)id + " ya existe.");
+                                    
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionIntegerPtr",23, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1901,15 +1932,28 @@ class CUP$Sintactico$actions {
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		 if(b != null){
-                                                                    ArrayList arregloNodos = (ArrayList) b;
-                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                    arregloNodos.add( newID );
-                                                                    RESULT = arregloNodos;
+                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                    if(agregarATabla){
+                                                                        ArrayList arregloNodos = (ArrayList) b;
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloNodos.add( newID );
+                                                                        RESULT = arregloNodos;
+                                                                        Tabla nuevaVar = new Tabla((String)id, "char", "", 0, 0);
+                                                                        tabla.add( nuevaVar );
+                                                                    } else
+                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
                                                                  } else {
-                                                                    ArrayList arregloInstancias = new ArrayList();
-                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                    arregloInstancias.add(newID);
-                                                                    RESULT = arregloInstancias;} 
+                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                    if(agregarATabla){
+                                                                        ArrayList arregloInstancias = new ArrayList();
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloInstancias.add(newID);
+                                                                        RESULT = arregloInstancias;
+                                                                        Tabla nuevaVar = new Tabla((String)id, "char", "", 0, 0);
+                                                                        tabla.add( nuevaVar );
+                                                                    } else
+                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                }
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionChar",8, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -1921,12 +1965,21 @@ class CUP$Sintactico$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		ArrayList arregloInstancias = new ArrayList();
-                                    Nodo newChar = new Nodo("char", "");
-                                    Nodo newID = new Nodo((String)id, "");
-                                    arregloInstancias.add(newChar);
-                                    arregloInstancias.add(newID);
-                                    RESULT = arregloInstancias; 
+		
+                                    System.out.println("Error Error  Error Error Error Error");
+                                    boolean agregarATabla = noExiste((String)id);
+                                    if(agregarATabla){
+                                        ArrayList arregloInstancias = new ArrayList();
+                                        Nodo newChar = new Nodo("char", "");
+                                        Nodo newID = new Nodo((String)id, "");
+                                        arregloInstancias.add(newChar);
+                                        arregloInstancias.add(newID);
+                                        RESULT = arregloInstancias;
+                                        Tabla nuevaVar = new Tabla((String)id, "char", "", 0, 0);
+                                        tabla.add( nuevaVar );
+                                    } else
+                                        System.out.println("Error variable " + (String)id + " ya existe.");
+                                
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionChar",8, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2089,15 +2142,28 @@ class CUP$Sintactico$actions {
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		 if(b != null){
-                                                                            ArrayList arregloNodos = (ArrayList) b;
-                                                                            Nodo newID = new Nodo((String)id, "");
-                                                                            arregloNodos.add( newID );
-                                                                            RESULT = arregloNodos;
+                                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                                    if(agregarATabla){
+                                                                                        ArrayList arregloNodos = (ArrayList) b;
+                                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                                        arregloNodos.add( newID );
+                                                                                        RESULT = arregloNodos;
+                                                                                        Tabla nuevaVar = new Tabla((String)id, "char*", "", 0, 0);
+                                                                                        tabla.add( nuevaVar );
+                                                                                    } else
+                                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
                                                                          } else {
-                                                                            ArrayList arregloInstancias = new ArrayList();
-                                                                            Nodo newID = new Nodo((String)id, "");
-                                                                            arregloInstancias.add(newID);
-                                                                            RESULT = arregloInstancias;}
+                                                                            boolean agregarATabla = noExiste((String)id);
+                                                                            if(agregarATabla){
+                                                                                ArrayList arregloInstancias = new ArrayList();
+                                                                                Nodo newID = new Nodo((String)id, "");
+                                                                                arregloInstancias.add(newID);
+                                                                                RESULT = arregloInstancias;
+                                                                                Tabla nuevaVar = new Tabla((String)id, "char*", "", 0, 0);
+                                                                                tabla.add( nuevaVar );
+                                                                            } else
+                                                                                System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                            }
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionCharPtr",26, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2109,12 +2175,20 @@ class CUP$Sintactico$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		ArrayList arregloInstancias = new ArrayList();
-                                            Nodo newChar = new Nodo("char ptr", "");
-                                            Nodo newID = new Nodo((String)id, "");
-                                            arregloInstancias.add(newChar);
-                                            arregloInstancias.add(newID);
-                                            RESULT = arregloInstancias; 
+		
+                                            boolean agregarATabla = noExiste((String)id);
+                                            if(agregarATabla){
+                                                ArrayList arregloInstancias = new ArrayList();
+                                                Nodo newChar = new Nodo("char ptr", "");
+                                                Nodo newID = new Nodo((String)id, "");
+                                                arregloInstancias.add(newChar);
+                                                arregloInstancias.add(newID);
+                                                RESULT = arregloInstancias;
+                                                Tabla nuevaVar = new Tabla((String)id, "char*", "", 0, 0);
+                                                tabla.add( nuevaVar );
+                                            } else
+                                                System.out.println("Error variable " + (String)id + " ya existe.");
+                                            
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionCharPtr",26, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2187,15 +2261,29 @@ class CUP$Sintactico$actions {
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		if(b != null){
-                                                                    ArrayList arregloNodos = (ArrayList) b;
-                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                    arregloNodos.add( newID );
-                                                                    RESULT = arregloNodos;
+                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                    if(agregarATabla){
+                                                                        ArrayList arregloNodos = (ArrayList) b;
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloNodos.add( newID );
+                                                                        RESULT = arregloNodos;
+                                                                        Tabla nuevaVar = new Tabla((String)id, "bool", "", 0, 0);
+                                                                        tabla.add( nuevaVar );
+                                                                    } else
+                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
                                                                  } else {
-                                                                    ArrayList arregloInstancias = new ArrayList();
-                                                                    Nodo newID = new Nodo((String)id, "");
-                                                                    arregloInstancias.add(newID);
-                                                                    RESULT = arregloInstancias;}
+                                                                    boolean agregarATabla = noExiste((String)id);
+                                                                    if(agregarATabla){
+                                                                        ArrayList arregloInstancias = new ArrayList();
+                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        arregloInstancias.add(newID);
+                                                                        RESULT = arregloInstancias;
+                                                                        Tabla nuevaVar = new Tabla((String)id, "bool", "", 0, 0);
+                                                                        tabla.add( nuevaVar );
+                                                                    } else
+                                                                        System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                }
+                                                                
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionBool",13, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2207,12 +2295,19 @@ class CUP$Sintactico$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		ArrayList arregloInstancias = new ArrayList();
-                                Nodo newChar = new Nodo("bool", "");
-                                Nodo newID = new Nodo((String)id, "");
-                                arregloInstancias.add(newChar);
-                                arregloInstancias.add(newID);
-                                RESULT = arregloInstancias; 
+		
+                                boolean agregarATabla = noExiste((String)id);
+                                if(agregarATabla){
+                                    ArrayList arregloInstancias = new ArrayList();
+                                    Nodo newChar = new Nodo("bool", "");
+                                    Nodo newID = new Nodo((String)id, "");
+                                    arregloInstancias.add(newChar);
+                                    arregloInstancias.add(newID);
+                                    RESULT = arregloInstancias;
+                                    Tabla nuevaVar = new Tabla((String)id, "bool", "", 0, 0);
+                                    tabla.add( nuevaVar );
+                                } else
+                                    System.out.println("Error variable " + (String)id + " ya existe.");
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionBool",13, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2294,15 +2389,28 @@ class CUP$Sintactico$actions {
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		if(b != null){
-                                                                        ArrayList arregloNodos = (ArrayList) b;
-                                                                        Nodo newID = new Nodo((String)id, "");
-                                                                        arregloNodos.add( newID );
-                                                                        RESULT = arregloNodos;
-                                                                     } else {
-                                                                        ArrayList arregloInstancias = new ArrayList();
-                                                                        Nodo newID = new Nodo((String)id, "");
-                                                                        arregloInstancias.add(newID);
-                                                                        RESULT = arregloInstancias;}
+                                                                            boolean agregarATabla = noExiste((String)id);
+                                                                            if(agregarATabla){
+                                                                                ArrayList arregloNodos = (ArrayList) b;
+                                                                                Nodo newID = new Nodo((String)id, "");
+                                                                                arregloNodos.add( newID );
+                                                                                RESULT = arregloNodos;
+                                                                                Tabla nuevaVar = new Tabla((String)id, "bool*", "", 0, 0);
+                                                                                tabla.add( nuevaVar );
+                                                                            } else
+                                                                                System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                        } else {
+                                                                            boolean agregarATabla = noExiste((String)id);
+                                                                            if(agregarATabla){
+                                                                                ArrayList arregloInstancias = new ArrayList();
+                                                                                Nodo newID = new Nodo((String)id, "");
+                                                                                arregloInstancias.add(newID);
+                                                                                RESULT = arregloInstancias;
+                                                                                Tabla nuevaVar = new Tabla((String)id, "bool*", "", 0, 0);
+                                                                                tabla.add( nuevaVar );
+                                                                            } else
+                                                                                System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                        }
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionBoolPtr",29, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2314,12 +2422,20 @@ class CUP$Sintactico$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		ArrayList arregloInstancias = new ArrayList();
-                                        Nodo newChar = new Nodo("bool ptr", "");
-                                        Nodo newID = new Nodo((String)id, "");
-                                        arregloInstancias.add(newChar);
-                                        arregloInstancias.add(newID);
-                                        RESULT = arregloInstancias; 
+		
+                                        boolean agregarATabla = noExiste((String)id);
+                                        if(agregarATabla){
+                                            ArrayList arregloInstancias = new ArrayList();
+                                            Nodo newChar = new Nodo("bool ptr", "");
+                                            Nodo newID = new Nodo((String)id, "");
+                                            arregloInstancias.add(newChar);
+                                            arregloInstancias.add(newID);
+                                            RESULT = arregloInstancias;
+                                            Tabla nuevaVar = new Tabla((String)id, "bool*", "", 0, 0);
+                                            tabla.add( nuevaVar );
+                                        } else
+                                            System.out.println("Error variable " + (String)id + " ya existe.");
+                                        
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionBoolPtr",29, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2410,15 +2526,28 @@ class CUP$Sintactico$actions {
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		if(b != null){
-                                                                        ArrayList arregloNodos = (ArrayList) b;
-                                                                        Nodo newID = new Nodo((String)id, "");
-                                                                        arregloNodos.add( newID );
-                                                                        RESULT = arregloNodos;
+                                                                        boolean agregarATabla = noExiste((String)id);
+                                                                        if(agregarATabla){
+                                                                            ArrayList arregloNodos = (ArrayList) b;
+                                                                            Nodo newID = new Nodo((String)id, "");
+                                                                            arregloNodos.add( newID );
+                                                                            RESULT = arregloNodos;
+                                                                            Tabla nuevaVar = new Tabla((String)id, "string", "", 0, 0);
+                                                                            tabla.add( nuevaVar );
+                                                                        } else
+                                                                            System.out.println("Error variable " + (String)id + " ya existe.");
                                                                      } else {
-                                                                        ArrayList arregloInstancias = new ArrayList();
-                                                                        Nodo newID = new Nodo((String)id, "");
-                                                                        arregloInstancias.add(newID);
-                                                                        RESULT = arregloInstancias;}
+                                                                        boolean agregarATabla = noExiste((String)id);
+                                                                        if(agregarATabla){
+                                                                            ArrayList arregloInstancias = new ArrayList();
+                                                                            Nodo newID = new Nodo((String)id, "");
+                                                                            arregloInstancias.add(newID);
+                                                                            RESULT = arregloInstancias;
+                                                                            Tabla nuevaVar = new Tabla((String)id, "string", "", 0, 0);
+                                                                            tabla.add( nuevaVar );
+                                                                        } else
+                                                                            System.out.println("Error variable " + (String)id + " ya existe.");
+                                                                    }
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionString",19, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -2430,12 +2559,20 @@ class CUP$Sintactico$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		ArrayList arregloInstancias = new ArrayList();
-                                        Nodo newChar = new Nodo("string", "");
-                                        Nodo newID = new Nodo((String)id, "");
-                                        arregloInstancias.add(newChar);
-                                        arregloInstancias.add(newID);
-                                        RESULT = arregloInstancias; 
+		
+                                        boolean agregarATabla = noExiste((String)id);
+                                        if(agregarATabla){
+                                            ArrayList arregloInstancias = new ArrayList();
+                                            Nodo newChar = new Nodo("string", "");
+                                            Nodo newID = new Nodo((String)id, "");
+                                            arregloInstancias.add(newChar);
+                                            arregloInstancias.add(newID);
+                                            RESULT = arregloInstancias;
+                                            Tabla nuevaVar = new Tabla((String)id, "string", "", 0, 0);
+                                            tabla.add( nuevaVar );
+                                        } else
+                                            System.out.println("Error variable " + (String)id + " ya existe.");
+                                    
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("asignacionString",19, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -3874,23 +4011,45 @@ class CUP$Sintactico$actions {
 		int nombreleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-11)).left;
 		int nombreright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-11)).right;
 		Object nombre = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-11)).value;
+		int paramsleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-8)).left;
+		int paramsright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-8)).right;
+		Object params = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-8)).value;
 		int bodyleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-5)).left;
 		int bodyright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-5)).right;
 		Object body = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-5)).value;
-		 Nodo nodo = new Nodo("funcion", nombre.toString());
-                            System.out.println("RESULT");
-                            System.out.println(RESULT);
-                            System.out.println("body");
-                            ArrayList arregloNodos = (ArrayList) body;
-                            for(int i = 0; i < arregloNodos.size(); i++){
-                                Nodo temp = ((Nodo)arregloNodos.get(i));
-                                nodo.addHijo(temp);
-                                System.out.println( temp.getTipo() );
+		int retleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).left;
+		int retright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).right;
+		Object ret = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).value;
+		
+                            String tipoRetorno = buscarTipo(ret.toString());
+                            if( tipoRetorno.length() == 0 )
+                                System.out.println("Variable de retorno "+ret.toString()+" no existe");
+                            else {
+                                Nodo nodo = new Nodo("funcion", nombre.toString());
+                                System.out.println("RESULT");
+                                System.out.println(RESULT);
+                                System.out.println("body");
+                                ArrayList arregloNodos = (ArrayList) body;
+                                for(int i = 0; i < arregloNodos.size(); i++){
+                                    Nodo temp = ((Nodo)arregloNodos.get(i));
+                                    nodo.addHijo(temp);
+                                    System.out.println( temp.getTipo() );
+                                }
+                                String tipoFunc = "";
+                                String parametrosFunc = "";
+                                ArrayList arregloParams = (ArrayList)params;
+                                for(int i = 0; i < arregloParams.size(); i++){
+                                    parametrosFunc+=((String)arregloParams.get(i));
+                                    if(i != arregloParams.size()-1)
+                                        parametrosFunc+=" x ";
+                                }
+                                tipoFunc+=parametrosFunc+ " -> " + tipoRetorno;
+                                Tabla nuevaVar = new Tabla(nombre.toString(), tipoFunc, "", 0, 0);
+                                tabla.add( nuevaVar );
+                                ArrayList arregloFuncion = new ArrayList();
+                                arregloFuncion.add(nodo);
+                                RESULT = arregloFuncion;
                             }
-                            System.out.println(this.parser.raiz);
-                            ArrayList arregloFuncion = new ArrayList();
-                            arregloFuncion.add(nodo);
-                            RESULT = arregloFuncion; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("dec_function",58, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-12)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -3905,24 +4064,33 @@ class CUP$Sintactico$actions {
 		int idsleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
 		int idsright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
 		Object ids = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
-		    ArrayList idsArray = (ArrayList)ids;
+		      ArrayList idsArray = (ArrayList)ids;
                                                 String tipos = buscarTipo(id.toString());
-                                                String[] tiposParts = tipos.split(" x ");
+                                                String[] tiposParts = tipos.split(" x | -> ");
                                                 boolean llamadoValido = true;
-                                                if(idsArray.size() == tiposParts.length-1){
-                                                    for (int i = 0; i < idsArray.size(); i++) {
-                                                        if(tiposParts[i] == null)
-                                                            llamadoValido = false;
-                                                        else if( !idsArray.get(i).equals(tiposParts[i]))
-                                                            llamadoValido = false;
-                                                    }
-                                                    if(llamadoValido){
-                                                        RESULT = tiposParts[tiposParts.length-1];
-                                                        System.out.println("Nodo funcion creado");
-                                                    } else 
-                                                        System.out.println("Unexpected param. Expected: " + tipos);
+                                                System.out.println("TIPOS.\t"+tipos);
+                                                System.out.println(idsArray.size());
+                                                System.out.println(tiposParts.length);
+                                                if(tipos.length() > 0){
+                                                    if(idsArray.size() == tiposParts.length-1){
+                                                        String[] tiposLLamadoFuncion = new String[idsArray.size()];
+                                                        for (int i = 0; i < idsArray.size(); i++) {
+                                                            tiposLLamadoFuncion[i] = buscarTipo( ((String)idsArray.get(i)) );
+                                                            if(tiposParts[i] == null)
+                                                                llamadoValido = false;
+                                                            else if( !tiposLLamadoFuncion[i].equals(tiposParts[i]))
+                                                                llamadoValido = false;
+                                                        }
+                                                        if(llamadoValido){
+                                                            System.out.println(tiposParts[tiposParts.length-1]);
+                                                            RESULT = tiposParts[tiposParts.length-1];
+                                                            System.out.println("Nodo funcion creado");
+                                                        } else 
+                                                            System.out.println("Unexpected param. Expected: " + tipos);
+                                                    } else
+                                                        System.out.println("Param number unexpected. Expected: " + tipos);
                                                 } else
-                                                    System.out.println("Param number unexpected. Expected: " + tipos);
+                                                    System.out.println("Function not declared.");
                                                 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("func",68, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -4285,13 +4453,30 @@ class CUP$Sintactico$actions {
 		int aeleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
 		int aeright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
 		Object ae = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
-		   String s = id.toString() + "=" + ae.toString();
-                                                        System.out.println("\u001B[31m" + "------------>  " + s);
-                                                        ArrayList arreglo = new ArrayList();
-                                                        Nodo op_aritmetica= new Nodo("artimetica",s);
-                                                        arreglo.add(op_aritmetica);
-                                                        RESULT = arreglo; 
-                                                        System.out.println("Nodo Arithmetic creado"); 
+		   String tipoAsignado = buscarTipo(id.toString());
+                                                        if(tipoAsignado.length() > 0){
+                                                            boolean sonCompatibles = true;
+                                                            ArrayList retornos = (ArrayList)ae;
+                                                            for (int i = 0; i < ((String[])retornos.get(1)).length; i++) {
+                                                                System.out.println("i = "+ ((String[])retornos.get(1))[i]);
+                                                                System.out.println(tipoAsignado);
+                                                                if( isNumeric(((String[])retornos.get(1))[i]) && !tipoAsignado.equals("int") )
+                                                                    sonCompatibles = false;
+                                                                else if( !tipoAsignado.equals(((String[])retornos.get(1))[i]) && !isNumeric(((String[])retornos.get(1))[i]) && ((String[])retornos.get(1))[i].length()>0 )
+                                                                    sonCompatibles = false;
+                                                            }
+                                                            if(sonCompatibles){
+                                                                String s = id.toString() + "=" + ((String)retornos.get(0));
+                                                                System.out.println("\u001B[31m" + "------------>  " + s);
+                                                                ArrayList arreglo = new ArrayList();
+                                                                Nodo op_aritmetica= new Nodo("artimetica",s);
+                                                                arreglo.add(op_aritmetica);
+                                                                RESULT = arreglo;
+                                                                System.out.println("Nodo Arithmetic creado");
+                                                            } else
+                                                                System.out.println("La asignacion: "+ id.toString() +" no es compatible con el argumento.");
+                                                        } else
+                                                            System.out.println("No existe variable asignada: "+ id.toString() +"."); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("assign_var",69, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -4321,8 +4506,19 @@ class CUP$Sintactico$actions {
 		int termleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int termright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object term = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		 String add = se1.toString() + "+" + term.toString(); 
-                                                           RESULT = add; 
+		  String add = se1.toString() + "+" + term.toString();
+                                                            String[] tokens = add.split("\\+|-|\\*|\\/");
+                                                            String[] tipos = new String[tokens.length];
+                                                            for (int i = 0; i < tokens.length; i++) {
+                                                                if( !isNumeric(tokens[i]) )
+                                                                    tipos[i] = buscarTipo(tokens[i]);
+                                                                else
+                                                                    tipos[i] = tokens[i];
+                                                            }
+                                                            ArrayList retorno = new ArrayList(); //primer objeto el string de la operacion, el segundo los tipos
+                                                            retorno.add(add);
+                                                            retorno.add(tipos);
+                                                            RESULT = retorno; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("arithmetic_exp",63, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -4340,8 +4536,19 @@ class CUP$Sintactico$actions {
 		int termleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int termright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object term = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		 String sub = se1.toString() + "-" + term.toString(); 
-                                                           RESULT = sub; 
+		  String sub = se1.toString() + "-" + term.toString();
+                                                            String[] tokens = sub.split("\\+|-|\\*|\\/");
+                                                            String[] tipos = new String[tokens.length];
+                                                            for (int i = 0; i < tokens.length; i++) {
+                                                                if( !isNumeric(tokens[i]) )
+                                                                    tipos[i] = buscarTipo(tokens[i]);
+                                                                else
+                                                                    tipos[i] = tokens[i];
+                                                            }
+                                                            ArrayList retorno = new ArrayList(); //primer objeto el string de la operacion, el segundo los tipos
+                                                            retorno.add(sub);
+                                                            retorno.add(tipos);
+                                                            RESULT = retorno; 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("arithmetic_exp",63, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
@@ -4354,7 +4561,12 @@ class CUP$Sintactico$actions {
 		int retright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object ret = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		
-                                RESULT = ret;
+                                String[] tipos = new String[1];
+                                tipos[0] = ret.toString();
+                                ArrayList retorno = new ArrayList();
+                                retorno.add("");
+                                retorno.add(tipos);
+                                RESULT = retorno;
                             
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("arithmetic_exp",63, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -4432,7 +4644,10 @@ class CUP$Sintactico$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
-		 RESULT = id.toString(); 
+		   if( buscarTipo(id.toString()).length() == 0 )
+                                                System.out.println("No existe variable asignada: "+ id.toString() +".");
+                                            else
+                                                RESULT = id.toString(); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("factor",65, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
           return CUP$Sintactico$result;
