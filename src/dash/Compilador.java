@@ -179,8 +179,9 @@ public class Compilador extends javax.swing.JFrame {
             root.add(nodoraiz);
             System.out.println("Antes de Print");
             print(sintactico.raiz, nodoraiz);
+            System.out.println("I\tID\tTipo\t\t\tAmbito\t\tProfundidad");
             for (int i = 0; i < sintactico.tabla.size(); i++) {
-                System.out.println( i + "\t" + ((Tabla)sintactico.tabla.get(i)).getId() + "\t" + ((Tabla)sintactico.tabla.get(i)).getTipo() + "\t" + ((Tabla)sintactico.tabla.get(i)).getAmbito() + "\t" + ((Tabla)sintactico.tabla.get(i)).getProfundidad() );
+                System.out.println( i + "\t" + ((Tabla)sintactico.tabla.get(i)).getId() + "\t" + ((Tabla)sintactico.tabla.get(i)).getTipo() + "\t\t\t" + ((Tabla)sintactico.tabla.get(i)).getAmbito() + "\t\t" + ((Tabla)sintactico.tabla.get(i)).getProfundidad() );
             }
             model.reload();
         } catch(Exception e){

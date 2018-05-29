@@ -1,7 +1,7 @@
 int[1] b-
-func suma => (int a){
+func suma => (char a){
 	char z-
-	ret z-
+	ret a-
 }-
 
 func hola => (int a, int b, int[1] bd){
@@ -22,7 +22,7 @@ func hola => (int a, int b, int[1] bd){
 		a1 = q * q1 - 3-
 		dash.in(hello)-
 		dash.print("HOLA MUNDO" + hello)-
-		a1 = suma(q)-
+		a33 = suma(q)-
 		for (int a = 1; a<=1; i++){
 			int q2-
 		}
