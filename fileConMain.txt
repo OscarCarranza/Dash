@@ -1,0 +1,46 @@
+int x1, a2-
+func hola => (int a, int b){
+	for (int a = 1; a<=1; i++){
+		int q-
+	}
+	switch(valor){
+		case 1: if(a <= b){
+				int a-
+				for (int a = 1; a<=1; i++){
+					int q-
+				}
+			}
+			for (int a = 1; a<=1; i++){
+				int q-
+			}
+	}
+	if(a){
+		for (int a = 1; a<=1; i++){
+			int q-
+		}
+	}
+	ret 1-
+}-
+
+main => (int a, int b){
+	switch(valor){
+		case 1: if(a <= b){
+				int a-
+				for (int a = 1; a<=1; i++){
+					int q-
+				}
+			}
+			for (int a = 1; a<=1; i++){
+				int q-
+			}
+	}
+	if(a){
+		for (int a = 1; a<=1; i++){
+			int q-
+		}
+	}
+	for (int a = 1; a<=1; i++){
+		int q-
+	}
+	ret 1-
+}

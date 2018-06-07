@@ -1,0 +1,79 @@
+int[1] b-
+func suma => (char a){
+	char z-
+	ret a-
+}-
+
+func hola => (int a, int b, int[1] bd){
+	switch(valor){
+		case 1: if(a <= b){
+				int a1-
+				for (int a = 1; a<=1; i++){
+					int q-
+				}
+			}
+			for (int a = 1; a<=1; i++){
+				int q1-
+			
+			}
+	}
+	if(a <= b && c <= d || b){
+		char a33-
+		a1 = q * q1 - 3-
+		dash.in(hello)-
+		dash.print("HOLA MUNDO" + hello)-
+		a33 = suma(q)-
+		for (int a = 1; a<=1; i++){
+			int q2-
+		}
+	}
+	for (int a = 1; a<=1; i++){
+		int q3-
+		if(a2){
+			char a3-
+			char[2] a4, a5-
+		}
+	}
+	ret a1-
+}-
+
+
+main => (int a, int b){
+	switch(valor){
+		case 1: if(a <= b){
+				int a9-
+				for (int a = 1; a<=1; i++){
+					int q6-
+
+				}
+			}
+			for (int a = 1; a<=1; i++){
+				int q7-
+			}
+	}
+	if(a){
+		for (int a = 1; a<=1; i++){
+			int q8-
+		}
+	}
+	for (int a = 1; a<=1; i++){
+		int q9-
+
+	}
+	ret a1-
+}
+
+func hola2 => (int a, int b){
+	for (int a = 1; a<=1; i++){
+		int qq-
+	}
+	if(a){
+		for (int a = 1; a<=1; i++){
+			int qq1-
+		}
+	}
+	ret a1-
+}-
+
+
+
