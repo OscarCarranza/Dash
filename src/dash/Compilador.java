@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import Nodos.Nodo;
+import Nodos.Tabla;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 /**
@@ -39,11 +40,6 @@ public class Compilador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        ta_codigo = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        ta_result = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -56,16 +52,6 @@ public class Compilador extends javax.swing.JFrame {
                 formWindowActivated(evt);
             }
         });
-
-        ta_codigo.setColumns(20);
-        ta_codigo.setRows(5);
-        jScrollPane1.setViewportView(ta_codigo);
-
-        ta_result.setColumns(20);
-        ta_result.setRows(5);
-        jScrollPane2.setViewportView(ta_result);
-
-        jLabel1.setText("Resultado:");
 
         jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         jLabel3.setText("DASH");
@@ -96,39 +82,23 @@ public class Compilador extends javax.swing.JFrame {
                                 .addComponent(jLabel3))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(134, 134, 134))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1)
-                        .addGap(2, 2, 2)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -151,9 +121,6 @@ public class Compilador extends javax.swing.JFrame {
         String datos = "";
         BufferedReader br;
         try{
-            if (ta_codigo.getText().length() > 0) {
-                datos = ta_codigo.getText();
-            } else{
                 br = new BufferedReader(new FileReader("file.txt"));
                 
                 
@@ -166,7 +133,7 @@ public class Compilador extends javax.swing.JFrame {
                     line = br.readLine();
                 }
                 datos = sb.toString();
-            }
+            
             
             Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader(new StringReader(datos)));
             Sintactico sintactico = new Sintactico(lexico);
@@ -176,8 +143,13 @@ public class Compilador extends javax.swing.JFrame {
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
             DefaultMutableTreeNode nodoraiz = new DefaultMutableTreeNode(sintactico.raiz.getTipo());
             root.add(nodoraiz);
-            System.out.println("Antes de Print");
+            System.out.println( "\u001B[32m" + "Compilacion finalizada" + "\n" + "\n");
             print(sintactico.raiz, nodoraiz);
+            System.out.println("---------  Tabla de Símbolos  ---------" + "\n");
+            System.out.println("I\tID\tTipo\t\t\tAmbito\t\tProfundidad");
+            for (int i = 0; i < sintactico.tabla.size(); i++) {
+                System.out.println( i + "\t" + ((Tabla)sintactico.tabla.get(i)).getId() + "\t" + ((Tabla)sintactico.tabla.get(i)).getTipo() + "\t\t\t" + ((Tabla)sintactico.tabla.get(i)).getAmbito() + "\t\t" + ((Tabla)sintactico.tabla.get(i)).getProfundidad() );
+            }
             model.reload();
         } catch(Exception e){
             //
@@ -229,17 +201,22 @@ public class Compilador extends javax.swing.JFrame {
             print(nodo.getHijos().get(i), nodohijo);
         }
     }
+    
+    public static boolean isNumeric(String str) {
+        try {
+            int d = Integer.parseInt(str);  
+        }
+        catch(NumberFormatException nfe) {
+            return false;
+        }
+        return true;  
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea ta_codigo;
-    private javax.swing.JTextArea ta_result;
     private javax.swing.JTree tree;
     // End of variables declaration//GEN-END:variables
 }
