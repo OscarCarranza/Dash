@@ -59,7 +59,7 @@ public class Cuadruplo {
 
     @Override
     public String toString() {
-        String form = "%-15s %-30s %-30s %-15s";
+        String form = "%-15s %-15s %-15s %-15s";
         return String.format(form, operacion, argumento1, argumento2, resultado);
     }
     

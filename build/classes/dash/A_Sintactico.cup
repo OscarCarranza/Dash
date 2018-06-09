@@ -8,7 +8,8 @@ import java.util.LinkedList;
 import Nodos.Nodo;
 import Nodos.Variable;
 import Nodos.Tabla;
-import Nodos.Cuadruplo
+import Nodos.Cuadruplo;
+import Nodos.Infix2Postfix;
 import java.util.ArrayList;
 
 //---------> Codigo para el parser, variables, metodos
@@ -20,6 +21,8 @@ parser code
     public ArrayList<Variable> variables = new ArrayList();
     public ArrayList<Tabla> tabla = new ArrayList();
     public String ambito="global";
+    public static int contTemp = 0;
+    public static ArrayList<Cuadruplo> cuads = new ArrayList();
 
     public boolean noExiste(String id) {
         boolean esValido = true;
@@ -81,6 +84,18 @@ parser code
 
         MyError datos = new MyError(lexema, fila, columna, "Error Sintactico", "Simbolo no esperado, Panic Mode");
         listaErrorSintacticos.add(datos);
+    }
+
+    public String getOp(String s){
+        int num = 0;
+        for(int i = 0; i < s.length(); i++){
+            if(s.charAt(i) == '='){
+                num = i;
+                break;
+            }    
+        }
+        s = s.substring(num+1, s.length());
+        return s;
     }
 
 :}
@@ -1253,10 +1268,14 @@ assign_var ::= ID:id ASSIGN arithmetic_exp:ae DASH {:   String tipoAsignado = th
                                                             if(sonCompatibles){
                                                                 String s = id.toString() + "=" + ((String)retornos.get(0));
                                                                 ArrayList arreglo = new ArrayList();
+                                                                s = this.parser.getOp(s);
+                                                                Infix2Postfix inf=new Infix2Postfix(s);
+                                                                inf.CodigoIntermedio();
+                                                                
+                                                                this.parser.cuads.add(new Cuadruplo("=",id.toString(),"t_" + this.parser.contTemp++));
                                                                 Nodo op_aritmetica= new Nodo("artimetica",s);
                                                                 arreglo.add(op_aritmetica);
 
-                                                                Cuadruplo cuad = new Cuadruplo)();
                                                                 RESULT = arreglo;
                                                             } else{
                                                                 System.out.println("\u001B[31m" + "The assigned value of "+ id.toString() +" does not match its type.");
