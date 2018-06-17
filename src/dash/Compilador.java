@@ -17,6 +17,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import Nodos.Nodo;
+import Nodos.Tabla;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 /**
@@ -178,7 +181,20 @@ public class Compilador extends javax.swing.JFrame {
             root.add(nodoraiz);
             System.out.println("Antes de Print");
             print(sintactico.raiz, nodoraiz);
+            System.out.println("I\tID\tTipo\t\t\tAmbito\t\t\tProfundidad");
+            for (int i = 0; i < sintactico.tabla.size(); i++) {
+                System.out.println( i + "\t" + ((Tabla)sintactico.tabla.get(i)).getId() + "\t" + ((Tabla)sintactico.tabla.get(i)).getTipo() + "\t\t\t" + ((Tabla)sintactico.tabla.get(i)).getAmbito() + "\t\t\t" + ((Tabla)sintactico.tabla.get(i)).getProfundidad() );
+            }
             model.reload();
+            tabla = sintactico.tabla;
+            ambito = "global";
+            profundidad = 0;
+            checkTypes(sintactico.raiz, ambito);
+            System.out.println("I\t\t\tOperacio\t\t\tArgu1\t\t\tArg2\t\t\tResultado");
+            for (int i = 0; i < sintactico.cuads.size(); i++) {
+                System.out.println(i+"\t\t\t"+sintactico.cuads.get(i).getOperacion()+"\t\t\t"+sintactico.cuads.get(i).getArgumento1()+"\t\t\t"+
+                        sintactico.cuads.get(i).getArgumento2()+"\t\t\t"+sintactico.cuads.get(i).getResultado());
+            }
         } catch(Exception e){
             //
         }
@@ -220,6 +236,10 @@ public class Compilador extends javax.swing.JFrame {
         });
     }
     
+    ArrayList<Tabla> tabla;
+    String ambito;
+    int profundidad;
+    
     private void print(Nodo nodo, DefaultMutableTreeNode arbolnodo){
         //System.out.print("\t");
         //System.out.println(nodo.getTipo());
@@ -229,6 +249,182 @@ public class Compilador extends javax.swing.JFrame {
             print(nodo.getHijos().get(i), nodohijo);
         }
     }
+    
+    private void checkTypes(Nodo nodo, String ambito){
+        for (int i = 0; i < nodo.getHijos().size(); i++) {
+            Boolean entro = false;
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("funcion") || ((Nodo)nodo.getHijos().get(i)).getTipo().equals("main") ){
+                profundidad = 0;
+                if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("funcion") )
+                    ambito+="."+((Nodo)nodo.getHijos().get(i)).getValue();
+                else
+                    ambito+=".main";
+                entro = true;
+                checkFunRet((Nodo)nodo.getHijos().get(i), ambito, profundidad);
+                //checkFunParams((Nodo)nodo.getHijos().get(i));
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("if")){
+                ambito+=".if";
+                profundidad++;
+                entro = true;
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("while")){
+                ambito+=".while";
+                profundidad++;
+                entro = true;
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("dowhile")){
+                ambito+=".dowhile";
+                profundidad++;
+                entro = true;
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("for")){
+                ambito+=".for";
+                profundidad++;
+                entro = true;
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("switch")){
+                ambito+=".switch";
+                profundidad++;
+                entro = true;
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("aritmetica")){
+                checkAritmetica((Nodo)nodo.getHijos().get(i), ambito, profundidad);
+            }
+            //ambito = quitarAmbito(ambito);
+            checkTypes(nodo.getHijos().get(i), ambito);
+            if(entro)
+                ambito = quitarAmbito(ambito);
+        }
+    }
+    
+    private void checkFunRet(Nodo nodo, String ambito, int profundidad){
+        String tipoRetornoTabla = getTipoVar(nodo.getHijos().get(nodo.getHijos().size()-1).getValue(), ambito, profundidad);
+        if(!isNumeric(nodo.getHijos().get(nodo.getHijos().size()-1).getValue()))
+            if( tipoRetornoTabla.length() == 0 )
+                System.out.println("\u001B[31m" + "La variable de retorno de la funcion "+nodo.getValue()+" no ha sido declarada.");
+    }
+    
+    private void checkAritmetica(Nodo nodo, String ambito, int profundidad){
+        String[] partsAsignacion = nodo.getValue().split("=");
+        String[] partsAritmetica = partsAsignacion[partsAsignacion.length-1].split("\\+|-|\\*|\\/");
+        String tipoAsignado = getTipoVar(partsAsignacion[0], ambito, profundidad);
+        Boolean[] probarParams = new Boolean[partsAritmetica.length];
+        Arrays.fill(probarParams, true);
+        ArrayList<String> tipoAsignadores = new ArrayList<String>();
+        for (int i = 0; i < partsAritmetica.length; i++) {
+            if(partsAritmetica[i].contains("("))
+                tipoAsignadores.add(getTipoVar(partsAritmetica[i].split(("\\("))[0], ambito, profundidad));
+            else
+                tipoAsignadores.add(getTipoVar(partsAritmetica[i], ambito, profundidad));
+        }
+        if( tipoAsignado.length() == 0 )
+            System.out.println("\u001B[31m" + "La variable de asignacion "+partsAsignacion[0]+" no ha sido declarada.");
+        for (int i = 0; i < tipoAsignadores.size(); i++) {
+            if(tipoAsignadores.get(i).equals("")){
+                if(partsAritmetica[i].contains("(")){
+                    System.out.println("\u001B[31m" + "La funcion "+partsAritmetica[i]+" no ha sido declarada.");
+                    probarParams[i] =  false;
+                } else if(!isNumeric(partsAritmetica[i])){
+                    System.out.println("\u001B[31m" + "La variable "+partsAritmetica[i]+" no ha sido declarada.");
+                    probarParams[i] =  false;
+                }
+            } else if(!tipoAsignadores.get(i).equals("int") ){
+                if(partsAritmetica[i].contains("(")){
+                    String[] partsFuncion = partsAritmetica[i].split(" |\\(");
+                    String tipoFuncion = getTipoVar(partsFuncion[0], ambito, profundidad);
+                    String[] tipoRetFuncion = tipoFuncion.split(" x | -> ");
+                    if(!tipoAsignado.equals(tipoRetFuncion[tipoRetFuncion.length-1]) && tipoAsignado.length() > 0)
+                        System.out.println("\u001B[31m" + "Asignación imposible en "+partsAsignacion[0]+": tipo de "+partsFuncion[0]+" incompatible - se esparabá "+tipoAsignado+".");
+                }
+            } else if(!tipoAsignado.equals("int"))
+                System.out.println("\u001B[31m" + "Asignación imposible en "+partsAsignacion[0]+": tipo de asignado "+tipoAsignado+" es incompatible con int."); //por si se suma int a strings o char
+        }
+        //si es funcion probar sus params
+        for (int i = 0; i < partsAritmetica.length; i++) {
+            if(probarParams[i])
+                if( partsAritmetica[i].contains("(") ){
+                    String[] partsFuncion = partsAritmetica[i].split("\\(|\\)");
+                    String[] partsParametros;
+                    if(partsFuncion.length > 1)
+                        partsParametros = partsFuncion[1].split(" ");
+                    else
+                        partsParametros = new String[0];
+                    String tipoFuncion = getTipoVar(partsFuncion[0].split(" ")[0], ambito, profundidad);    //trayendo el tipo real de la funcion en la tabla de variables
+                    String[] partsFuncionRetorno = tipoFuncion.split(" x | -> ");
+                    
+                    if(partsParametros.length == 0 && partsFuncionRetorno.length == 1)
+                        System.out.println("\u001B[31m" + "Llamado a funcion "+ partsFuncion[0].split(" ")[0] +" invalido: demasiados parametros.");
+                    else if(partsParametros.length == 0 && partsFuncionRetorno.length > 1 && !partsFuncionRetorno[0].equals(""))
+                        System.out.println("\u001B[31m" + "Llamado a funcion "+ partsFuncion[0].split(" ")[0] +" invalido: muy pocos parametros.");
+                    for (int j = 0; j < partsParametros.length; j++) {
+                        String tipoParam = getTipoVar(partsParametros[j], ambito, profundidad);
+                        if (tipoParam.length() == 0)
+                            System.out.println("\u001B[31m" + "La variable "+partsParametros[j]+" no ha sido declarada en: "+ partsFuncion[0] +".");
+                        else {
+                            
+                            if(partsFuncionRetorno.length-1 <= j)
+                                System.out.println("\u001B[31m" + "Llamado a funcion "+ partsFuncion[0].split(" ")[0] +" invalido en: "+partsParametros[j]+" demasiados parametros.");
+                            else{
+                                if(partsFuncionRetorno.length-1 > partsParametros.length)
+                                    System.out.println("\u001B[31m" + "Llamado a funcion "+ partsFuncion[0].split(" ")[0] +" invalido en: "+"muy pocos parametros.");
+                                else if(!partsFuncionRetorno[j].equals(tipoParam) && j < partsFuncionRetorno.length-1 && !partsFuncionRetorno[j].equals(""))
+                                    System.out.println("\u001B[31m" + "Llamado a funcion "+ partsFuncion[0].split(" ")[0] +" invalido en "+ partsParametros[j] +": tipos incompatibles - se esparabá "+partsFuncionRetorno[j]+".");
+                                else if(partsFuncionRetorno[j].equals(""))
+                                    System.out.println("\u001B[31m" + "Llamado a funcion "+ partsFuncion[0].split(" ")[0] +" invalido en: "+partsParametros[j]+" demasiados parametros.");
+                            }
+                        }
+                    }// fin for
+                }
+        }
+    }
+    
+    private void checkFunParams(Nodo nodo){
+        String tiposParametros = "";
+        for (int i = 0; i < nodo.getHijos().get(0).getHijos().size(); i++) {
+            tiposParametros+=((Nodo)nodo.getHijos().get(0).getHijos().get(i)).getTipo();
+            if(i != nodo.getHijos().get(0).getHijos().size()-1)
+                tiposParametros+=" x ";
+        }
+        String tipoFuncion = getTipoVar( nodo.getValue(), ambito, profundidad );
+        System.out.println( tiposParametros );
+        System.out.println( tipoFuncion );
+    }
+    
+    private String getTipoVar(String variableID, String ambito, int profundidad){
+        //System.out.println("var = "+variableID+"\t\tambito = "+ambito+"\t\tprofundidad = "+profundidad);
+        String tipo = "";
+        for (int i = 0; i < tabla.size(); i++) {
+            if( ((Tabla)tabla.get(i)).getId().equals(variableID) && ambito.contains( ((Tabla)tabla.get(i)).getAmbito()) && ((Tabla)tabla.get(i)).getProfundidad() == profundidad )
+                tipo = ((Tabla)tabla.get(i)).getTipo();
+        }
+        if(tipo.equals(""))
+            for (int i = 0; i < tabla.size(); i++) {
+                if( ((Tabla)tabla.get(i)).getId().equals(variableID) && ambito.contains( ((Tabla)tabla.get(i)).getAmbito()) && ((Tabla)tabla.get(i)).getProfundidad() <= profundidad )
+                    tipo = ((Tabla)tabla.get(i)).getTipo();
+            }
+        if(tipo.equals(""))
+            if(isNumeric(variableID))
+                tipo = "int";
+        return tipo;
+    }
+    
+    public static boolean isNumeric(String str) {
+        try {
+            int d = Integer.parseInt(str);
+        }
+        catch(NumberFormatException nfe) {
+            return false;
+        }
+        return true;  
+    }
+    
+    public String quitarAmbito(String ambito) {
+        int index = ambito.lastIndexOf('.');
+        ambito = ambito.substring(0, index);
+        return ambito;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

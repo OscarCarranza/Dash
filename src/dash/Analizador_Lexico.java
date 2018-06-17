@@ -897,112 +897,112 @@ public class Analizador_Lexico implements java_cup.runtime.Scanner{
             }
           case 64: break;
           case 3: 
-            { System.out.println("<div_operator> " + yytext());
+            { //System.out.println("<div_operator> " + yytext());
                                 return new Symbol(Simbolos.DIV_OP, yycolumn, yyline, yytext());
             }
           case 65: break;
           case 4: 
-            { System.out.println("<mult_operator> " + yytext());
+            { //System.out.println("<mult_operator> " + yytext());
                                 return new Symbol(Simbolos.MULT_OP, yycolumn, yyline, yytext());
             }
           case 66: break;
           case 5: 
-            { System.out.println("<id> " + yytext());
+            { //System.out.println("<id> " + yytext());
                                 return new Symbol(Simbolos.ID, yycolumn, yyline, yytext());
             }
           case 67: break;
           case 6: 
-            { System.out.println("<number> " + yytext());
+            { //System.out.println("<number> " + yytext());
                                 return new Symbol(Simbolos.INTEGER, yycolumn, yyline, yytext());
             }
           case 68: break;
           case 7: 
-            { System.out.println("<left_brac> " + yytext());
+            { //System.out.println("<left_brac> " + yytext());
                                 return new Symbol(Simbolos.LBRAC, yycolumn, yyline, yytext());
             }
           case 69: break;
           case 8: 
-            { System.out.println("<right_brac> " + yytext());
+            { //System.out.println("<right_brac> " + yytext());
                                 return new Symbol(Simbolos.RBRAC, yycolumn, yyline, yytext());
             }
           case 70: break;
           case 9: 
-            { System.out.println("<assign> " + yytext());
+            { //System.out.println("<assign> " + yytext());
                                 return new Symbol(Simbolos.ASSIGN, yycolumn, yyline, yytext());
             }
           case 71: break;
           case 10: 
-            { System.out.println("<greaterThan_operator> " + yytext());
+            { //System.out.println("<greaterThan_operator> " + yytext());
                                 return new Symbol(Simbolos.GREATERTHAN_OP, yycolumn, yyline, yytext());
             }
           case 72: break;
           case 11: 
-            { System.out.println("<comma> " + yytext());
+            { //System.out.println("<comma> " + yytext());
                                 return new Symbol(Simbolos.COMMA, yycolumn, yyline, yytext());
             }
           case 73: break;
           case 12: 
-            { System.out.println("<add_operator> " + yytext());
+            { //System.out.println("<add_operator> " + yytext());
                                 return new Symbol(Simbolos.ADD_OP, yycolumn, yyline, yytext());
             }
           case 74: break;
           case 13: 
-            { System.out.println("<minus_operator> " + yytext());
+            { //System.out.println("<minus_operator> " + yytext());
                                 return new Symbol(Simbolos.MINUS_OP, yycolumn, yyline, yytext());
             }
           case 75: break;
           case 14: 
-            { System.out.println("<symbols> " + yytext());
+            { //System.out.println("<symbols> " + yytext());
                                     return new Symbol(Simbolos.SYMBS, yycolumn, yyline, yytext());
             }
           case 76: break;
           case 15: 
-            { System.out.println("<lessThan_operator> " + yytext());
+            { //System.out.println("<lessThan_operator> " + yytext());
                                 return new Symbol(Simbolos.LESSTHAN_OP, yycolumn, yyline, yytext());
             }
           case 77: break;
           case 16: 
-            { System.out.println("<left_parent> " + yytext());
+            { //System.out.println("<left_parent> " + yytext());
                                 return new Symbol(Simbolos.LPAR, yycolumn, yyline, yytext());
             }
           case 78: break;
           case 17: 
-            { System.out.println("<right_parent> " + yytext());
+            { //System.out.println("<right_parent> " + yytext());
                                 return new Symbol(Simbolos.RPAR, yycolumn, yyline, yytext());
             }
           case 79: break;
           case 18: 
-            { System.out.println("<left_key> " + yytext());
+            { //System.out.println("<left_key> " + yytext());
                                 return new Symbol(Simbolos.LKEY, yycolumn, yyline, yytext());
             }
           case 80: break;
           case 19: 
-            { System.out.println("<right_key> " + yytext());
+            { //System.out.println("<right_key> " + yytext());
                                 return new Symbol(Simbolos.RKEY, yycolumn, yyline, yytext());
             }
           case 81: break;
           case 20: 
-            { System.out.println("<semi_colon> " + yytext());
+            { //System.out.println("<semi_colon> " + yytext());
                                 return new Symbol(Simbolos.SEMICOLON, yycolumn, yyline, yytext());
             }
           case 82: break;
           case 21: 
-            { System.out.println("<colon> " + yytext());
+            { //System.out.println("<colon> " + yytext());
                                 return new Symbol(Simbolos.COLON, yycolumn, yyline, yytext());
             }
           case 83: break;
           case 22: 
-            { System.out.println("<dot> " + yytext());
+            { //System.out.println("<dot> " + yytext());
                                 return new Symbol(Simbolos.DOT, yycolumn, yyline, yytext());
             }
           case 84: break;
           case 23: 
-            { System.out.println("<sim_comilla> " + yytext());
+            { //System.out.println("<sim_comilla> " + yytext());
                                 return new Symbol(Simbolos.SIMCOM, yycolumn, yyline, yytext());
             }
           case 85: break;
           case 24: 
-            { System.out.println("<dob_comilla> " + yytext());
+            { //System.out.println("<dob_comilla> " + yytext());
                                 return new Symbol(Simbolos.DOBCOM, yycolumn, yyline, yytext());
             }
           case 86: break;
@@ -1012,187 +1012,187 @@ public class Analizador_Lexico implements java_cup.runtime.Scanner{
             }
           case 87: break;
           case 26: 
-            { System.out.println("<if> " + yytext());
+            { //System.out.println("<if> " + yytext());
                                 return new Symbol(Simbolos.IF, yycolumn, yyline, yytext());
             }
           case 88: break;
           case 27: 
-            { System.out.println("<equal_operator> " + yytext());
+            { //System.out.println("<equal_operator> " + yytext());
                                 return new Symbol(Simbolos.EQUAL_OP, yycolumn, yyline, yytext());
             }
           case 89: break;
           case 28: 
-            { System.out.println("<arrow> " + yytext());
+            { //System.out.println("<arrow> " + yytext());
                                 return new Symbol(Simbolos.ARROW, yycolumn, yyline, yytext());
             }
           case 90: break;
           case 29: 
-            { System.out.println("<greaterThanOrEqual_operator> " + yytext());
+            { //System.out.println("<greaterThanOrEqual_operator> " + yytext());
                                         return new Symbol(Simbolos.GREATEREQUAL_OP, yycolumn, yyline, yytext());
             }
           case 91: break;
           case 30: 
-            { System.out.println("<addFor> " + yytext());
+            { //System.out.println("<addFor> " + yytext());
                                 return new Symbol(Simbolos.ADDFOR, yycolumn, yyline, yytext());
             }
           case 92: break;
           case 31: 
-            { System.out.println("<dash> " + yytext());
+            { //System.out.println("<dash> " + yytext());
                                 return new Symbol(Simbolos.DASH, yycolumn, yyline, yytext());
             }
           case 93: break;
           case 32: 
-            { System.out.println("<minusFor> " + yytext());
+            { //System.out.println("<minusFor> " + yytext());
                                 return new Symbol(Simbolos.MINUSFOR, yycolumn, yyline, yytext());
             }
           case 94: break;
           case 33: 
-            { System.out.println("<and_operator> " + yytext());
+            { //System.out.println("<and_operator> " + yytext());
                                 return new Symbol(Simbolos.AND_OP, yycolumn, yyline, yytext());
             }
           case 95: break;
           case 34: 
-            { System.out.println("<or_operator> " + yytext());
+            { //System.out.println("<or_operator> " + yytext());
                                 return new Symbol(Simbolos.OR_OP, yycolumn, yyline, yytext());
             }
           case 96: break;
           case 35: 
-            { System.out.println("<lessThanOrEqual_operator> " + yytext());
+            { //System.out.println("<lessThanOrEqual_operator> " + yytext());
                                     return new Symbol(Simbolos.LESSEQUAL_OP, yycolumn, yyline, yytext());
             }
           case 97: break;
           case 36: 
-            { System.out.println("<notEqual_operator> " + yytext());
+            { //System.out.println("<notEqual_operator> " + yytext());
                                 return new Symbol(Simbolos.NOTEQUAL_OP, yycolumn, yyline, yytext());
             }
           case 98: break;
           case 37: 
-            { System.out.println("<do> " + yytext());
+            { //System.out.println("<do> " + yytext());
                                 return new Symbol(Simbolos.DO, yycolumn, yyline, yytext());
             }
           case 99: break;
           case 38: 
-            { System.out.println("<int> " + yytext());
+            { //System.out.println("<int> " + yytext());
                                 return new Symbol(Simbolos.INT, yycolumn, yyline, yytext());
             }
           case 100: break;
           case 39: 
-            { System.out.println("<return> " + yytext());
+            { //System.out.println("<return> " + yytext());
                                 return new Symbol(Simbolos.RETURN, yycolumn, yyline, yytext());
             }
           case 101: break;
           case 40: 
-            { System.out.println("<for> " + yytext());
+            { //System.out.println("<for> " + yytext());
                                 return new Symbol(Simbolos.FOR, yycolumn, yyline, yytext());
             }
           case 102: break;
           case 41: 
-            { System.out.println("<text> " + yytext());
+            { //System.out.println("<text> " + yytext());
                                     return new Symbol(Simbolos.TEXT, yycolumn, yyline, yytext());
             }
           case 103: break;
           case 42: 
-            { System.out.println("<char> " + yytext());
+            { //System.out.println("<char> " + yytext());
                                 return new Symbol(Simbolos.CHAR, yycolumn, yyline, yytext());
             }
           case 104: break;
           case 43: 
-            { System.out.println("<case> " + yytext());
+            { //System.out.println("<case> " + yytext());
                                 return new Symbol(Simbolos.CASE, yycolumn, yyline, yytext());
             }
           case 105: break;
           case 44: 
-            { System.out.println("<bool> " + yytext());
+            { //System.out.println("<bool> " + yytext());
                                 return new Symbol(Simbolos.BOOL, yycolumn, yyline, yytext());
             }
           case 106: break;
           case 45: 
-            { System.out.println("<function> " + yytext());
+            { //System.out.println("<function> " + yytext());
                                 return new Symbol(Simbolos.FUNCTION, yycolumn, yyline, yytext());
             }
           case 107: break;
           case 46: 
-            { System.out.println("<main> " + yytext());
+            { //System.out.println("<main> " + yytext());
                                 return new Symbol(Simbolos.MAIN, yycolumn, yyline, yytext());
             }
           case 108: break;
           case 47: 
-            { System.out.println("<else> " + yytext());
+            { //System.out.println("<else> " + yytext());
                                 return new Symbol(Simbolos.ELSE, yycolumn, yyline, yytext());
             }
           case 109: break;
           case 48: 
-            { System.out.println("<break> " + yytext());
+            { //System.out.println("<break> " + yytext());
                                 return new Symbol(Simbolos.BREAK, yycolumn, yyline, yytext());
             }
           case 110: break;
           case 49: 
-            { System.out.println("<false> " + yytext());
+            { //System.out.println("<false> " + yytext());
                                 return new Symbol(Simbolos.FALSE, yycolumn, yyline, yytext());
             }
           case 111: break;
           case 50: 
-            { System.out.println("<while> " + yytext());
+            { //System.out.println("<while> " + yytext());
                                 return new Symbol(Simbolos.WHILE, yycolumn, yyline, yytext());
             }
           case 112: break;
           case 51: 
-            { System.out.println("<intptr> " + yytext());
+            { //System.out.println("<intptr> " + yytext());
                                 return new Symbol(Simbolos.INTPTR, yycolumn, yyline, yytext());
             }
           case 113: break;
           case 52: 
-            { System.out.println("<string> " + yytext());
+            { //System.out.println("<string> " + yytext());
                                 return new Symbol(Simbolos.STRING, yycolumn, yyline, yytext());
             }
           case 114: break;
           case 53: 
-            { System.out.println("<switch> " + yytext());
+            { //System.out.println("<switch> " + yytext());
                                 return new Symbol(Simbolos.SWITCH, yycolumn, yyline, yytext());
             }
           case 115: break;
           case 54: 
-            { System.out.println("<charptr> " + yytext());
+            { //System.out.println("<charptr> " + yytext());
                                 return new Symbol(Simbolos.CHARPTR, yycolumn, yyline, yytext());
             }
           case 116: break;
           case 55: 
-            { System.out.println("<boolptr> " + yytext());
+            { //System.out.println("<boolptr> " + yytext());
                                 return new Symbol(Simbolos.BOOLPTR, yycolumn, yyline, yytext());
             }
           case 117: break;
           case 56: 
-            { System.out.println("<read> " + yytext());
+            { //System.out.println("<read> " + yytext());
                                 return new Symbol(Simbolos.READ, yycolumn, yyline, yytext());
             }
           case 118: break;
           case 57: 
-            { System.out.println("<default> " + yytext());
+            { //System.out.println("<default> " + yytext());
                                 return new Symbol(Simbolos.DEFAULT, yycolumn, yyline, yytext());
             }
           case 119: break;
           case 58: 
-            { System.out.println("<add_assign> " + yytext());
+            { //System.out.println("<add_assign> " + yytext());
                                 return new Symbol(Simbolos.ADD_ASSIGN, yycolumn, yyline, yytext());
             }
           case 120: break;
           case 59: 
-            { System.out.println("<div_assign> " + yytext());
+            { //System.out.println("<div_assign> " + yytext());
                                 return new Symbol(Simbolos.DIV_ASSIGN, yycolumn, yyline, yytext());
             }
           case 121: break;
           case 60: 
-            { System.out.println("<mult_assign> " + yytext());
+            { //System.out.println("<mult_assign> " + yytext());
                                 return new Symbol(Simbolos.MULT_ASSIGN, yycolumn, yyline, yytext());
             }
           case 122: break;
           case 61: 
-            { System.out.println("<print> " + yytext());
+            { //System.out.println("<print> " + yytext());
                                 return new Symbol(Simbolos.PRINT, yycolumn, yyline, yytext());
             }
           case 123: break;
           case 62: 
-            { System.out.println("<minus_assign> " + yytext());
+            { //System.out.println("<minus_assign> " + yytext());
                                 return new Symbol(Simbolos.MINUS_ASSIGN, yycolumn, yyline, yytext());
             }
           case 124: break;
