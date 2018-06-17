@@ -1,5 +1,13 @@
 int[1] b-
+func holaSum => (int a, int b){
+	char s-
+	ret b-
+}-
+func g => (){
+	ret 2-
+}-
 func hola => (int a, int b){
+	int prueba-
 	switch(valor){
 		case 1: if(a <= b){
 				int a-
@@ -13,7 +21,9 @@ func hola => (int a, int b){
 			}
 	}
 	if(a <= b && c <= d || b){
-		a = b * v - c-
+		int n1, n2-
+		a = holaSum(n1, n2) / g()-
+		a = holaSum(n1, n2) + 1 * fin(prueba)-
 		dash.in(hello)-
 		dash.print("HOLA MUNDO" + hello)-
 		//suma=>(a)-
@@ -30,7 +40,7 @@ func hola => (int a, int b){
 			char[2] a1, a2-
 		}
 	}
-	ret 1-
+	ret prueba-
 }-
 
 

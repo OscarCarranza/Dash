@@ -7,6 +7,9 @@ import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import Nodos.Nodo;
 import Nodos.Variable;
+import Nodos.Tabla;
+import Nodos.Cuadruplo;
+import Nodos.Infix2Postfix;
 import java.util.ArrayList;
 
 //---------> Codigo para el parser, variables, metodos
@@ -16,6 +19,59 @@ parser code
     public static LinkedList<MyError> listaErrorSintacticos = new LinkedList<MyError>();
     public Nodo raiz;
     public ArrayList<Variable> variables = new ArrayList();
+    public ArrayList<Tabla> tabla = new ArrayList();
+    public String ambito="global";
+    public int profundidad = 0;
+    public static int contTemp = 0;
+    public ArrayList<Cuadruplo> cuads = new ArrayList();
+
+    public boolean noExiste(String id) {
+        boolean esValido = true;
+        for (int i = 0; i < tabla.size(); i++) {
+            if( ((Tabla)tabla.get(i)).getId().equals(id) && ((Tabla)tabla.get(i)).getAmbito().equals(ambito)){
+                esValido = false;
+            }
+        }
+        return esValido;
+    }
+
+    public String buscarTipo(String id) {
+        String tipo = "";
+        for (int i = 0; i < tabla.size(); i++) {
+            if( ((Tabla)tabla.get(i)).getId().equals(id) && ((Tabla)tabla.get(i)).getAmbito().equals(ambito) && ((Tabla)tabla.get(i)).getProfundidad() == 0 ){
+                tipo+=((Tabla)tabla.get(i)).getTipo();
+            }
+        }
+        return tipo;
+    }
+
+    public void quitarAmbito() {
+        int index = ambito.lastIndexOf('.');
+        ambito = ambito.substring(0, index);
+        System.out.println("AMBITO\t"+ambito);
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            int d = Integer.parseInt(str);  
+        }
+        catch(NumberFormatException nfe) {
+            return false;
+        }
+        return true;  
+    }
+
+    public String getOp(String s){
+        int num = 0;
+        for(int i = 0; i < s.length(); i++){
+            if(s.charAt(i) == '='){
+                num = i;
+                break;
+            }    
+        }
+        s = s.substring(num+1, s.length());
+        return s;
+    }
     
     //Metodo al que se llama automaticamente ante algun error sintactico
     public void syntax_error(Symbol s)
@@ -185,17 +241,23 @@ asignacionInteger ::= asignacionInteger:b COMMA instanciacionInteger:id {:  if(b
                                                                                 ArrayList arregloNodos = (ArrayList) b;
                                                                                 Nodo newID = new Nodo((String)id, "");
                                                                                 arregloNodos.add( newID );
+                                                                                Tabla nuevaVar = new Tabla((String)id, "int", ambito, profundidad, 0);
+                                                                                tabla.add( nuevaVar );
                                                                                 RESULT = arregloNodos;
                                                                              } else {
                                                                                 ArrayList arregloInstancias = new ArrayList();
                                                                                 Nodo newID = new Nodo((String)id, "");
                                                                                 arregloInstancias.add(newID);
+                                                                                Tabla nuevaVar = new Tabla((String)id, "int", ambito, profundidad, 0);
+                                                                                tabla.add( nuevaVar );
                                                                                 RESULT = arregloInstancias;} :} 
     | INT instanciacionInteger:id {:ArrayList arregloInstancias = new ArrayList();
                                     Nodo newInt = new Nodo("int", "");
                                     Nodo newID = new Nodo((String)id, "");
                                     arregloInstancias.add(newInt);
                                     arregloInstancias.add(newID);
+                                    Tabla nuevaVar = new Tabla((String)id, "int", ambito, profundidad, 0);
+                                    tabla.add( nuevaVar );
                                     RESULT = arregloInstancias; :} ;
 
 instanciacionInteger ::= ID:id iniciacionInteger {: RESULT = id.toString(); :}
@@ -214,17 +276,23 @@ asignacionIntegerPtr ::= asignacionIntegerPtr:b COMMA instanciacionIntegerPtr:id
                                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                                     Nodo newID = new Nodo((String)id, "");
                                                                                     arregloNodos.add( newID );
+                                                                                    Tabla nuevaVar = new Tabla((String)id, "int*", ambito, profundidad, 0);
+                                                                                    tabla.add( nuevaVar );
                                                                                     RESULT = arregloNodos;
                                                                                  } else {
                                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                                     Nodo newID = new Nodo((String)id, "");
                                                                                     arregloInstancias.add(newID);
+                                                                                    Tabla nuevaVar = new Tabla((String)id, "int*", ambito, profundidad, 0);
+                                                                                    tabla.add( nuevaVar );
                                                                                     RESULT = arregloInstancias;}:} 
     | INTPTR instanciacionIntegerPtr:id {:ArrayList arregloInstancias = new ArrayList();
                                     Nodo newInt = new Nodo("int ptr", "");
                                     Nodo newID = new Nodo((String)id, "");
                                     arregloInstancias.add(newInt);
                                     arregloInstancias.add(newID);
+                                    Tabla nuevaVar = new Tabla((String)id, "int*", ambito, profundidad, 0);
+                                    tabla.add( nuevaVar );
                                     RESULT = arregloInstancias; :} ;
 
 instanciacionIntegerPtr ::= ID:id iniciacionIntegerPtr {: RESULT = id.toString(); :}
@@ -241,17 +309,23 @@ asignacionChar ::= asignacionChar:b COMMA instanciacionChar:id {: if(b != null){
                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                     Nodo newID = new Nodo((String)id, "");
                                                                     arregloNodos.add( newID );
+                                                                    Tabla nuevaVar = new Tabla((String)id, "char", ambito, profundidad, 0);
+                                                                    tabla.add( nuevaVar );
                                                                     RESULT = arregloNodos;
                                                                  } else {
                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                     Nodo newID = new Nodo((String)id, "");
                                                                     arregloInstancias.add(newID);
+                                                                    Tabla nuevaVar = new Tabla((String)id, "char", ambito, profundidad, 0);
+                                                                    tabla.add( nuevaVar );
                                                                     RESULT = arregloInstancias;} :} 
     | CHAR instanciacionChar:id {:ArrayList arregloInstancias = new ArrayList();
                                     Nodo newChar = new Nodo("char", "");
                                     Nodo newID = new Nodo((String)id, "");
                                     arregloInstancias.add(newChar);
                                     arregloInstancias.add(newID);
+                                    Tabla nuevaVar = new Tabla((String)id, "char", ambito, profundidad, 0);
+                                    tabla.add( nuevaVar );
                                     RESULT = arregloInstancias; :};
 
 instanciacionChar ::= ID:id iniciacionChar {: RESULT = id.toString(); :}
@@ -278,17 +352,23 @@ asignacionCharPtr ::= asignacionCharPtr:b COMMA instanciacionCharPointer:id {: i
                                                                             ArrayList arregloNodos = (ArrayList) b;
                                                                             Nodo newID = new Nodo((String)id, "");
                                                                             arregloNodos.add( newID );
+                                                                            Tabla nuevaVar = new Tabla((String)id, "char*", ambito, profundidad, 0);
+                                                                            tabla.add( nuevaVar );
                                                                             RESULT = arregloNodos;
                                                                          } else {
                                                                             ArrayList arregloInstancias = new ArrayList();
                                                                             Nodo newID = new Nodo((String)id, "");
                                                                             arregloInstancias.add(newID);
+                                                                            Tabla nuevaVar = new Tabla((String)id, "char*", ambito, profundidad, 0);
+                                                                            tabla.add( nuevaVar );
                                                                             RESULT = arregloInstancias;}:} 
     | CHARPTR instanciacionCharPointer:id {:ArrayList arregloInstancias = new ArrayList();
                                             Nodo newChar = new Nodo("char ptr", "");
                                             Nodo newID = new Nodo((String)id, "");
                                             arregloInstancias.add(newChar);
                                             arregloInstancias.add(newID);
+                                            Tabla nuevaVar = new Tabla((String)id, "char*", ambito, profundidad, 0);
+                                            tabla.add( nuevaVar );
                                             RESULT = arregloInstancias; :};
 
 instanciacionCharPointer ::= ID:id iniciacionCharPtr {: RESULT = id.toString(); :}
@@ -305,17 +385,23 @@ asignacionBool ::= asignacionBool:b COMMA instanciacionBool:id {:if(b != null){
                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                     Nodo newID = new Nodo((String)id, "");
                                                                     arregloNodos.add( newID );
+                                                                    Tabla nuevaVar = new Tabla((String)id, "bool", ambito, profundidad, 0);
+                                                                    tabla.add( nuevaVar );
                                                                     RESULT = arregloNodos;
                                                                  } else {
                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                     Nodo newID = new Nodo((String)id, "");
                                                                     arregloInstancias.add(newID);
+                                                                    Tabla nuevaVar = new Tabla((String)id, "bool", ambito, profundidad, 0);
+                                                                    tabla.add( nuevaVar );
                                                                     RESULT = arregloInstancias;}:}
     | BOOL instanciacionBool:id {:ArrayList arregloInstancias = new ArrayList();
                                 Nodo newChar = new Nodo("bool", "");
                                 Nodo newID = new Nodo((String)id, "");
                                 arregloInstancias.add(newChar);
                                 arregloInstancias.add(newID);
+                                Tabla nuevaVar = new Tabla((String)id, "bool", ambito, profundidad, 0);
+                                tabla.add( nuevaVar );
                                 RESULT = arregloInstancias; :};
 
 instanciacionBool ::= ID:id iniciacionBool {: RESULT = id.toString(); :}
@@ -331,17 +417,23 @@ asignacionBoolPtr ::= asignacionBoolPtr:b COMMA instanciacionBoolPtr:id {:if(b !
                                                                         ArrayList arregloNodos = (ArrayList) b;
                                                                         Nodo newID = new Nodo((String)id, "");
                                                                         arregloNodos.add( newID );
+                                                                        Tabla nuevaVar = new Tabla((String)id, "bool*", ambito, profundidad, 0);
+                                                                        tabla.add( nuevaVar );
                                                                         RESULT = arregloNodos;
                                                                      } else {
                                                                         ArrayList arregloInstancias = new ArrayList();
                                                                         Nodo newID = new Nodo((String)id, "");
                                                                         arregloInstancias.add(newID);
+                                                                        Tabla nuevaVar = new Tabla((String)id, "bool*", ambito, profundidad, 0);
+                                                                        tabla.add( nuevaVar );
                                                                         RESULT = arregloInstancias;}:}
     | BOOLPTR instanciacionBoolPtr:id {:ArrayList arregloInstancias = new ArrayList();
                                         Nodo newChar = new Nodo("bool ptr", "");
                                         Nodo newID = new Nodo((String)id, "");
                                         arregloInstancias.add(newChar);
                                         arregloInstancias.add(newID);
+                                        Tabla nuevaVar = new Tabla((String)id, "bool*", ambito, profundidad, 0);
+                                        tabla.add( nuevaVar );
                                         RESULT = arregloInstancias; :};
 
 instanciacionBoolPtr ::= ID:id iniciacionBoolPtr {: RESULT = id.toString(); :}
@@ -361,17 +453,23 @@ asignacionString ::= asignacionString:b COMMA instanciacionString:id {:if(b != n
                                                                         ArrayList arregloNodos = (ArrayList) b;
                                                                         Nodo newID = new Nodo((String)id, "");
                                                                         arregloNodos.add( newID );
+                                                                        Tabla nuevaVar = new Tabla((String)id, "string", ambito, profundidad, 0);
+                                                                        tabla.add( nuevaVar );
                                                                         RESULT = arregloNodos;
                                                                      } else {
                                                                         ArrayList arregloInstancias = new ArrayList();
                                                                         Nodo newID = new Nodo((String)id, "");
                                                                         arregloInstancias.add(newID);
+                                                                        Tabla nuevaVar = new Tabla((String)id, "string", ambito, profundidad, 0);
+                                                                        tabla.add( nuevaVar );
                                                                         RESULT = arregloInstancias;}:}
     | STRING instanciacionString:id {:ArrayList arregloInstancias = new ArrayList();
                                         Nodo newChar = new Nodo("string", "");
                                         Nodo newID = new Nodo((String)id, "");
                                         arregloInstancias.add(newChar);
                                         arregloInstancias.add(newID);
+                                        Tabla nuevaVar = new Tabla((String)id, "string", ambito, profundidad, 0);
+                                        tabla.add( nuevaVar );
                                         RESULT = arregloInstancias; :};
 
 instanciacionString ::= ID:id iniciacionString {: RESULT = id.toString(); :}
@@ -455,7 +553,7 @@ comparator ::= EQUAL_OP:comp {: RESULT = comp; :}
     | GREATEREQUAL_OP:comp {: RESULT = comp; :}
     | NOTEQUAL_OP:comp {: RESULT = comp; :};
 
-if ::= IF LPAR conditionalExpr:cond RPAR LKEY body:body RKEY else:elseIf {: if(elseIf != null){
+if ::= IF LPAR conditionalExpr:cond RPAR LKEY {: ambito+=".if"; profundidad++; :} body:body {: quitarAmbito(); :} RKEY else:elseIf {: if(elseIf != null){
                                                                             Nodo nodo = new Nodo("if", "");
                                                                             Nodo cuerpo = new Nodo("cuerpo", "");
                                                                             Nodo condicion = new Nodo("condicion", "");
@@ -513,10 +611,10 @@ if ::= IF LPAR conditionalExpr:cond RPAR LKEY body:body RKEY else:elseIf {: if(e
                                                                             arregloNodos.add(nodo);
                                                                             RESULT = arregloNodos; } :}
     | error LPAR conditionalExpr RPAR LKEY body:body RKEY else {: System.out.println("Expected if."); :}
-    | IF error conditionalExpr RPAR LKEY body:body RKEY else {: System.out.println("Expected '('."); :}
-    | IF LPAR conditionalExpr error LKEY body:body RKEY else {: System.out.println("Expected ')'."); :}
+    | IF error conditionalExpr RPAR LKEY body:body RKEY else {: System.out.println("Expected '('."); :};
+    /*| IF LPAR conditionalExpr error LKEY body:body RKEY else {: System.out.println("Expected ')'."); :}
     | IF LPAR conditionalExpr RPAR error body:body RKEY else {: System.out.println("Expected '{'."); :}
-    | IF LPAR conditionalExpr RPAR LKEY body:body error else {: System.out.println("Expected '}'."); :};
+    | IF LPAR conditionalExpr RPAR LKEY body:body error else {: System.out.println("Expected '}'."); :};*/
 
 else ::= else ELSE ifSinElse:ifSinElse {:RESULT = ifSinElse; :}
     | ;
@@ -569,7 +667,7 @@ while ::= WHILE LPAR conditionalExpr:cond RPAR LKEY body:body RKEY {: Nodo nodo 
     | WHILE LPAR conditionalExpr RPAR LKEY body:body error {: System.out.println("Expected '}'."); :};
 
 /*------------------- Do While GRAMATICA -----------------------*/
-doWhile ::= DO LKEY body:body RKEY WHILE LPAR conditionalExpr:cond RPAR DASH {: Nodo nodo = new Nodo("do while", "");
+doWhile ::= DO LKEY {: ambito+=".dowhile"; profundidad++; :} body:body {: quitarAmbito(); :} RKEY WHILE LPAR conditionalExpr:cond RPAR DASH {: Nodo nodo = new Nodo("do while", "");
                                                                         Nodo condicion = new Nodo("condicion", "");
                                                                         Nodo cuerpo = new Nodo("cuerpo", "");
                                                                         ArrayList arregloBody = (ArrayList) body;
@@ -594,11 +692,11 @@ doWhile ::= DO LKEY body:body RKEY WHILE LPAR conditionalExpr:cond RPAR DASH {: 
                                                                         arregloNodos.add(nodo);
                                                                         RESULT = arregloNodos; :}
     | error LKEY body:body RKEY WHILE LPAR conditionalExpr RPAR DASH {: System.out.println("Expected do."); :}
-    | DO error body:body RKEY WHILE LPAR conditionalExpr RPAR DASH {: System.out.println("Expected '{'."); :}
-    | DO LKEY body:body error WHILE LPAR conditionalExpr RPAR DASH {: System.out.println("Expected '}'."); :}
+    | DO error body:body RKEY WHILE LPAR conditionalExpr RPAR DASH {: System.out.println("Expected '{'."); :};
+    /*| DO LKEY body:body error WHILE LPAR conditionalExpr RPAR DASH {: System.out.println("Expected '}'."); :}
     | DO LKEY body:body RKEY WHILE error conditionalExpr RPAR DASH {: System.out.println("Expected '('."); :}
     | DO LKEY body:body RKEY WHILE LPAR conditionalExpr error DASH {: System.out.println("Expected ')'."); :}
-    | DO LKEY body:body RKEY WHILE LPAR conditionalExpr RPAR error {: System.out.println("Expected '-'."); :};
+    | DO LKEY body:body RKEY WHILE LPAR conditionalExpr RPAR error {: System.out.println("Expected '-'."); :};*/
 
 /*------------------- For GRAMATICA -----------------------*/
 for ::= FOR LPAR declaracionFor SEMICOLON conditionalExpr:cond SEMICOLON ID autoAssign RPAR LKEY body:body RKEY {: Nodo nodo = new Nodo("for", "");
@@ -624,14 +722,14 @@ for ::= FOR LPAR declaracionFor SEMICOLON conditionalExpr:cond SEMICOLON ID auto
                                                                                                             nodo.addHijo(cuerpo);
                                                                                                             ArrayList arregloNodos = new ArrayList();
                                                                                                             arregloNodos.add(nodo);
-                                                                                                            RESULT = arregloNodos; :}
-    | error LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body:body RKEY {: System.out.println("Expected for."); :}
+                                                                                                            RESULT = arregloNodos; :};
+    /*| error LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body:body RKEY {: System.out.println("Expected for."); :}
     | FOR error declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body:body RKEY {: System.out.println("Expected '('."); :}
     | FOR LPAR declaracionFor error conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body:body RKEY {: System.out.println("Expected ';'."); :}
     | FOR LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON error autoAssign RPAR LKEY body:body RKEY {: System.out.println("Expected an id."); :}
     | FOR LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign error LKEY body:body RKEY {: System.out.println("Expected ')'."); :}
     | FOR LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR error body:body RKEY {: System.out.println("Expected '{'."); :}
-    | FOR LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body:body error {: System.out.println("Expected '}'."); :};
+    | FOR LPAR declaracionFor SEMICOLON conditionalExpr SEMICOLON ID autoAssign RPAR LKEY body:body error {: System.out.println("Expected '}'."); :};*/
 
 autoAssign ::= ADDFOR
     | MINUSFOR
@@ -725,7 +823,8 @@ body ::= body:b declaracion:a {: if(b != null){
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo ifVar = (Nodo)arregloCommand.get(0);
                         RESULT = a;} :}
-    | body:b while:a {: if(b != null){
+    | body:b {: ambito+=".while"; profundidad++; :} while:a {: quitarAmbito();
+                    if(b != null){
                         ArrayList arregloNodos = (ArrayList) b;
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo whileVar = (Nodo)arregloCommand.get(0);
@@ -736,26 +835,28 @@ body ::= body:b declaracion:a {: if(b != null){
                         Nodo whileVar = (Nodo)arregloCommand.get(0);
                         RESULT = a;} :}
     | body:b doWhile:a {: if(b != null){
-                        ArrayList arregloNodos = (ArrayList) b;
-                        ArrayList arregloCommand = (ArrayList) a;
-                        Nodo doWhile = (Nodo)arregloCommand.get(0);
-                        arregloNodos.add( doWhile );
-                        RESULT = arregloNodos;
-                     } else {
-                        ArrayList arregloCommand = (ArrayList) a;
-                        Nodo doWhile = (Nodo)arregloCommand.get(0);
-                        RESULT = a;} :}
-    | body:b for:a {: if(b != null){
+                            ArrayList arregloNodos = (ArrayList) b;
+                            ArrayList arregloCommand = (ArrayList) a;
+                            Nodo doWhile = (Nodo)arregloCommand.get(0);
+                            arregloNodos.add( doWhile );
+                            RESULT = arregloNodos;
+                         } else {
+                            ArrayList arregloCommand = (ArrayList) a;
+                            Nodo doWhile = (Nodo)arregloCommand.get(0);
+                            RESULT = a;} :}
+    | body:b {: ambito+=".for"; profundidad++; :} for:a {: quitarAmbito();
+                    if(b != null){
                         ArrayList arregloNodos = (ArrayList) b;
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo forVar = (Nodo)arregloCommand.get(0);
                         arregloNodos.add( forVar );
                         RESULT = arregloNodos;
-                     } else {
+                    } else {
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo forVar = (Nodo)arregloCommand.get(0);
                         RESULT = a;} :}
-    | body:b switch:a {: if(b != null){
+    | body:b {: ambito+=".switch"; profundidad++; :} switch:a {: quitarAmbito();
+                    if(b != null){
                         ArrayList arregloNodos = (ArrayList) b;
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo switchVar = (Nodo)arregloCommand.get(0);
@@ -765,17 +866,6 @@ body ::= body:b declaracion:a {: if(b != null){
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo switchVar = (Nodo)arregloCommand.get(0);
                         RESULT = a;} :}
-
-    | body:b func:a {: if(b != null){
-                                ArrayList arregloNodos = (ArrayList) b;
-                                ArrayList arregloCommand = (ArrayList) a;
-                                Nodo callFunc = (Nodo)arregloCommand.get(0);
-                                arregloNodos.add( callFunc );
-                                RESULT = arregloNodos;
-                             } else {
-                                ArrayList arregloCommand = (ArrayList) a;
-                                Nodo callFunc = (Nodo)arregloCommand.get(0);
-                                RESULT = a;} :}
     | body:b entry:a {: if(b != null){
                                 ArrayList arregloNodos = (ArrayList) b;
                                 ArrayList arregloCommand = (ArrayList) a;
@@ -806,87 +896,157 @@ body ::= body:b declaracion:a {: if(b != null){
                                 ArrayList arregloCommand = (ArrayList) a;
                                 Nodo assign_var = (Nodo)arregloCommand.get(0);
                                 RESULT = a;} :}
-    | ;
+    |   {:
+            ArrayList arreglo = new ArrayList();
+            RESULT = arreglo;
+        :};
 
 /*------------------- Declaracion de funciones -----------------------*/
-dec_function ::= FUNCTION ID:nombre ARROW LPAR parameters RPAR LKEY body:body RETURN varRet DASH RKEY DASH {: Nodo nodo = new Nodo("funcion", nombre.toString());
-                            System.out.println("RESULT");
-                            System.out.println(RESULT);
-                            System.out.println("body");
+dec_function ::= FUNCTION ID:nombre {: ambito+="."+nombre.toString(); profundidad=0; :} ARROW LPAR parameters:params RPAR LKEY body:body RETURN varRet:ret DASH RKEY DASH {: Nodo nodo = new Nodo("funcion", nombre.toString());
+                            String tipoRetorno = "";
+                            if(isNumeric(ret.toString()))
+                                tipoRetorno = "int";
+                            else if(ret.toString().length() > 0)
+                                tipoRetorno = buscarTipo(ret.toString());
+                            else
+                                tipoRetorno = "Variable de retorno no ha sido declarada";
+                            
+                            String tipoFunc = "";
+                            String parametrosFunc = "";
+                            ArrayList arregloParams = (ArrayList)params;
+                            for(int i = 0; i < arregloParams.size(); i++){
+                                parametrosFunc+=((String)arregloParams.get(i));
+                                if(i != arregloParams.size()-1)
+                                    parametrosFunc+=" x ";
+                            }
+                            quitarAmbito();
+                            tipoFunc+=parametrosFunc+ " -> " + tipoRetorno;
+                            Tabla nuevaVar = new Tabla(nombre.toString(), tipoFunc, ambito, profundidad, 0);
+                            tabla.add( nuevaVar );
+                            
                             ArrayList arregloNodos = (ArrayList) body;
                             for(int i = 0; i < arregloNodos.size(); i++){
                                 Nodo temp = ((Nodo)arregloNodos.get(i));
                                 nodo.addHijo(temp);
-                                System.out.println( temp.getTipo() );
                             }
-                            System.out.println(this.parser.raiz);
+                            Nodo nodoRet = new Nodo("return", ret.toString());
+                            nodo.addHijo(nodoRet);
                             ArrayList arregloFuncion = new ArrayList();
                             arregloFuncion.add(nodo);
                             RESULT = arregloFuncion; :};
 
-func ::= ID ARROW LPAR ids:id RPAR DASH        {:  ArrayList arreglo = new ArrayList();
+func ::= ID:id LPAR ids:ids RPAR        {:  ArrayList arreglo = new ArrayList();
                                             Nodo func = new Nodo("FuncionCall",id.toString());
                                             arreglo.add(func);
-                                            RESULT = arreglo; 
+                                            ArrayList idsArray = (ArrayList)ids;
+                                            String variables = "";
+                                            for (int i = 0; i < idsArray.size(); i++) {
+                                                variables+=idsArray.get(i)+" ";
+                                            }
+                                            String llamado = id.toString()+"("+variables+")";
+                                            RESULT = llamado; 
                                             System.out.println("Nodo funcion creado"); :}
 
-    | ID error LPAR ids RPAR DASH           {: System.out.println("Expected '=>'"); :}
-    | ID ARROW error ids RPAR DASH          {: System.out.println("Expected '('"); :}
-    | ID ARROW LPAR ids error DASH          {: System.out.println("Expected ')'"); :}
-    | ID ARROW LPAR ids RPAR error          {: System.out.println("Expected '-' at end of line"); :}
+    | ID error LPAR ids RPAR           {: System.out.println("Expected '=>'"); :}
+    | ID ARROW error ids RPAR          {: System.out.println("Expected '('"); :}
+    | ID ARROW LPAR ids error          {: System.out.println("Expected ')'"); :}
 
 ;
 
 
-dec_main ::= MAIN ARROW LPAR parameters RPAR LKEY body:body RETURN varRet DASH RKEY {: Nodo nodo = new Nodo("main", "");
+dec_main ::= MAIN ARROW LPAR {: ambito+=".main"; profundidad=0; :} parameters:params RPAR LKEY body:body RETURN varRet:ret DASH RKEY {: Nodo nodo = new Nodo("main", "");
+                                                                                    String tipoRetorno = "";
+                                                                                    if(isNumeric(ret.toString()))
+                                                                                        tipoRetorno = "int";
+                                                                                    else if(ret.toString().length() > 0)
+                                                                                        tipoRetorno = buscarTipo(ret.toString());
+                                                                                    else
+                                                                                        tipoRetorno = "Variable de retorno no ha sido declarada";
+
+                                                                                    String tipoFunc = "";
+                                                                                    String parametrosFunc = "";
+                                                                                    ArrayList arregloParams = (ArrayList)params;
+                                                                                    for(int i = 0; i < arregloParams.size(); i++){
+                                                                                        parametrosFunc+=((String)arregloParams.get(i));
+                                                                                        if(i != arregloParams.size()-1)
+                                                                                            parametrosFunc+=" x ";
+                                                                                    }
+                                                                                    quitarAmbito();
+                                                                                    tipoFunc+=parametrosFunc+ " -> " + tipoRetorno;
+                                                                                    Tabla nuevaVar = new Tabla("main", tipoFunc, ambito, profundidad, 0);
+                                                                                    tabla.add( nuevaVar );
                                                                                     ArrayList arregloNodos = (ArrayList) body;
                                                                                     for(int i = 0; i < arregloNodos.size(); i++){
                                                                                         Nodo temp = ((Nodo)arregloNodos.get(i));
                                                                                         nodo.addHijo(temp);
                                                                                     }
+                                                                                    Nodo nodoRet = new Nodo("return", ret.toString());
+                                                                                    nodo.addHijo(nodoRet);
                                                                                     ArrayList arregloFuncion = new ArrayList();
                                                                                     arregloFuncion.add(nodo);
                                                                                     RESULT = arregloFuncion;:}
-    | MAIN error LPAR parameters RPAR LKEY body RETURN varRet DASH RKEY       {: System.out.println("Expected '=>'"); :}
+    /*| MAIN error LPAR parameters RPAR LKEY body RETURN varRet DASH RKEY       {: System.out.println("Expected '=>'"); :}
     | MAIN ARROW error parameters RPAR LKEY body RETURN varRet DASH RKEY      {: System.out.println("Expected '('"); :}
     | MAIN ARROW LPAR parameters error LKEY body RETURN varRet DASH RKEY      {: System.out.println("Expected ')'"); :}
     | MAIN ARROW LPAR parameters RPAR error body RETURN varRet DASH RKEY      {: System.out.println("Expected '{'"); :}
     | MAIN ARROW LPAR parameters RPAR LKEY body error varRet DASH RKEY        {: System.out.println("Missing return statement"); :}
     | MAIN ARROW LPAR parameters RPAR LKEY body RETURN varRet error RKEY      {: System.out.println("Expected '-' at end of line"); :}
-    | MAIN ARROW LPAR parameters RPAR LKEY body RETURN varRet DASH error      {: System.out.println("Expected ')'"); :}
+    | MAIN ARROW LPAR parameters RPAR LKEY body RETURN varRet DASH error      {: System.out.println("Expected ')'"); :}*/
 ;
  
-parameters ::= parameters COMMA params_type ID
-    | params_type ID;
+parameters ::= parameters:params COMMA params_type:param ID:id  {:ArrayList arregloParams = (ArrayList)params;
+                                                arregloParams.add(param.toString());
+                                                RESULT = arregloParams;
+                                                Tabla nuevaVar = new Tabla((String)id, param.toString(), ambito, profundidad, 0);
+                                                tabla.add( nuevaVar ); :}
+    | params_type:param ID:id    {:ArrayList arregloParams = new ArrayList();
+                                arregloParams.add(param.toString());
+                                RESULT = arregloParams;
+                                Tabla nuevaVar = new Tabla((String)id, param.toString(), ambito, profundidad, 0);
+                                tabla.add( nuevaVar ); :}
+    |   {:  ArrayList arregloParams = new ArrayList();
+            RESULT = arregloParams; :};
 
-ids ::= moreIds:ids ID:id          {:System.out.println(ids.toString() + id.toString(); :};
+ids ::= moreIds:ids          {:ArrayList idsArray = (ArrayList)ids;
+                                RESULT = idsArray; :}
+    | {:ArrayList idsArray = new ArrayList();
+        RESULT = idsArray; :};
 
-moreIds ::= moreIds ID:id COMMA         {: RESULT = id.toString(); :}
-    |;
+moreIds ::= moreIds:ids COMMA ID:id     {: ArrayList idsArray = (ArrayList)ids;
+                                            idsArray.add(id.toString());
+                                            RESULT = idsArray; :}
+    | ID:id     {: ArrayList ids = new ArrayList();
+                    ids.add(id.toString());
+                    RESULT = ids; 
+                :};
 
 
-params_type ::= INT    
-    | INTPTR           
-    | CHAR             
-    | CHARPTR      
-    | BOOL          
-    | BOOLPTR       
-    | STRING        
+params_type ::= INT    {: RESULT = "int"; :}
+    | INTPTR    {: RESULT = "int*"; :}
+    | CHAR      {: RESULT = "char"; :}
+    | CHARPTR   {: RESULT = "char*"; :}
+    | BOOL      {: RESULT = "bool"; :}
+    | BOOLPTR   {: RESULT = "bool*"; :}
+    | STRING    {: RESULT = "string"; :}
     | error            {: System.out.println("Expected type"); :};
 
-varRet ::= ID        
-    | TRUE           
-    | FALSE         
+varRet ::= ID:id   {: RESULT = id.toString(); :}
+    | TRUE      {: RESULT = "true"; :}
+    | FALSE     {: RESULT = "false"; :}
+    | INTEGER:inte   {: RESULT = inte.toString(); :}
     | error          {: System.out.println("Expected return variable"); :};
-
 
 /* --------------------- Operaciones Aritmeticas ---------------------------*/
 assign_var ::= ID:id ASSIGN arithmetic_exp:ae DASH {:   String s = id.toString() + "=" + ae;
                                                         System.out.println("\u001B[31m" + "------------>  " + s);
                                                         ArrayList arreglo = new ArrayList();
-                                                        Nodo op_aritmetica= new Nodo("artimetica",s);
+                                                        Nodo op_aritmetica= new Nodo("aritmetica",s);
+                                                        s = getOp(s);
                                                         arreglo.add(op_aritmetica);
-                                                        RESULT = arreglo; 
+                                                        cuads.add(new Cuadruplo("=",id.toString(),"t_" + this.parser.contTemp++));
+                                                        Infix2Postfix inf = new Infix2Postfix(s);
+                                                        inf.CodigoIntermedio();
+                                                        RESULT = arreglo;
                                                         System.out.println("Nodo Arithmetic creado"); :}
 ;
 
@@ -903,14 +1063,15 @@ term ::= factor:fact                         {: RESULT = fact.toString();
          |term:term MULT_OP:tim factor:fact  {: String mult = term.toString() + "*" + fact.toString();
                                                 RESULT = mult;
                                                 :}
-         |term:term DIV_OP:div factor:fact  {: String div = term.toString() + "/" + fact.toString();
-                                                RESULT = div;
+         |term:term DIV_OP:div factor:fact  {: String div1 = term.toString() + "/" + fact.toString();
+                                                RESULT = div1;
                                                 :};
 
 factor ::= INTEGER:id                  {: RESULT = id.toString(); :}
     | ID:id                            {: RESULT = id.toString(); :}
     | TRUE:id                          {: RESULT = id.toString(); :}
     | FALSE:id                         {: RESULT = id.toString(); :}
+    | func:fun                         {: RESULT = fun.toString(); :}
     | LPAR arithmetic_exp RPAR;                                                       
        
     
@@ -929,7 +1090,7 @@ entry ::= READ LPAR ID:id RPAR DASH     {:  ArrayList arreglo = new ArrayList();
 
 salida ::= PRINT LPAR content_print:c RPAR DASH    {: ArrayList arreglo = new ArrayList();
                                                     System.out.println("\u001B[32m" + c);
-                                                    Nodo salida = new Nodo("salida",c);
+                                                    Nodo salida = new Nodo("salida",c.toString());
                                                     arreglo.add(salida);
                                                     RESULT = arreglo; 
                                                     System.out.println("Nodo print creado"); :}
