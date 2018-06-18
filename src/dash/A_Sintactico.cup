@@ -1,4 +1,3 @@
-
 /*--------- 1ra Area: Codigo de Usuario---------*/
 
 //---------> Paquetes, importaciones
@@ -86,16 +85,26 @@ parser code
         listaErrorSintacticos.add(datos);
     }
 
-    public String getOp(String s){
-        int num = 0;
+    public String splitOp(String s){
+        int cont1 = 0;
+
         for(int i = 0; i < s.length(); i++){
-            if(s.charAt(i) == '='){
-                num = i;
-                break;
-            }    
+            if(s.charAt(i) == '['){
+                cont1 = i;
+            }
+            else if(s.charAt(i) == ']'){
+                s = s.substring(0,cont1) + s.substring(i+1, s.length());
+                i = cont1;
+            }
+            
         }
-        s = s.substring(num+1, s.length());
+        
+        s = s.replace(",", "");
+        s = s.replace("[", "");
+        s = s.replace("]", "");
+        s = s.replace(" ","");
         return s;
+            
     }
 
 :}
@@ -1266,9 +1275,9 @@ assign_var ::= ID:id ASSIGN arithmetic_exp:ae DASH {:   String tipoAsignado = th
                                                                     sonCompatibles = false;
                                                             }
                                                             if(sonCompatibles){
-                                                                String s = id.toString() + "=" + ((String)retornos.get(0));
+                                                                String s = ((String)retornos.get(0));
+                                                                s = this.parser.splitOp(s);
                                                                 ArrayList arreglo = new ArrayList();
-                                                                s = this.parser.getOp(s);
                                                                 Infix2Postfix inf=new Infix2Postfix(s);
                                                                 inf.CodigoIntermedio();
                                                                 
@@ -1335,12 +1344,32 @@ arithmetic_exp ::= term:term                           {: RESULT = term; :}
 
 term ::= factor:fact                         {: RESULT = fact.toString();
                                     :}                                                        
-         |term:term MULT_OP:tim factor:fact  {: String mult = term.toString() + "*" + fact.toString();
-                                                RESULT = mult;
-                                                :}
-         |term:term DIV_OP:div factor:fact  {: String div1 = term.toString() + "/" + fact.toString();
-                                                RESULT = div1;
-                                                :};
+         |term:term MULT_OP:tim factor:fact  {:  String mult = term.toString() + "*" + fact.toString();
+                                                            String[] tokens = mult.split("\\+|-|\\*|\\/");
+                                                            String[] tipos = new String[tokens.length];
+                                                            for (int i = 0; i < tokens.length; i++) {
+                                                                if( !this.parser.isNumeric(tokens[i]) )
+                                                                    tipos[i] = this.parser.buscarTipo(tokens[i]);
+                                                                else
+                                                                    tipos[i] = tokens[i];
+                                                            }
+                                                            ArrayList retorno = new ArrayList(); //primer objeto el string de la operacion, el segundo los tipos
+                                                            retorno.add(mult);
+                                                            retorno.add(tipos);
+                                                            RESULT = retorno; :}
+         |term:term DIV_OP:div factor:fact  {:  String d = term.toString() + "/" + fact.toString();
+                                                            String[] tokens = d.split("\\+|-|\\*|\\/");
+                                                            String[] tipos = new String[tokens.length];
+                                                            for (int i = 0; i < tokens.length; i++) {
+                                                                if( !this.parser.isNumeric(tokens[i]) )
+                                                                    tipos[i] = this.parser.buscarTipo(tokens[i]);
+                                                                else
+                                                                    tipos[i] = tokens[i];
+                                                            }
+                                                            ArrayList retorno = new ArrayList(); //primer objeto el string de la operacion, el segundo los tipos
+                                                            retorno.add(d);
+                                                            retorno.add(tipos);
+                                                            RESULT = retorno; :};
 
 factor ::= INTEGER:id                  {: RESULT = id.toString(); :}
     | ID:id                            {:   if( this.parser.buscarTipo(id.toString()).length() == 0 ){
@@ -1391,4 +1420,3 @@ id_text ::= ID:id       {: RESULT = id.toString();  :}
     | TEXT:id           {: RESULT = id.toString();  :}
 
     | error             {: System.out.println("\u001B[31m" + "Expected printing content"); :};
-

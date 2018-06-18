@@ -13,13 +13,13 @@ func hola => (int a, int b, int[1] bd){
 				}
 			}
 			for (int a = 1; a<=1; i++){
-				int q1-
+				int q1 = 9-
 			
 			}
 	}
 	if(a <= b && c <= d || b){
 		char a33-
-		a1 = q * q1 - 3-
+		a1 = q * q1 + 3 - 5 + 6 / 7-
 		dash.in(hello)-
 		dash.print("HOLA MUNDO" + hello)-
 		a33 = suma(q)-

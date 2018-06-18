@@ -16,12 +16,13 @@ public class Infix2Postfix {
 		
 		String str = "";
 		infixExp = exp;
+                System.out.println("INF EXP = " + infixExp);
 		stack = new Stack<String>();
                 String id = "";
 		
 		for (int i=0;i<infixExp.length();i++){
 			str = infixExp.substring(i,i+1);
-                        System.out.println("CHAR " + str);
+                        
 			if(!isOperator(str)){
                             id += str;
                         }
@@ -48,12 +49,13 @@ public class Infix2Postfix {
                 stack.push(id);
 		while(!(stack.isEmpty()))
 			postfixExp += " " + stack.pop();
-                        finalString = postfixExp;
+                finalString = postfixExp;
+                System.out.println("POSTFIX = " + finalString);
 	}
 	
 	private boolean isOperator(String ch){
 		
-		String operators = "*/%+-";
+		String operators = "*/+-";
 		if (operators.indexOf(ch) != -1)
 			return true;
 		else
