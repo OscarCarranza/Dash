@@ -85,6 +85,19 @@ parser code
         listaErrorSintacticos.add(datos);
     }
 
+    public ArrayList orderPrecedence(ArrayList a){
+        ArrayList b = new ArrayList();
+        for(int i = 0;i < a.size(); i++){
+            if(((Nodo)a.get(i)).Tipo.equals("&&"))
+                b.add(a.get(i));
+        }
+        for(int i = 0;i < a.size(); i++){
+            if(((Nodo)a.get(i)).Tipo.equals("||"))
+                b.add(a.get(i));
+        }
+        return b;
+        
+    }
     public String splitOp(String s){
         int cont1 = 0;
 
@@ -106,6 +119,66 @@ parser code
         return s;
             
     }
+
+    public void cuadsExpr(ArrayList a){
+                 
+                ArrayList order = orderPrecedence(a);
+                String operator = "", id = "";
+                
+                System.out.println("a --> " + a.toString());
+                System.out.println("order -->" + order.toString());
+                
+                if (order.isEmpty()){
+                    System.out.println("--------------------- " + a.toString());
+                    for(int i = 0; i < a.size(); i++){
+                        operator = ((Nodo)a.get(i)).Tipo;
+                        ArrayList hijos = (((Nodo)a.get(i)).getHijos());
+                        Cuadruplo cuad = new Cuadruplo(operator,((Nodo)hijos.get(0)).getTipo(),((Nodo)hijos.get(1)).getTipo(),"t_" + contTemp++);
+                        cuads.add(cuad);  
+                    }
+                } 
+                if(order != a){
+                    for(int i = 0; i < order.size(); i++){
+                    operator = ((Nodo)order.get(i)).Tipo;
+                    System.out.println("Operator: " + operator);
+                        if(operator.equals("&&") || operator.equals("||")){
+                            ArrayList hijos = (((Nodo)order.get(i)).getHijos());
+                            for(int j = 0; j < hijos.size(); j++){
+                                operator = (((Nodo)hijos.get(j)).Tipo);
+                                System.out.println("Operator: " + operator);
+                                ArrayList hijos2 = (((Nodo)hijos.get(j)).getHijos());
+
+                                if (i >= 1 && j >= 1){
+                                   operator = ((Nodo)order.get(i)).Tipo;
+                                   Cuadruplo cuad = new Cuadruplo(operator,"t_" + (contTemp-2),"t_" + (contTemp-1),"t_" + contTemp++);
+                                   cuads.add(cuad);
+                                   System.out.println(cuad); 
+                                }
+                                
+                                else {
+                                    // Agrego el cuadruplo de operacion relacional (comparar valores)
+                                    Cuadruplo cuad = new Cuadruplo(operator,((Nodo)hijos2.get(0)).getTipo(),((Nodo)hijos2.get(1)).getTipo(),"t_" + contTemp++);
+                                    cuads.add(cuad);
+                                    System.out.println(cuad);
+                                }
+                            }
+                            
+                            if(i < 1){
+                                operator = (((Nodo)order.get(i)).Tipo);
+                                Cuadruplo cuad = new Cuadruplo(operator,"t_" + (contTemp-2),"t_" + (contTemp-1),"t_" + contTemp++);
+                                cuads.add(cuad);
+                                System.out.println(cuad);
+                              
+                            }
+
+                        } 
+                    
+                    /* else if es un boolean */
+                    
+                    }   
+                }
+    }
+
 
 :}
 
@@ -764,7 +837,10 @@ comparator ::= EQUAL_OP:comp {: RESULT = comp; :}
     | GREATEREQUAL_OP:comp {: RESULT = comp; :}
     | NOTEQUAL_OP:comp {: RESULT = comp; :};
 
-if ::= IF LPAR conditionalExpr:cond RPAR LKEY body:body RKEY else:elseIf {: if(elseIf != null){
+if ::= IF LPAR conditionalExpr:cond RPAR LKEY body:body RKEY else:elseIf {: System.out.println("IF ---> " + cond.toString());
+                                                                            
+                                                                            this.parser.cuadsExpr((ArrayList)cond);
+                                                                            if(elseIf != null){
                                                                             Nodo nodo = new Nodo("if", "");
                                                                             Nodo cuerpo = new Nodo("cuerpo", "");
                                                                             Nodo condicion = new Nodo("condicion", "");

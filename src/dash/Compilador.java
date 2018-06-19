@@ -130,7 +130,7 @@ public class Compilador extends javax.swing.JFrame {
                 while (line != null) {
                     sb.append(line);
                     sb.append(System.lineSeparator());
-                    line = br.readLine();
+                    line = br.readLine(); 
                 }
                 datos = sb.toString();
             

@@ -93,12 +93,9 @@ public class Infix2Postfix {
                    String s1 = st.pop().toString();
                    String s2 = st.pop().toString();
                    
-                   Sintactico.contTemp++;
-                   int t = Sintactico.contTemp;
-                   String temp = "t_" + t;
-                   Cuadruplo c = new Cuadruplo(Character.toString(finalString.charAt(i)),s1,s2,temp);
+                   Cuadruplo c = new Cuadruplo(Character.toString(finalString.charAt(i)),s1,s2,"t_" + Sintactico.contTemp++);
                    Sintactico.cuads.add(c);
-                   st.push(temp);
+                   st.push("t_" + Sintactico.contTemp);
                    
                 }
                 else if(finalString.charAt(i) == ' ' && !id.isEmpty()){

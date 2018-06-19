@@ -13,14 +13,21 @@ import java.util.ArrayList;
  */
 public class Nodo {
     
-    String Tipo; // Main, Funcion, If, While, etc
-    String value; // nombre metodo, nombre variable
-    ArrayList<Nodo> hijos = new ArrayList<Nodo>();
+    public String Tipo; // Main, Funcion, If, While, etc
+    public String value; // nombre metodo, nombre variable
+    public ArrayList<Nodo> hijos = new ArrayList<Nodo>();
 
     public Nodo(String Tipo, String value) {
         this.Tipo = Tipo;
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "Nodo{" + "Tipo=" + Tipo + ", value=" + value + ", hijos=" + hijos + '}';
+    }
+    
+    
 
     public String getTipo() {
         return Tipo;
@@ -48,6 +55,17 @@ public class Nodo {
     
     public void addHijo(Nodo hijo) {
         this.hijos.add(hijo);
+    }
+    
+    public Nodo getHijoAt(int i){
+        return hijos.get(i);
+    }
+    
+    public boolean hasHijos(){
+        if(hijos.isEmpty())
+            return false;
+        else
+            return true;
     }
     
     public void print(int level) {

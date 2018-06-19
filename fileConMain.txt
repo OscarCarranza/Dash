@@ -1,46 +1,69 @@
-int x1, a2-
-func hola => (int a, int b){
-	for (int a = 1; a<=1; i++){
-		int q-
-	}
-	switch(valor){
-		case 1: if(a <= b){
-				int a-
-				for (int a = 1; a<=1; i++){
-					int q-
-				}
-			}
-			for (int a = 1; a<=1; i++){
-				int q-
-			}
-	}
-	if(a){
-		for (int a = 1; a<=1; i++){
-			int q-
-		}
-	}
-	ret 1-
+int[1] b-
+
+func suma => (char a){
+
+	char z-
+	
+	ret a-
+
 }-
 
-main => (int a, int b){
+
+func hola => (int a, int b, int[1] bd){
+
 	switch(valor){
+
 		case 1: if(a <= b){
-				int a-
+
+				int a1-
+
 				for (int a = 1; a<=1; i++){
+
 					int q-
+
 				}
+
 			}
+			
 			for (int a = 1; a<=1; i++){
-				int q-
+
+				int q1-
+
 			}
-	}
-	if(a){
-		for (int a = 1; a<=1; i++){
-			int q-
+	
+			if(a <= b && c <= d || b){
+
+				char a33-
+		
+				a1 = q * q1 + 3 - 5 + 6 / 7-
+
+				dash.in(hello)-
+		
+		dash.print("HOLA MUNDO" + hello)-
+				a33 = suma(q)-
+		
+				for (int a = 1; a<=1; i++){
+			
+					int q2-
+		
+				}
+	
+			}
+	
+			for (int a = 1; a<=1; i++){
+
+				int q3-
+
+				if(a2){
+			
+					char a3-
+		
+			char[2] a4, a5-
+		
 		}
-	}
-	for (int a = 1; a<=1; i++){
-		int q-
-	}
-	ret 1-
+	
+			}
+	
+	ret a1-
+
 }
