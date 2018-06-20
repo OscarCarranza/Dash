@@ -9,7 +9,7 @@ func g => (){
 func hola => (int a, int b){
 	int prueba-
 	switch(valor){
-		case 1: if(a <= b){
+		case 1: if(a){
 				int a-
 				for (int a = 1; a<=1; i++){
 					int q-
@@ -20,10 +20,11 @@ func hola => (int a, int b){
 			
 			}
 	}
-	if(a <= b && c <= d || b){
+	if(a <= b && c <= d || b > 2){
 		int n1, n2-
+		a = 2 / 1-
 		a = holaSum(n1, n2) / g()-
-		a = holaSum(n1, n2) + 1 * fin(prueba)-
+		//a = holaSum(n1, n2) + 1 * fin(prueba)-
 		dash.in(hello)-
 		dash.print("HOLA MUNDO" + hello)-
 		//suma=>(a)-

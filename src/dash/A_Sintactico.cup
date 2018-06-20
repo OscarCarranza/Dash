@@ -72,6 +72,106 @@ parser code
         s = s.substring(num+1, s.length());
         return s;
     }
+
+    public String splitOp(String s){
+        int cont1 = 0;
+
+        for(int i = 0; i < s.length(); i++){
+            if(s.charAt(i) == '['){
+                cont1 = i;
+            }
+            else if(s.charAt(i) == ']'){
+                s = s.substring(0,cont1) + s.substring(i+1, s.length());
+                i = cont1;
+            }
+            
+        }
+        
+        s = s.replace(",", "");
+        s = s.replace("[", "");
+        s = s.replace("]", "");
+        s = s.replace(" ","");
+        return s;
+    }
+    
+    public ArrayList orderPrecedence(ArrayList a){
+        ArrayList b = new ArrayList();
+        for(int i = 0;i < a.size(); i++){
+            if(((Nodo)a.get(i)).Tipo.equals("&&"))
+                b.add(a.get(i));
+        }
+        for(int i = 0;i < a.size(); i++){
+            if(((Nodo)a.get(i)).Tipo.equals("||"))
+                b.add(a.get(i));
+        }
+        return b;
+        
+    }
+
+    public void cuadsExpr(ArrayList a){
+                 
+        ArrayList order = orderPrecedence(a);
+        String operator = "", id = "";
+
+        System.out.println("a --> " + a.toString());
+        System.out.println("order -->" + order.toString());
+
+        if (order.isEmpty()){
+            System.out.println("--------------------- " + a.toString());
+            for(int i = 0; i < a.size(); i++){
+                if( ((Nodo)a.get(i)).getHijos().size()>0){
+                    operator = ((Nodo)a.get(i)).Tipo;
+                    ArrayList hijos = (((Nodo)a.get(i)).getHijos());
+                    Cuadruplo cuad = new Cuadruplo(operator,((Nodo)hijos.get(0)).getTipo(),((Nodo)hijos.get(1)).getTipo(),"t_" + contTemp++);
+                    cuads.add(cuad);
+                } else {
+                    operator = "==";
+                    Cuadruplo cuad = new Cuadruplo(operator,((Nodo)a.get(i)).getTipo(),"","t_" + contTemp++);
+                    cuads.add(cuad);
+                }
+            }
+        } 
+        if(order != a){
+            for(int i = 0; i < order.size(); i++){
+            operator = ((Nodo)order.get(i)).Tipo;
+            System.out.println("Operator: " + operator);
+                if(operator.equals("&&") || operator.equals("||")){
+                    ArrayList hijos = (((Nodo)order.get(i)).getHijos());
+                    for(int j = 0; j < hijos.size(); j++){
+                        operator = (((Nodo)hijos.get(j)).Tipo);
+                        System.out.println("Operator: " + operator);
+                        ArrayList hijos2 = (((Nodo)hijos.get(j)).getHijos());
+
+                        if (i >= 1 && j >= 1){
+                           operator = ((Nodo)order.get(i)).Tipo;
+                           Cuadruplo cuad = new Cuadruplo(operator,"t_" + (contTemp-2),"t_" + (contTemp-1),"t_" + contTemp++);
+                           cuads.add(cuad);
+                           System.out.println(cuad); 
+                        }
+
+                        else {
+                            // Agrego el cuadruplo de operacion relacional (comparar valores)
+                            Cuadruplo cuad = new Cuadruplo(operator,((Nodo)hijos2.get(0)).getTipo(),((Nodo)hijos2.get(1)).getTipo(),"t_" + contTemp++);
+                            cuads.add(cuad);
+                            System.out.println(cuad);
+                        }
+                    }
+
+                    if(i < 1){
+                        operator = (((Nodo)order.get(i)).Tipo);
+                        Cuadruplo cuad = new Cuadruplo(operator,"t_" + (contTemp-2),"t_" + (contTemp-1),"t_" + contTemp++);
+                        cuads.add(cuad);
+                        System.out.println(cuad);
+
+                    }
+
+                } 
+
+            /* else if es un boolean */
+
+            }   
+        }
+    }
     
     //Metodo al que se llama automaticamente ante algun error sintactico
     public void syntax_error(Symbol s)
@@ -128,7 +228,7 @@ non terminal asignacionCharPtr, instanciacionCharPointer, iniciacionCharPtr, asi
 non terminal body, body_dec;
 
 //if DEC
-non terminal conditionalExpr, andORor, logicalExpr, logicalExprComp, logicalExprID, comparator, if, else, ifElse, ifSinElse;
+non terminal conditionalExpr, andExpr, andORor, logicalExpr, logicalExprComp, logicalExprID, comparator, if, else, ifElse, ifSinElse;
 
 //Iteraciones DEC
 non terminal while, doWhile, for, autoAssign, declaracionFor, instanciacionIntegerFor, switch, caseExist, case, declaracionCase, varCase, caseBreak, default;
@@ -484,7 +584,7 @@ contenidoString ::= contenidoString ID
     | error {: System.out.println("Expected an id."); :};
 
 /*------------------- if GRAMATICA -----------------------*/
-conditionalExpr ::= conditionalExpr:expr1 andORor:andor logicalExpr:expr2 {: ArrayList expresion1 = (ArrayList)expr1;
+conditionalExpr ::= conditionalExpr:expr1 OR_OP:andor logicalExpr:expr2 {: ArrayList expresion1 = (ArrayList)expr1;
                                                                             Nodo expresion2 = (Nodo)expr2;
                                                                             Nodo condition = new Nodo(andor.toString(), "");
                                                                             if(expresion1.size() >= 2)
@@ -498,7 +598,27 @@ conditionalExpr ::= conditionalExpr:expr1 andORor:andor logicalExpr:expr2 {: Arr
                             Nodo expresion = (Nodo)expr;
                             arregloCondiciones.add(expresion);
                             RESULT = arregloCondiciones; :}
-    | conditionalExpr:expr1 andORor:andor LPAR logicalExpr:expr2 RPAR {: ArrayList expresion1 = (ArrayList)expr1;
+    | LPAR conditionalExpr:expr1 OR_OP:andor logicalExpr:expr2 RPAR {: ArrayList expresion1 = (ArrayList)expr1;
+                                                                        Nodo expresion2 = (Nodo)expr2;
+                                                                        Nodo condition = new Nodo(andor.toString(), "");
+                                                                        if(expresion1.size() >= 2)
+                                                                            condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().get( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().size()-1 ) );
+                                                                        else
+                                                                            condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)) );
+                                                                        condition.addHijo(expresion2);
+                                                                        expresion1.add(condition);
+                                                                        RESULT =  expresion1;:}
+    | conditionalExpr:expr1 AND_OP:andor logicalExpr:expr2 {: ArrayList expresion1 = (ArrayList)expr1;
+                                                                            Nodo expresion2 = (Nodo)expr2;
+                                                                            Nodo condition = new Nodo(andor.toString(), "");
+                                                                            if(expresion1.size() >= 2)
+                                                                                condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().get( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().size()-1 ) );
+                                                                            else
+                                                                                condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)) );
+                                                                            condition.addHijo(expresion2);
+                                                                            expresion1.add(condition);
+                                                                            RESULT =  expresion1;:}
+    | LPAR conditionalExpr:expr1 AND_OP:andor logicalExpr:expr2 RPAR {: ArrayList expresion1 = (ArrayList)expr1;
                                                                         Nodo expresion2 = (Nodo)expr2;
                                                                         Nodo condition = new Nodo(andor.toString(), "");
                                                                         if(expresion1.size() >= 2)
@@ -553,7 +673,9 @@ comparator ::= EQUAL_OP:comp {: RESULT = comp; :}
     | GREATEREQUAL_OP:comp {: RESULT = comp; :}
     | NOTEQUAL_OP:comp {: RESULT = comp; :};
 
-if ::= IF LPAR conditionalExpr:cond RPAR LKEY {: ambito+=".if"; profundidad++; :} body:body {: quitarAmbito(); :} RKEY else:elseIf {: if(elseIf != null){
+if ::= IF LPAR conditionalExpr:cond RPAR LKEY {: ambito+=".if"; profundidad++; :} body:body {: quitarAmbito(); :} RKEY else:elseIf {: 
+                                                                        this.parser.cuadsExpr((ArrayList)cond);
+                                                                        if(elseIf != null){
                                                                             Nodo nodo = new Nodo("if", "");
                                                                             Nodo cuerpo = new Nodo("cuerpo", "");
                                                                             Nodo condicion = new Nodo("condicion", "");
@@ -1037,15 +1159,15 @@ varRet ::= ID:id   {: RESULT = id.toString(); :}
     | error          {: System.out.println("Expected return variable"); :};
 
 /* --------------------- Operaciones Aritmeticas ---------------------------*/
-assign_var ::= ID:id ASSIGN arithmetic_exp:ae DASH {:   String s = id.toString() + "=" + ae;
+assign_var ::= ID:id ASSIGN arithmetic_exp:ae DASH {:   String sArit = id.toString() + "=" + ae;
+                                                        String s = this.parser.splitOp(ae.toString());
                                                         System.out.println("\u001B[31m" + "------------>  " + s);
                                                         ArrayList arreglo = new ArrayList();
-                                                        Nodo op_aritmetica= new Nodo("aritmetica",s);
-                                                        s = getOp(s);
-                                                        arreglo.add(op_aritmetica);
-                                                        cuads.add(new Cuadruplo("=",id.toString(),"t_" + this.parser.contTemp++));
+                                                        Nodo op_aritmetica= new Nodo("aritmetica",sArit);
                                                         Infix2Postfix inf = new Infix2Postfix(s);
                                                         inf.CodigoIntermedio();
+                                                        arreglo.add(op_aritmetica);
+                                                        cuads.add(new Cuadruplo("=",id.toString(),"t_" + this.parser.contTemp++));
                                                         RESULT = arreglo;
                                                         System.out.println("Nodo Arithmetic creado"); :}
 ;
