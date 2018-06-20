@@ -13,9 +13,9 @@ import java.util.ArrayList;
  */
 public class Nodo {
     
-    String Tipo; // Main, Funcion, If, While, etc
-    String value; // nombre metodo, nombre variable
-    ArrayList<Nodo> hijos = new ArrayList<Nodo>();
+    public String Tipo; // Main, Funcion, If, While, etc
+    public String value; // nombre metodo, nombre variable
+    public ArrayList<Nodo> hijos = new ArrayList<Nodo>();
 
     public Nodo(String Tipo, String value) {
         this.Tipo = Tipo;

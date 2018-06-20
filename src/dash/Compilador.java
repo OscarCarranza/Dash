@@ -190,6 +190,8 @@ public class Compilador extends javax.swing.JFrame {
             ambito = "global";
             profundidad = 0;
             checkTypes(sintactico.raiz, ambito);
+            System.out.println("");
+            System.out.println("");
             System.out.println("I\t\t\tOperacio\t\t\tArgu1\t\t\tArg2\t\t\tResultado");
             for (int i = 0; i < sintactico.cuads.size(); i++) {
                 System.out.println(i+"\t\t\t"+sintactico.cuads.get(i).getOperacion()+"\t\t\t"+sintactico.cuads.get(i).getArgumento1()+"\t\t\t"+
@@ -337,8 +339,10 @@ public class Compilador extends javax.swing.JFrame {
                     if(!tipoAsignado.equals(tipoRetFuncion[tipoRetFuncion.length-1]) && tipoAsignado.length() > 0)
                         System.out.println("\u001B[31m" + "Asignación imposible en "+partsAsignacion[0]+": tipo de "+partsFuncion[0]+" incompatible - se esparabá "+tipoAsignado+".");
                 }
-            } else if(!tipoAsignado.equals("int"))
+            } else if(!tipoAsignado.equals("int")){
+                System.out.println(partsAsignacion[0]);
                 System.out.println("\u001B[31m" + "Asignación imposible en "+partsAsignacion[0]+": tipo de asignado "+tipoAsignado+" es incompatible con int."); //por si se suma int a strings o char
+            }
         }
         //si es funcion probar sus params
         for (int i = 0; i < partsAritmetica.length; i++) {
