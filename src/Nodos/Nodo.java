@@ -22,6 +22,13 @@ public class Nodo {
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return "Nodo{" + "Tipo=" + Tipo + ", value=" + value + ", hijos=" + hijos + '}';
+    }
+    
+    
+
     public String getTipo() {
         return Tipo;
     }
@@ -48,6 +55,17 @@ public class Nodo {
     
     public void addHijo(Nodo hijo) {
         this.hijos.add(hijo);
+    }
+    
+    public Nodo getHijoAt(int i){
+        return hijos.get(i);
+    }
+    
+    public boolean hasHijos(){
+        if(hijos.isEmpty())
+            return false;
+        else
+            return true;
     }
     
     public void print(int level) {

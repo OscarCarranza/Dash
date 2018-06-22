@@ -18,6 +18,8 @@ import javax.swing.ImageIcon;
 
 import Nodos.Nodo;
 import Nodos.Tabla;
+import dash.Analizador_Lexico;
+import dash.Sintactico;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -181,6 +183,14 @@ public class Compilador extends javax.swing.JFrame {
             root.add(nodoraiz);
             System.out.println("Antes de Print");
             print(sintactico.raiz, nodoraiz);
+            
+            //cuadruplos
+            
+            System.out.println("\n" + " ---------------- CUADRUPLOS ---------------------- \n");
+            for(int i = 0; i < Sintactico.cuads.size(); i++){
+                System.out.println("\u001B[34m" + Sintactico.cuads.get(i).toString());
+            }
+            System.out.println("");
             System.out.println("I\tID\tTipo\t\t\tAmbito\t\t\tProfundidad");
             for (int i = 0; i < sintactico.tabla.size(); i++) {
                 System.out.println( i + "\t" + ((Tabla)sintactico.tabla.get(i)).getId() + "\t" + ((Tabla)sintactico.tabla.get(i)).getTipo() + "\t\t\t" + ((Tabla)sintactico.tabla.get(i)).getAmbito() + "\t\t\t" + ((Tabla)sintactico.tabla.get(i)).getProfundidad() );
@@ -190,13 +200,7 @@ public class Compilador extends javax.swing.JFrame {
             ambito = "global";
             profundidad = 0;
             checkTypes(sintactico.raiz, ambito);
-            System.out.println("");
-            System.out.println("");
-            System.out.println("I\t\t\tOperacio\t\t\tArgu1\t\t\tArg2\t\t\tResultado");
-            for (int i = 0; i < sintactico.cuads.size(); i++) {
-                System.out.println(i+"\t\t\t"+sintactico.cuads.get(i).getOperacion()+"\t\t\t"+sintactico.cuads.get(i).getArgumento1()+"\t\t\t"+
-                        sintactico.cuads.get(i).getArgumento2()+"\t\t\t"+sintactico.cuads.get(i).getResultado());
-            }
+            
         } catch(Exception e){
             //
         }
@@ -228,6 +232,7 @@ public class Compilador extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Compilador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

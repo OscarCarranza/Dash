@@ -16,12 +16,13 @@ public class Infix2Postfix {
 		
 		String str = "";
 		infixExp = exp;
+                System.out.println("INF EXP = " + infixExp);
 		stack = new Stack<String>();
                 String id = "";
 		
 		for (int i=0;i<infixExp.length();i++){
 			str = infixExp.substring(i,i+1);
-                        System.out.println("CHAR " + str);
+                        
 			if(!isOperator(str)){
                             id += str;
                         }
@@ -48,12 +49,13 @@ public class Infix2Postfix {
                 stack.push(id);
 		while(!(stack.isEmpty()))
 			postfixExp += " " + stack.pop();
-                        finalString = postfixExp;
+                finalString = postfixExp;
+                System.out.println("POSTFIX = " + finalString);
 	}
 	
 	private boolean isOperator(String ch){
 		
-		String operators = "*/%+-";
+		String operators = "*/+-";
 		if (operators.indexOf(ch) != -1)
 			return true;
 		else
@@ -91,12 +93,9 @@ public class Infix2Postfix {
                    String s1 = st.pop().toString();
                    String s2 = st.pop().toString();
                    
-                   //Sintactico.contTemp++;
-                   //int t = Sintactico.contTemp;
-                   //String temp = "t_" + t;
-                   //Cuadruplo c = new Cuadruplo(Character.toString(finalString.charAt(i)),s1,s2,temp);
-                   //Sintactico.cuads.add(c);
-                   //st.push(temp);
+                   Cuadruplo c = new Cuadruplo(Character.toString(finalString.charAt(i)),s2,s1,"t_" + Sintactico.contTemp++);
+                   Sintactico.cuads.add(c);
+                   st.push("t_" + Sintactico.contTemp);
                    
                 }
                 else if(finalString.charAt(i) == ' ' && !id.isEmpty()){
