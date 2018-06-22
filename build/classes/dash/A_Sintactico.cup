@@ -24,6 +24,9 @@ parser code
     public int profundidad = 0;
     public static int contTemp = 0;
     public ArrayList<Cuadruplo> cuads = new ArrayList();
+    public boolean crearEtiquetaSalida = false;
+    public boolean crearEtiqueta = false;
+    public static int contEtiq = 0;
 
     public boolean noExiste(String id) {
         boolean esValido = true;
@@ -125,7 +128,7 @@ parser code
                     Cuadruplo cuad = new Cuadruplo(operator,((Nodo)hijos.get(0)).getTipo(),((Nodo)hijos.get(1)).getTipo(),"t_" + contTemp++);
                     cuads.add(cuad);
                 } else {
-                    operator = "==";
+                    operator = "true";
                     Cuadruplo cuad = new Cuadruplo(operator,((Nodo)a.get(i)).getTipo(),"","t_" + contTemp++);
                     cuads.add(cuad);
                 }
@@ -680,14 +683,24 @@ if ::= IF LPAR conditionalExpr:cond RPAR LKEY {: ambito+=".if"; profundidad++; :
                                                                             Nodo cuerpo = new Nodo("cuerpo", "");
                                                                             Nodo condicion = new Nodo("condicion", "");
                                                                             ArrayList arregloCondicion = (ArrayList) cond;
+                                                                            String accionIF = "";
                                                                             if(arregloCondicion != null){
                                                                                 for(int i = 0; i < arregloCondicion.size(); i++){
                                                                                     if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
                                                                                         Nodo temp = ((Nodo)arregloCondicion.get(i));
                                                                                         condicion.addHijo(temp);
                                                                                     }
+                                                                                    if("||".equals(((Nodo)arregloCondicion.get(i)).getTipo()))
+                                                                                        accionIF = "||";
+                                                                                    else if("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()))
+                                                                                        accionIF = "&&";
+                                                                                    else if( ((Nodo)arregloCondicion.get(i)).getTipo().matches("[a-zA-z]") )
+                                                                                        accionIF = "true";
+                                                                                    else
+                                                                                        accionIF = ((Nodo)arregloCondicion.get(i)).getTipo();
                                                                                 }
                                                                             }
+                                                                            cuads.add(new Cuadruplo("if"+accionIF,"t_"+(contTemp-1), "", "etiq"+(this.parser.contEtiq+1) ));
                                                                             ArrayList arregloBody = (ArrayList) body;
                                                                             if(arregloBody != null){
                                                                                 for(int i = 0; i < arregloBody.size(); i++){
@@ -706,20 +719,31 @@ if ::= IF LPAR conditionalExpr:cond RPAR LKEY {: ambito+=".if"; profundidad++; :
                                                                                     arregloNodos.add(temp);
                                                                                 }
                                                                             }
+                                                                            cuads.add(new Cuadruplo("etiq","etiq" + this.parser.contEtiq++));
                                                                             RESULT = arregloNodos;
                                                                         } else {
                                                                             Nodo nodo = new Nodo("if", "");
                                                                             Nodo cuerpo = new Nodo("cuerpo", "");
                                                                             Nodo condicion = new Nodo("condicion", "");
                                                                             ArrayList arregloCondicion = (ArrayList) cond;
+                                                                            String accionIF = "";
                                                                             if(arregloCondicion != null){
                                                                                 for(int i = 0; i < arregloCondicion.size(); i++){
                                                                                     if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
                                                                                         Nodo temp = ((Nodo)arregloCondicion.get(i));
                                                                                         condicion.addHijo(temp);
                                                                                     }
+                                                                                    if("||".equals(((Nodo)arregloCondicion.get(i)).getTipo()))
+                                                                                        accionIF = "||";
+                                                                                    else if("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()))
+                                                                                        accionIF = "&&";
+                                                                                    else if( ((Nodo)arregloCondicion.get(i)).getTipo().matches("[a-zA-z]+") )
+                                                                                        accionIF = "true";
+                                                                                    else
+                                                                                        accionIF = ((Nodo)arregloCondicion.get(i)).getTipo();
                                                                                 }
                                                                             }
+                                                                            cuads.add(new Cuadruplo("if"+accionIF,"t_"+(contTemp-1), "", "etiq"+(this.parser.contEtiq+1) ));
                                                                             ArrayList arregloBody = (ArrayList) body;
                                                                             if(arregloBody != null){
                                                                                 for(int i = 0; i < arregloBody.size(); i++){
@@ -731,6 +755,7 @@ if ::= IF LPAR conditionalExpr:cond RPAR LKEY {: ambito+=".if"; profundidad++; :
                                                                             nodo.addHijo(cuerpo);
                                                                             ArrayList arregloNodos = new ArrayList();
                                                                             arregloNodos.add(nodo);
+                                                                            cuads.add(new Cuadruplo("etiq","etiq" + this.parser.contEtiq++));
                                                                             RESULT = arregloNodos; } :}
     | error LPAR conditionalExpr RPAR LKEY body:body RKEY else {: System.out.println("Expected if."); :}
     | IF error conditionalExpr RPAR LKEY body:body RKEY else {: System.out.println("Expected '('."); :};
@@ -923,17 +948,27 @@ default ::= DEFAULT COLON body caseBreak {::}
     | ;
 
 /*------------------- BODY -----------------------*/
-body ::= body:b declaracion:a {: if(b != null){
+body ::= body:b declaracion:a {: 
+                            if(crearEtiqueta){
+                                cuads.add(new Cuadruplo("etiq","etiq" + this.parser.contEtiq++));
+                                crearEtiqueta=false;
+                            }
+                            if(b != null){
                                 ArrayList arregloNodos = (ArrayList) b;
                                 ArrayList arregloCommand = (ArrayList) a;
                                 Nodo declaracionVar = (Nodo)arregloCommand.get(0);
                                 arregloNodos.add( declaracionVar );
                                 RESULT = arregloNodos;
-                             } else {
+                            } else {
                                 ArrayList arregloCommand = (ArrayList) a;
                                 Nodo declaracionVar = (Nodo)arregloCommand.get(0);
                                 RESULT = a;} :}
-    | body:b if:a {: if(b != null){
+    | body:b if:a {:
+                    if(crearEtiqueta){
+                        cuads.add(new Cuadruplo("etiq","etiq" + this.parser.contEtiq++));
+                        crearEtiqueta=false;
+                    }
+                    if(b != null){
                         ArrayList arregloNodos = (ArrayList) b;
                         ArrayList arregloCommand = (ArrayList) a;
                         for(int i = 0; i < arregloCommand.size(); i++){
@@ -941,11 +976,16 @@ body ::= body:b declaracion:a {: if(b != null){
                             arregloNodos.add( temp );
                         }
                         RESULT = arregloNodos;
-                     } else {
+                    } else {
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo ifVar = (Nodo)arregloCommand.get(0);
                         RESULT = a;} :}
-    | body:b {: ambito+=".while"; profundidad++; :} while:a {: quitarAmbito();
+    | body:b {: ambito+=".while"; profundidad++; :} while:a {: 
+                    if(crearEtiqueta){
+                        cuads.add(new Cuadruplo("etiq","etiq" + this.parser.contEtiq++));
+                        crearEtiqueta=false;
+                    }
+                    quitarAmbito();
                     if(b != null){
                         ArrayList arregloNodos = (ArrayList) b;
                         ArrayList arregloCommand = (ArrayList) a;
@@ -956,7 +996,12 @@ body ::= body:b declaracion:a {: if(b != null){
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo whileVar = (Nodo)arregloCommand.get(0);
                         RESULT = a;} :}
-    | body:b doWhile:a {: if(b != null){
+    | body:b doWhile:a {:
+                        if(crearEtiqueta){
+                            cuads.add(new Cuadruplo("etiq","etiq" + this.parser.contEtiq++));
+                            crearEtiqueta=false;
+                        }
+                        if(b != null){
                             ArrayList arregloNodos = (ArrayList) b;
                             ArrayList arregloCommand = (ArrayList) a;
                             Nodo doWhile = (Nodo)arregloCommand.get(0);
@@ -966,7 +1011,12 @@ body ::= body:b declaracion:a {: if(b != null){
                             ArrayList arregloCommand = (ArrayList) a;
                             Nodo doWhile = (Nodo)arregloCommand.get(0);
                             RESULT = a;} :}
-    | body:b {: ambito+=".for"; profundidad++; :} for:a {: quitarAmbito();
+    | body:b {: ambito+=".for"; profundidad++; :} for:a {:
+                    if(crearEtiqueta){
+                        cuads.add(new Cuadruplo("etiq","etiq" + this.parser.contEtiq++));
+                        crearEtiqueta=false;
+                    }
+                    quitarAmbito();
                     if(b != null){
                         ArrayList arregloNodos = (ArrayList) b;
                         ArrayList arregloCommand = (ArrayList) a;
@@ -977,7 +1027,12 @@ body ::= body:b declaracion:a {: if(b != null){
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo forVar = (Nodo)arregloCommand.get(0);
                         RESULT = a;} :}
-    | body:b {: ambito+=".switch"; profundidad++; :} switch:a {: quitarAmbito();
+    | body:b {: ambito+=".switch"; profundidad++; :} switch:a {:
+                    if(crearEtiqueta){
+                        cuads.add(new Cuadruplo("etiq","etiq" + this.parser.contEtiq++));
+                        crearEtiqueta=false;
+                    }
+                    quitarAmbito();
                     if(b != null){
                         ArrayList arregloNodos = (ArrayList) b;
                         ArrayList arregloCommand = (ArrayList) a;
@@ -988,33 +1043,48 @@ body ::= body:b declaracion:a {: if(b != null){
                         ArrayList arregloCommand = (ArrayList) a;
                         Nodo switchVar = (Nodo)arregloCommand.get(0);
                         RESULT = a;} :}
-    | body:b entry:a {: if(b != null){
-                                ArrayList arregloNodos = (ArrayList) b;
-                                ArrayList arregloCommand = (ArrayList) a;
-                                Nodo entrada = (Nodo)arregloCommand.get(0);
-                                arregloNodos.add( entrada );
-                                RESULT = arregloNodos;
-                             } else {
-                                ArrayList arregloCommand = (ArrayList) a;
-                                Nodo entrada = (Nodo)arregloCommand.get(0);
-                                RESULT = a;} :}
-    | body:b salida:a {: if(b != null){
-                                ArrayList arregloNodos = (ArrayList) b;
-                                ArrayList arregloCommand = (ArrayList) a;
-                                Nodo salida = (Nodo)arregloCommand.get(0);
-                                arregloNodos.add( salida );
-                                RESULT = arregloNodos;
-                             } else {
-                                ArrayList arregloCommand = (ArrayList) a;
-                                Nodo salida = (Nodo)arregloCommand.get(0);
-                                RESULT = a;} :}
-    | body:b assign_var:a {: if(b != null){
+    | body:b entry:a {:
+                        if(crearEtiqueta){
+                            cuads.add(new Cuadruplo("etiq","etiq" + this.parser.contEtiq++));
+                            crearEtiqueta=false;
+                        }
+                        if(b != null){
+                            ArrayList arregloNodos = (ArrayList) b;
+                            ArrayList arregloCommand = (ArrayList) a;
+                            Nodo entrada = (Nodo)arregloCommand.get(0);
+                            arregloNodos.add( entrada );
+                            RESULT = arregloNodos;
+                        } else {
+                            ArrayList arregloCommand = (ArrayList) a;
+                            Nodo entrada = (Nodo)arregloCommand.get(0);
+                            RESULT = a;} :}
+    | body:b salida:a {:
+                        if(crearEtiqueta){
+                            cuads.add(new Cuadruplo("etiq","etiq" + this.parser.contEtiq++));
+                            crearEtiqueta=false;
+                        }
+                        if(b != null){
+                            ArrayList arregloNodos = (ArrayList) b;
+                            ArrayList arregloCommand = (ArrayList) a;
+                            Nodo salida = (Nodo)arregloCommand.get(0);
+                            arregloNodos.add( salida );
+                            RESULT = arregloNodos;
+                        } else {
+                            ArrayList arregloCommand = (ArrayList) a;
+                            Nodo salida = (Nodo)arregloCommand.get(0);
+                            RESULT = a;} :}
+    | body:b assign_var:a {:
+                            if(crearEtiqueta){
+                                cuads.add(new Cuadruplo("etiq","etiq" + this.parser.contEtiq++));
+                                crearEtiqueta=false;
+                            }
+                            if(b != null){
                                 ArrayList arregloNodos = (ArrayList) b;
                                 ArrayList arregloCommand = (ArrayList) a;
                                 Nodo assign_var = (Nodo)arregloCommand.get(0);
                                 arregloNodos.add( assign_var );
                                 RESULT = arregloNodos;
-                             } else {
+                            } else {
                                 ArrayList arregloCommand = (ArrayList) a;
                                 Nodo assign_var = (Nodo)arregloCommand.get(0);
                                 RESULT = a;} :}

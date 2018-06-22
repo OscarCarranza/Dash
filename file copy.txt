@@ -1,7 +1,12 @@
+int[1] b-
+func holaSum => (int a, int b){
+	char s-
+	ret b-
+}-
+func g => (){
+	ret 2-
+}-
 func hola => (int a, int b){
-	if(a > b){
-		int ppp-
-	}
 	int prueba-
 	switch(valor){
 		case 1: if(a){
@@ -37,6 +42,44 @@ func hola => (int a, int b){
 		}
 	}
 	ret prueba-
+}-
+
+
+main => (int a, int b){
+	switch(valor){
+		case 1: if(a <= b){
+				int a-
+				for (int a = 1; a<=1; i++){
+					int q-
+
+				}
+			}
+			for (int a = 1; a<=1; i++){
+				int q-
+			}
+	}
+	if(a){
+		for (int a = 1; a<=1; i++){
+			int q-
+		}
+	}
+	for (int a = 1; a<=1; i++){
+		int q-
+
+	}
+	ret 1-
+}
+
+func hola2 => (int a, int b){
+	for (int a = 1; a<=1; i++){
+		int q-
+	}
+	if(a){
+		for (int a = 1; a<=1; i++){
+			int q-
+		}
+	}
+	ret 1-
 }-
 
 
