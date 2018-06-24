@@ -1,10 +1,10 @@
 int[1] b-
-func suma => (char a){
+func suma => (int a){
 	char z-
 	ret a-
 }-
 
-func hola => (int a, int b, int[1] bd){
+func hola => (int a, int b){
 	switch(valor){
 		case 1: if(a <= b){
 				int a1-
@@ -12,68 +12,28 @@ func hola => (int a, int b, int[1] bd){
 					int q-
 				}
 			}
-			for (int a = 1; a<=1; i++){
+			for (int a = 2; a<=1; i++){
 				int q1-
 			
 			}
 	}
-	if(a <= b && c <= d || f > 2){
+	if(a <= b && c <= d || f > 2 && a && b > 2 || 1 > 2){
 		char a33-
-		a1 = q + q1 * 3 / 5 + 1-
+		//a1 = q + q1 * 3 / 5 + 1-
 		dash.in(hello)-
 		dash.print("HOLA MUNDO" + hello)-
-		a33 = suma(q)-
-		for (int a = 1; a<=1; i++){
+		int q-
+		a = suma(q)-
+		for (int a = 3; a<=1; i++){
 			int q2-
 		}
 	}
-	for (int a = 1; a<=1; i++){
+	for (int a = 4; a<=1; i++){
 		int q3-
-		if(a2 > 3){
+		if(a2 > 3 || m){
 			char a3-
 			char[2] a4, a5-
 		}
 	}
-	ret a1-
+	ret a-
 }-
-
-
-main => (int a, int b){
-	switch(valor){
-		case 1: if(a <= b){
-				int a9-
-				for (int a = 1; a<=1; i++){
-					int q6-
-
-				}
-			}
-			for (int a = 1; a<=1; i++){
-				int q7-
-			}
-	}
-	if(a < 3){
-		for (int a = 1; a<=1; i++){
-			int q8-
-		}
-	}
-	for (int a = 1; a<=1; i++){
-		int q9-
-
-	}
-	ret a1-
-}
-
-func hola2 => (int a, int b){
-	for (int a = 1; a<=1; i++){
-		int qq-
-	}
-	if(a > 1){
-		for (int a = 1; a<=1; i++){
-			int qq1-
-		}
-	}
-	ret a1-
-}-
-
-
-

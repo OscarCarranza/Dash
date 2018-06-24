@@ -262,7 +262,7 @@ non terminal asignacionCharPtr, instanciacionCharPointer, iniciacionCharPtr, asi
 non terminal body, body_dec;
 
 //if DEC
-non terminal conditionalExpr, andORor, logicalExpr, logicalExprComp, logicalExprID, comparator, if, else, ifElse, ifSinElse;
+non terminal conditionalExpr, andExpr, andORor, logicalExpr, logicalExprComp, logicalExprID, comparator, if, else, ifElse, ifSinElse;
 
 //Iteraciones DEC
 non terminal while, doWhile, for, autoAssign, declaracionFor, instanciacionIntegerFor, switch, caseExist, case, declaracionCase, varCase, caseBreak, default;
@@ -618,30 +618,35 @@ contenidoString ::= contenidoString ID
     | error {: System.out.println("\u001B[31m" + "Expected an id."); :};
 
 /*------------------- if GRAMATICA -----------------------*/
-conditionalExpr ::= conditionalExpr:expr1 andORor:andor logicalExpr:expr2 {: ArrayList expresion1 = (ArrayList)expr1;
-                                                                            Nodo expresion2 = (Nodo)expr2;
-                                                                            Nodo condition = new Nodo(andor.toString(), "");
-                                                                            if(expresion1.size() >= 2)
-                                                                                condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().get( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().size()-1 ) );
-                                                                            else
-                                                                                condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)) );
-                                                                            condition.addHijo(expresion2);
-                                                                            expresion1.add(condition);
-                                                                            RESULT =  expresion1;:}
-    | logicalExpr:expr {: ArrayList arregloCondiciones = new ArrayList();
-                            Nodo expresion = (Nodo)expr;
-                            arregloCondiciones.add(expresion);
-                            RESULT = arregloCondiciones; :}
-    | conditionalExpr:expr1 andORor:andor LPAR logicalExpr:expr2 RPAR {: ArrayList expresion1 = (ArrayList)expr1;
+conditionalExpr ::= conditionalExpr:expr1 OR_OP:andor andExpr:expr2 {:  Nodo expresion1 = (Nodo)expr1;
                                                                         Nodo expresion2 = (Nodo)expr2;
                                                                         Nodo condition = new Nodo(andor.toString(), "");
-                                                                        if(expresion1.size() >= 2)
-                                                                            condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().get( ((Nodo)expresion1.get(expresion1.size()-1)).getHijos().size()-1 ) );
-                                                                        else
-                                                                            condition.addHijo( ((Nodo)expresion1.get(expresion1.size()-1)) );
+                                                                        condition.addHijo(expresion1);
                                                                         condition.addHijo(expresion2);
-                                                                        expresion1.add(condition);
-                                                                        RESULT =  expresion1;:};
+                                                                        RESULT =  condition;:}
+    | andExpr:expr {:   Nodo expresion = (Nodo)expr;
+                        RESULT = expresion; :}
+    | conditionalExpr:expr1 OR_OP:andor LPAR andExpr:expr2 RPAR {:  Nodo expresion1 = (Nodo)expr1;
+                                                                    Nodo expresion2 = (Nodo)expr2;
+                                                                    Nodo condition = new Nodo(andor.toString(), "");
+                                                                    condition.addHijo(expresion1);
+                                                                    condition.addHijo(expresion2);
+                                                                    RESULT =  condition;:};
+
+andExpr ::= andExpr:expr1 AND_OP:andor logicalExpr:expr2 {: Nodo expresion1 = (Nodo)expr1;
+                                                            Nodo expresion2 = (Nodo)expr2;
+                                                            Nodo condition = new Nodo(andor.toString(), "");
+                                                            condition.addHijo(expresion1);
+                                                            condition.addHijo(expresion2);
+                                                            RESULT =  condition;:}
+    | logicalExpr:expr {:   Nodo expresion = (Nodo)expr;
+                            RESULT = expresion; :}
+    | andExpr:expr1 AND_OP:andor LPAR logicalExpr:expr2 RPAR {: Nodo expresion1 = (Nodo)expr1;
+                                                                Nodo expresion2 = (Nodo)expr2;
+                                                                Nodo condition = new Nodo(andor.toString(), "");
+                                                                condition.addHijo(expresion1);
+                                                                condition.addHijo(expresion2);
+                                                                RESULT =  condition;:};
 
 andORor ::= AND_OP:and {: RESULT = and.toString(); :}
     | OR_OP:or {: RESULT = or.toString(); :}
@@ -655,8 +660,11 @@ logicalExpr ::= ID:id logicalExprComp:arreglo {: Nodo expresion1 = new Nodo(id.t
                                                         condition.addHijo(expresion1);
                                                         condition.addHijo(expresion2);
                                                         RESULT = condition;
-                                                    } else
-                                                        RESULT = expresion1; :}
+                                                    } else{
+                                                        Nodo condition = new Nodo( "true", "");
+                                                        condition.addHijo(expresion1);
+                                                        RESULT = condition;
+                                                    } :}
     | INTEGER:inte comparator:comp logicalExprID:expr {: Nodo expresion1 = new Nodo(inte.toString(), "");
                                             Nodo expresion2 = new Nodo(expr.toString(), "");
                                             Nodo condition = new Nodo(comp.toString(), "");
@@ -689,20 +697,14 @@ comparator ::= EQUAL_OP:comp {: RESULT = comp; :}
 
 if ::= IF LPAR conditionalExpr:cond RPAR LKEY {: this.parser.ambito+=".if"; this.parser.profundidad++; :}body:body {: this.parser.quitarAmbito(); :} RKEY else:elseIf {: 
                                                                             
-                                                                            this.parser.cuadsExpr((ArrayList)cond);
                                                                             if(elseIf != null){
                                                                             Nodo nodo = new Nodo("if", "");
                                                                             Nodo cuerpo = new Nodo("cuerpo", "");
                                                                             Nodo condicion = new Nodo("condicion", "");
-                                                                            ArrayList arregloCondicion = (ArrayList) cond;
-                                                                            if(arregloCondicion != null){
-                                                                                for(int i = 0; i < arregloCondicion.size(); i++){
-                                                                                    if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
-                                                                                        Nodo temp = ((Nodo)arregloCondicion.get(i));
-                                                                                        condicion.addHijo(temp);
-                                                                                    }
-                                                                                }
-                                                                            }
+
+                                                                            Nodo conds = (Nodo) cond;
+                                                                            condicion.addHijo(conds);
+
                                                                             ArrayList arregloBody = (ArrayList) body;
                                                                             if(arregloBody != null){
                                                                                 for(int i = 0; i < arregloBody.size(); i++){
@@ -726,15 +728,10 @@ if ::= IF LPAR conditionalExpr:cond RPAR LKEY {: this.parser.ambito+=".if"; this
                                                                             Nodo nodo = new Nodo("if", "");
                                                                             Nodo cuerpo = new Nodo("cuerpo", "");
                                                                             Nodo condicion = new Nodo("condicion", "");
-                                                                            ArrayList arregloCondicion = (ArrayList) cond;
-                                                                            if(arregloCondicion != null){
-                                                                                for(int i = 0; i < arregloCondicion.size(); i++){
-                                                                                    if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
-                                                                                        Nodo temp = ((Nodo)arregloCondicion.get(i));
-                                                                                        condicion.addHijo(temp);
-                                                                                    }
-                                                                                }
-                                                                            }
+
+                                                                            Nodo conds = (Nodo) cond;
+                                                                            condicion.addHijo(conds);
+
                                                                             ArrayList arregloBody = (ArrayList) body;
                                                                             if(arregloBody != null){
                                                                                 for(int i = 0; i < arregloBody.size(); i++){
@@ -784,15 +781,9 @@ while ::= WHILE LPAR conditionalExpr:cond RPAR LKEY body:body RKEY {: Nodo nodo 
                                                                             cuerpo.addHijo(temp);
                                                                         }
                                                                     }
-                                                                    ArrayList arregloCondicion = (ArrayList) cond;
-                                                                    if(arregloCondicion != null){
-                                                                        for(int i = 0; i < arregloCondicion.size(); i++){
-                                                                            if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
-                                                                                Nodo temp = ((Nodo)arregloCondicion.get(i));
-                                                                                condicion.addHijo(temp);
-                                                                            }
-                                                                        }
-                                                                    }
+                                                                    Nodo conds = (Nodo) cond;
+                                                                    condicion.addHijo(conds);
+
                                                                     nodo.addHijo(condicion);
                                                                     nodo.addHijo(cuerpo);
                                                                     ArrayList arregloNodos = new ArrayList();
@@ -814,15 +805,9 @@ doWhile ::= DO LKEY {: this.parser.ambito+=".dowhile"; this.parser.profundidad++
                                                                                 cuerpo.addHijo(temp);
                                                                             }
                                                                         }
-                                                                        ArrayList arregloCondicion = (ArrayList) cond;
-                                                                        if(arregloCondicion != null){
-                                                                            for(int i = 0; i < arregloCondicion.size(); i++){
-                                                                                if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
-                                                                                    Nodo temp = ((Nodo)arregloCondicion.get(i));
-                                                                                    condicion.addHijo(temp);
-                                                                                }
-                                                                            }
-                                                                        }
+                                                                        Nodo conds = (Nodo) cond;
+                                                                        condicion.addHijo(conds);
+
                                                                         nodo.addHijo(condicion);
                                                                         nodo.addHijo(cuerpo);
                                                                         ArrayList arregloNodos = new ArrayList();
@@ -836,9 +821,10 @@ doWhile ::= DO LKEY {: this.parser.ambito+=".dowhile"; this.parser.profundidad++
     | DO LKEY body:body RKEY WHILE LPAR conditionalExpr RPAR error {: System.out.println("\u001B[31m" + "Expected '-'."); :} */;
 
 /*------------------- For GRAMATICA -----------------------*/
-for ::= FOR  LPAR declaracionFor SEMICOLON conditionalExpr:cond SEMICOLON ID autoAssign RPAR LKEY body:body RKEY {: Nodo nodo = new Nodo("for", "");
+for ::= FOR  LPAR declaracionFor:decFor SEMICOLON conditionalExpr:cond SEMICOLON ID autoAssign RPAR LKEY body:body RKEY {: Nodo nodo = new Nodo("for", "");
                                                                                                             Nodo condicion = new Nodo("condicion", "");
                                                                                                             Nodo cuerpo = new Nodo("cuerpo", "");
+                                                                                                            Nodo declaracionFor = new Nodo("declaracionFor", "");
                                                                                                             ArrayList arregloBody = (ArrayList) body;
                                                                                                             if(arregloBody != null){
                                                                                                                 for(int i = 0; i < arregloBody.size(); i++){
@@ -846,15 +832,18 @@ for ::= FOR  LPAR declaracionFor SEMICOLON conditionalExpr:cond SEMICOLON ID aut
                                                                                                                     cuerpo.addHijo(temp);
                                                                                                                 }
                                                                                                             }
-                                                                                                            ArrayList arregloCondicion = (ArrayList) cond;
-                                                                                                            if(arregloCondicion != null){
-                                                                                                                for(int i = 0; i < arregloCondicion.size(); i++){
-                                                                                                                    if( ("&&".equals(((Nodo)arregloCondicion.get(i)).getTipo()) || "||".equals(((Nodo)arregloCondicion.get(i)).getTipo())) || arregloCondicion.size() == 1 ){
-                                                                                                                        Nodo temp = ((Nodo)arregloCondicion.get(i));
-                                                                                                                        condicion.addHijo(temp);
-                                                                                                                    }
+                                                                                                            Nodo conds = (Nodo) cond;
+                                                                                                            condicion.addHijo(conds);
+
+                                                                                                            ArrayList arregloDecFor = (ArrayList) decFor;
+                                                                                                            if(arregloDecFor != null){
+                                                                                                                for(int i = 0; i < arregloDecFor.size(); i++){
+                                                                                                                    Nodo temp = ((Nodo)arregloDecFor.get(i));
+                                                                                                                    declaracionFor.addHijo(temp);
                                                                                                                 }
                                                                                                             }
+                                                                                                            
+                                                                                                            nodo.addHijo(declaracionFor);
                                                                                                             nodo.addHijo(condicion);
                                                                                                             nodo.addHijo(cuerpo);
                                                                                                             ArrayList arregloNodos = new ArrayList();
@@ -873,11 +862,21 @@ autoAssign ::= ADDFOR
     | MULTFOR
     | error {: System.out.println("\u001B[31m" + "Unexpected character."); :};
 
-declaracionFor ::= declaracionFor COMMA instanciacionIntegerFor {::}
-    | INT instanciacionIntegerFor
-    | ;
+declaracionFor ::= declaracionFor:array COMMA instanciacionIntegerFor:node {:
+                                                                                ArrayList arreglo = (ArrayList)array;
+                                                                                Nodo nodo = (Nodo)node;
+                                                                                arreglo.add(nodo);
+                                                                                RESULT=arreglo;
+                                                                            :}
+    | INT instanciacionIntegerFor:node {:   
+                                            ArrayList array = new ArrayList();
+                                            Nodo nodo = (Nodo)node;
+                                            array.add(nodo);
+                                            RESULT=array;
+                                        :}
+    | {: ArrayList array = new ArrayList(); RESULT=array; :};
 
-instanciacionIntegerFor ::= ID ASSIGN INTEGER  {::}
+instanciacionIntegerFor ::= ID:id ASSIGN INTEGER:inte  {: Nodo nodo = new Nodo(id.toString(), inte.toString()); RESULT=nodo; :}
     | error ASSIGN INTEGER  {: System.out.println("\u001B[31m" + "Expected an id."); :}
     | ID error INTEGER  {: System.out.println("\u001B[31m" + "Expected '='."); :}
     | ID ASSIGN error  {: System.out.println("\u001B[31m" + "Expected a number."); :};

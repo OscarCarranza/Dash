@@ -5,6 +5,7 @@
  */
 package dash;
 
+import Nodos.Cuadruplo;
 import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
@@ -184,22 +185,30 @@ public class Compilador extends javax.swing.JFrame {
             System.out.println("Antes de Print");
             print(sintactico.raiz, nodoraiz);
             
-            //cuadruplos
-            
-            System.out.println("\n" + " ---------------- CUADRUPLOS ---------------------- \n");
-            for(int i = 0; i < Sintactico.cuads.size(); i++){
-                System.out.println("\u001B[34m" + Sintactico.cuads.get(i).toString());
-            }
-            System.out.println("");
             System.out.println("I\tID\tTipo\t\t\tAmbito\t\t\tProfundidad");
             for (int i = 0; i < sintactico.tabla.size(); i++) {
                 System.out.println( i + "\t" + ((Tabla)sintactico.tabla.get(i)).getId() + "\t" + ((Tabla)sintactico.tabla.get(i)).getTipo() + "\t\t\t" + ((Tabla)sintactico.tabla.get(i)).getAmbito() + "\t\t\t" + ((Tabla)sintactico.tabla.get(i)).getProfundidad() );
             }
+            System.out.println("");
             model.reload();
             tabla = sintactico.tabla;
             ambito = "global";
             profundidad = 0;
             checkTypes(sintactico.raiz, ambito);
+            
+            //
+            //falta tipos en ifs, fors, switch ect
+            //
+            
+            System.out.println("");
+            System.out.println("");
+            genCuadruplos(sintactico.raiz);
+            System.out.println("\n" + " ---------------- CUADRUPLOS ---------------------- \n");
+            for(int i = 0; i < cuads.size(); i++){
+                System.out.println("\u001B[34m" + cuads.get(i).toString());
+            }
+            
+            System.out.println("");
             
         } catch(Exception e){
             //
@@ -246,6 +255,16 @@ public class Compilador extends javax.swing.JFrame {
     ArrayList<Tabla> tabla;
     String ambito;
     int profundidad;
+    ArrayList<Cuadruplo> cuads = new ArrayList();
+    int contTemp = 0;
+    int contEtiq = 0;
+    boolean genCuadruplosEsAND = false;
+    ArrayList<Integer> arregloEtiquetas = new ArrayList(); //cuenta cuantos nodos hojas hay por cada ||
+    int posArregloEtiquetas = 0;
+    int contadorArregloEtiquetas = 0;
+    String padreEtiq = "";
+    boolean generarOR = false;
+    int banderaEtiqSalida = 0;
     
     private void print(Nodo nodo, DefaultMutableTreeNode arbolnodo){
         //System.out.print("\t");
@@ -432,6 +451,158 @@ public class Compilador extends javax.swing.JFrame {
         int index = ambito.lastIndexOf('.');
         ambito = ambito.substring(0, index);
         return ambito;
+    }
+    
+    private void genCuadruplos(Nodo nodo) {
+        for (int i = 0; i < nodo.getHijos().size(); i++) {
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("funcion") || ((Nodo)nodo.getHijos().get(i)).getTipo().equals("main") ){
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("if")){
+                arregloEtiquetas = new ArrayList();
+                arregloEtiquetas.add(0);
+                posArregloEtiquetas = 0;
+                contarHojas( ((Nodo)nodo.getHijos().get(i)).getHijoAt(0).getHijoAt(0) );
+         
+                posArregloEtiquetas = 0;
+                contadorArregloEtiquetas = 0;
+                genCuadruplosIF(((Nodo)nodo.getHijos().get(i)).getHijoAt(0).getHijoAt(0));
+                Cuadruplo cuad = new Cuadruplo("etiq", "", "","etiq" + contEtiq++);
+                cuads.add(cuad);
+                genCuadruplos(((Nodo)nodo.getHijos().get(i)).getHijoAt(0));
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("while")){
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("dowhile")){
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("for")){
+                genCuadruplosFOR(((Nodo)nodo.getHijos().get(i)));
+                llenarSalidas( "etiq"+Integer.toString(contEtiq) );
+                Cuadruplo cuadEtiq = new Cuadruplo("etiq", "", "","etiq" + contEtiq++);
+                cuads.add(cuadEtiq);
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("switch")){
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("aritmetica")){
+            }
+            genCuadruplos((Nodo)nodo.getHijos().get(i));
+        }
+    }
+    
+    private void genCuadruplosIF(Nodo nodo) {
+        System.out.println(nodo);
+        for (int i = 0; i < nodo.getHijos().size(); i++) {
+            System.out.println("\t"+nodo.getHijoAt(i));
+            if(nodo.getHijoAt(i).getHijos().size() > 0 ){
+                if( !nodo.getHijoAt(i).getTipo().matches("<|>|true|<=|>=|==|!=") )
+                    padreEtiq = nodo.getHijoAt(i).getTipo();
+                if(nodo.getTipo().equals("||"))
+                    generarOR = true;
+                if(i == 0)
+                    banderaEtiqSalida = contEtiq;
+                genCuadruplosIF(nodo.getHijoAt(i));
+                if(nodo.getTipo().equals("||")){
+                    if(i != (nodo.getHijos().size()-1) )
+                        posArregloEtiquetas++;
+                    contadorArregloEtiquetas = 0;
+                }
+            } else if( nodo.getTipo().matches("<|>|true|<=|>=|==|!=") && i < 1 ){
+                if(posArregloEtiquetas == arregloEtiquetas.size()-1)
+                    banderaEtiqSalida = contEtiq;
+                Cuadruplo cuadEtiq = new Cuadruplo("etiq", "", "","etiq" + contEtiq++);
+                cuads.add(cuadEtiq);
+                contadorArregloEtiquetas++;
+                String arg2;
+                if(nodo.getTipo().equals("true"))
+                    arg2 = "";
+                else
+                    arg2 = nodo.getHijoAt(1).getTipo();
+                if(contadorArregloEtiquetas == arregloEtiquetas.get(posArregloEtiquetas) ){
+                    if(generarOR){
+                        int sumaEntrarCuerpo = banderaEtiqSalida;
+                        for (int j = posArregloEtiquetas; j < arregloEtiquetas.size(); j++) {
+                            sumaEntrarCuerpo+=arregloEtiquetas.get(j);
+                        }
+                        Cuadruplo cuad = new Cuadruplo("if"+nodo.getTipo(), nodo.getHijoAt(0).getTipo(), arg2, "etiq" + sumaEntrarCuerpo );
+                        cuads.add(cuad);
+                        int banderaSumaORFinal = (banderaEtiqSalida+arregloEtiquetas.get(posArregloEtiquetas));
+                        if(posArregloEtiquetas == arregloEtiquetas.size()-1)
+                            banderaSumaORFinal=-1;
+                        Cuadruplo cuadGoto = new Cuadruplo("goto", "", "","etiq" + banderaSumaORFinal );
+                        cuads.add(cuadGoto);
+                    } else {
+                        Cuadruplo cuad = new Cuadruplo("if"+nodo.getTipo(), nodo.getHijoAt(0).getTipo(), arg2, "etiq" + contEtiq );
+                        cuads.add(cuad);
+                        int banderaSumaORFinal = (banderaEtiqSalida+arregloEtiquetas.get(posArregloEtiquetas));
+                        if(posArregloEtiquetas == arregloEtiquetas.size()-1)
+                            banderaSumaORFinal=-1;
+                        Cuadruplo cuadGoto = new Cuadruplo("goto", "", "","etiq" + banderaSumaORFinal );
+                        cuads.add(cuadGoto);
+                    }
+                } else if(padreEtiq.equals("&&")){
+                    Cuadruplo cuad = new Cuadruplo("if"+nodo.getTipo(), nodo.getHijoAt(0).getTipo(), arg2,"etiq" + contEtiq );
+                    cuads.add(cuad);
+                    if(generarOR){
+                        Cuadruplo cuadGoto = new Cuadruplo("goto", "", "", "etiq" + (banderaEtiqSalida+arregloEtiquetas.get(posArregloEtiquetas)) );
+                        cuads.add(cuadGoto);
+                    } else {
+                        Cuadruplo cuadGoto = new Cuadruplo("goto", "", "", "etiqSALIDA" );
+                        cuads.add(cuadGoto);
+                    }
+                } else {
+                    Cuadruplo cuad = new Cuadruplo("if"+nodo.getTipo(), nodo.getHijoAt(0).getTipo(), arg2,"etiq" + (banderaEtiqSalida+arregloEtiquetas.get(posArregloEtiquetas)) );
+                    cuads.add(cuad);
+                    Cuadruplo cuadGoto = new Cuadruplo("goto", "", "", "etiq" + contEtiq );
+                    cuads.add(cuadGoto);
+                }
+            }
+        }
+    }
+    
+    private void contarHojas(Nodo nodo) {
+        if(nodo.getTipo().equals("||")){
+            arregloEtiquetas.add(0);
+            for (int i = 0; i < nodo.getHijos().size(); i++) {
+                contarHojas(nodo.getHijoAt(i));
+                if(i != (nodo.getHijos().size()-1) )
+                    posArregloEtiquetas++;
+            }
+        } else if(nodo.getTipo().equals("&&")) {
+            for (int i = 0; i < nodo.getHijos().size(); i++) {
+                contarHojas(nodo.getHijoAt(i));
+            }
+        } else
+            arregloEtiquetas.set(posArregloEtiquetas, arregloEtiquetas.get(posArregloEtiquetas) + 1);
+    }
+    
+    private void genCuadruplosFOR(Nodo nodo) {
+        //System.out.println(nodo);
+        for (int i = 0; i < nodo.getHijos().size(); i++) {
+            if(i == 0){
+                for (int j = 0; j < nodo.getHijoAt(0).getHijos().size(); j++) {
+                    Cuadruplo cuadEtiq = new Cuadruplo("=", nodo.getHijoAt(0).getHijos().get(j).getValue(), "", nodo.getHijoAt(0).getHijos().get(j).getTipo());
+                    cuads.add(cuadEtiq);
+                }
+            } else if(i == 1){
+                arregloEtiquetas = new ArrayList();
+                arregloEtiquetas.add(0);
+                posArregloEtiquetas = 0;
+                contarHojas( ((Nodo)nodo.getHijos().get(i)).getHijoAt(0));
+         
+                posArregloEtiquetas = 0;
+                contadorArregloEtiquetas = 0;
+                genCuadruplosIF(((Nodo)nodo.getHijos().get(i)).getHijoAt(0));
+            } else{
+                Cuadruplo cuadEtiq = new Cuadruplo("etiq", "", "","etiq" + contEtiq++);
+                cuads.add(cuadEtiq);
+            }
+        }
+    }
+    
+    private void llenarSalidas(String gotoEtiq){
+        for (int i = 0; i < cuads.size(); i++) {
+            if(cuads.get(i).getResultado().equals("etiq-1"))
+                cuads.set(i, new Cuadruplo(cuads.get(i).getOperacion(), cuads.get(i).getArgumento1(), cuads.get(i).getArgumento2(), gotoEtiq) );
+        }
     }
     
 
