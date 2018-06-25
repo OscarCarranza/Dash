@@ -1028,7 +1028,7 @@ body ::= body:b declaracion:a {: if(b != null){
                              } else {
                                 ArrayList arregloCommand = (ArrayList) a;
                                 Nodo assign_var = (Nodo)arregloCommand.get(0);
-                                RESULT = a;} :}
+                                RESULT = a;} :}    
     |   {:
             ArrayList arreglo = new ArrayList();
             RESULT = arreglo;
@@ -1168,14 +1168,9 @@ varRet ::= ID:id   {: RESULT = id.toString(); :}
 
 /* --------------------- Operaciones Aritmeticas ---------------------------*/
 assign_var ::= ID:id ASSIGN arithmetic_exp:ae DASH {:   String sArit = id.toString() + "=" + ae;
-                                                        System.out.println("-----> " + ae.toString());
-                                                        String s = this.parser.splitOp(ae.toString());
                                                         ArrayList arreglo = new ArrayList();
                                                         Nodo op_aritmetica= new Nodo("aritmetica",sArit);
-                                                        Infix2Postfix inf = new Infix2Postfix(s);
-                                                        inf.CodigoIntermedio();
                                                         arreglo.add(op_aritmetica);
-                                                        this.parser.cuads.add(new Cuadruplo("=",id.toString(),"t_" + this.parser.contTemp++));
                                                         RESULT = arreglo; :}
 ;
 
@@ -1199,7 +1194,7 @@ term ::= factor:fact                         {: RESULT = fact.toString();
                                                 RESULT = d; :};
 
 factor ::= INTEGER:id                  {: RESULT = id.toString(); :}
-    | ID:id                            {:   if( this.parser.buscarTipo(id.toString()).length() == 0 ){
+    | ID:id               {:   if( this.parser.buscarTipo(id.toString()).length() == 0 ){
                                                 System.out.println("\u001B[31m" + "Assigned variable "+ id.toString() +" does not exist.");
                                                 RESULT = "Error - "+id.toString();
                                             }
@@ -1207,8 +1202,8 @@ factor ::= INTEGER:id                  {: RESULT = id.toString(); :}
                                                 RESULT = id.toString(); :}
     | TRUE:id                          {: RESULT = id.toString(); :}
     | FALSE:id                         {: RESULT = id.toString(); :}
-    | LPAR arithmetic_exp:ae RPAR       {: RESULT = ae.toString(); :} ;                                                       
-       
+    | LPAR arithmetic_exp:ae RPAR       {: RESULT = ae.toString(); :};                                                       
+
     
 /* -------------------- Lectura y Escritura ---------------------------*/
 entry ::= READ LPAR ID:id RPAR DASH     {:  ArrayList arreglo = new ArrayList();

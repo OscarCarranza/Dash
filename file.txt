@@ -1,4 +1,7 @@
 int[1] b-
+char c-
+int g-
+
 func suma => (int a){
 	char z-
 	ret a-
@@ -14,15 +17,18 @@ func hola => (int a, int b){
 			}
 			for (int a = 2; a<=1; i++){
 				int q1-
-			
+				dash.print("ferferf")-
+
 			}
 	}
 	if(a <= b && c <= d || f > 2 && a && b > 2 || 1 > 2){
 		char a33-
-		//a1 = q + q1 * 3 / 5 + 1-
+		string hello-
 		dash.in(hello)-
 		dash.print("HOLA MUNDO" + hello)-
 		int q-
+		int bandera-
+		q = q + q1 * 3 / 5-
 		a = suma(q)-
 		for (int a = 3; a<=1; i++){
 			int q2-
@@ -33,6 +39,8 @@ func hola => (int a, int b){
 		if(a2 > 3 || m){
 			char a3-
 			char[2] a4, a5-
+			dash.print("HELLO")-
+
 		}
 	}
 	ret a-
