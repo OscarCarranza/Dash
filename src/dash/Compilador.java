@@ -31,6 +31,7 @@ import javax.swing.tree.DefaultTreeModel;
 public class Compilador extends javax.swing.JFrame {
 
     public Nodo raiz;
+    boolean error = false;
     public Compilador() {
         initComponents();
     }
@@ -182,10 +183,23 @@ public class Compilador extends javax.swing.JFrame {
             DefaultMutableTreeNode nodoraiz = new DefaultMutableTreeNode(sintactico.raiz.getTipo());
             root.add(nodoraiz);
             print(sintactico.raiz, nodoraiz);
+        
+            model.reload();
+            tabla = sintactico.tabla;
+            ambito = "global";
+            profundidad = 0;
+            checkTypes(sintactico.raiz, ambito);
+            //
+            //falta tipos en ifs, fors, switch ect
+            //
+            genCuadruplos(sintactico.raiz);
+            genMIPS();
             
-            System.out.println("I\tID\tTipo\t\t\tAmbito\t\t\tProfundidad");
+            //sin errores imprima tablas 
+            if(error == false){
+                 System.out.println(" ------------------------------------- Tabla de Simbolos --------------------------------------------");
             for (int i = 0; i < sintactico.tabla.size(); i++) {
-                System.out.println( i + "\t" + ((Tabla)sintactico.tabla.get(i)).getId() + "\t" + ((Tabla)sintactico.tabla.get(i)).getTipo() + "\t\t\t" + ((Tabla)sintactico.tabla.get(i)).getAmbito() + "\t\t\t" + ((Tabla)sintactico.tabla.get(i)).getProfundidad() );
+                System.out.println(((Tabla)sintactico.tabla.get(i)).toString());
                 
                 //agregar al archivo mips vars globales
                 if(((Tabla)sintactico.tabla.get(i)).getAmbito().equals("global")){
@@ -210,18 +224,7 @@ public class Compilador extends javax.swing.JFrame {
                     }
                 }
             }
-            System.out.println("");
-            model.reload();
-            tabla = sintactico.tabla;
-            ambito = "global";
-            profundidad = 0;
-            checkTypes(sintactico.raiz, ambito);
-
-            //
-            //falta tipos en ifs, fors, switch ect
-            //
-            genCuadruplos(sintactico.raiz);
-            genMIPS();
+            
 
             System.out.println("\n" + " ---------------- CUADRUPLOS ---------------------- \n");
             for(int i = 0; i < cuads.size(); i++){
@@ -240,7 +243,8 @@ public class Compilador extends javax.swing.JFrame {
                 System.out.println(textMIPS.get(i));
             }  
             
-
+            }
+            error = false;
             
         } catch(Exception e){
             //
@@ -361,10 +365,11 @@ public class Compilador extends javax.swing.JFrame {
     }
     
     private void checkFunRet(Nodo nodo, String ambito, int profundidad){
-        String tipoRetornoTabla = getTipoVar(nodo.getHijos().get(nodo.getHijos().size()-1).getValue(), ambito, profundidad);
+        // el ultimo es el fin. el penultimo es el return
+        String tipoRetornoTabla = getTipoVar(nodo.getHijos().get(nodo.getHijos().size()-2).getValue(), ambito, profundidad);
         if(!isNumeric(nodo.getHijos().get(nodo.getHijos().size()-1).getValue()))
             if( tipoRetornoTabla.length() == 0 )
-                System.out.println("\u001B[31m" + "Return variable "+nodo.getValue()+" has not been declared.");
+                System.out.println("\u001B[31m" + "Return variable in func "+nodo.getValue()+" has not been declared.");
     }
     
     private void checkAritmetica(Nodo nodo, String ambito, int profundidad){
@@ -380,27 +385,37 @@ public class Compilador extends javax.swing.JFrame {
             else
                 tipoAsignadores.add(getTipoVar(partsAritmetica[i], ambito, profundidad));
         }
-        if( tipoAsignado.length() == 0 )
+        if( tipoAsignado.length() == 0 ){
             System.out.println("\u001B[31m" + "Assigned variable  "+partsAsignacion[0]+" has not been declared.");
+            error = true;
+        }
         for (int i = 0; i < tipoAsignadores.size(); i++) {
             if(tipoAsignadores.get(i).equals("")){
                 if(partsAritmetica[i].contains("(")){
                     System.out.println("\u001B[31m" + "Function "+partsAritmetica[i]+" has not been declared.");
                     probarParams[i] =  false;
+                    error = true;
+
                 } else if(!isNumeric(partsAritmetica[i])){
                     System.out.println("\u001B[31m" + " Variable "+partsAritmetica[i]+" has not been declared.");
                     probarParams[i] =  false;
+                    error = true;
+
                 }
             } else if(!tipoAsignadores.get(i).equals("int") ){
                 if(partsAritmetica[i].contains("(")){
                     String[] partsFuncion = partsAritmetica[i].split(" |\\(");
                     String tipoFuncion = getTipoVar(partsFuncion[0], ambito, profundidad);
                     String[] tipoRetFuncion = tipoFuncion.split(" x | -> ");
-                    if(!tipoAsignado.equals(tipoRetFuncion[tipoRetFuncion.length-1]) && tipoAsignado.length() > 0)
-                        System.out.println("\u001B[31m" + "Invalid assignation "+partsAsignacion[0]+" type: "+partsFuncion[0]+" - Exptected "+tipoAsignado+".");
+                    if(!tipoAsignado.equals(tipoRetFuncion[tipoRetFuncion.length-1]) && tipoAsignado.length() > 0){
+                        error = true;
+                        System.out.println("\u001B[31m" + "Invalid assignation "+partsAsignacion[0]+" type: "+partsFuncion[0]+" - Expected "+tipoAsignado+".");
+
+                    }
                 }
             } else if(!tipoAsignado.equals("int")){
                 System.out.println(partsAsignacion[0]);
+                error = true;
                 System.out.println("\u001B[31m" + "Invalid assignation "+partsAsignacion[0]+" type: "+tipoAsignado+" not compatible with int."); //por si se suma int a strings o char
             }
         }
@@ -417,25 +432,40 @@ public class Compilador extends javax.swing.JFrame {
                     String tipoFuncion = getTipoVar(partsFuncion[0].split(" ")[0], ambito, profundidad);    //trayendo el tipo real de la funcion en la tabla de variables
                     String[] partsFuncionRetorno = tipoFuncion.split(" x | -> ");
                     
-                    if(partsParametros.length == 0 && partsFuncionRetorno.length == 1)
-                        System.out.println("\u001B[31m" + "Function Call "+ partsFuncion[0].split(" ")[0] +" invalid: Too much params.");
-                    else if(partsParametros.length == 0 && partsFuncionRetorno.length > 1 && !partsFuncionRetorno[0].equals(""))
-                        System.out.println("\u001B[31m" + "Function Call "+ partsFuncion[0].split(" ")[0] +" invalid: More params expected.");
+                    if(partsParametros.length == 0 && partsFuncionRetorno.length == 1){
+                          System.out.println("\u001B[31m" + "Function Call "+ partsFuncion[0].split(" ")[0] +" invalid: Too much params.");
+                          error = true;
+                    }
+                    else if(partsParametros.length == 0 && partsFuncionRetorno.length > 1 && !partsFuncionRetorno[0].equals("")){
+                         System.out.println("\u001B[31m" + "Function Call "+ partsFuncion[0].split(" ")[0] +" invalid: More params expected.");
+                         error = true;
+                    }
                     for (int j = 0; j < partsParametros.length; j++) {
                         String tipoParam = getTipoVar(partsParametros[j], ambito, profundidad);
-                        if (tipoParam.length() == 0)
+                        if (tipoParam.length() == 0){
                             System.out.println("\u001B[31m" + "Variable "+partsParametros[j]+" has not been declared in: "+ partsFuncion[0] +".");
+                            error = true;
+                        }
                         else {
                             
-                            if(partsFuncionRetorno.length-1 <= j)
+                            if(partsFuncionRetorno.length-1 <= j){
                                 System.out.println("\u001B[31m" + "Function Call "+ partsFuncion[0].split(" ")[0] +" invalid: "+partsParametros[j]+". Too much params.");
+                                error = true;
+                            }
                             else{
-                                if(partsFuncionRetorno.length-1 > partsParametros.length)
+                                if(partsFuncionRetorno.length-1 > partsParametros.length){
                                     System.out.println("\u001B[31m" + "Function Call "+ partsFuncion[0].split(" ")[0] +" invalido in: "+". More params expected.");
-                                else if(!partsFuncionRetorno[j].equals(tipoParam) && j < partsFuncionRetorno.length-1 && !partsFuncionRetorno[j].equals(""))
+                                    error = true;
+                                }
+                                else if(!partsFuncionRetorno[j].equals(tipoParam) && j < partsFuncionRetorno.length-1 && !partsFuncionRetorno[j].equals("")){
                                     System.out.println("\u001B[31m" + "Function Call "+ partsFuncion[0].split(" ")[0] +" invalido in "+ partsParametros[j] +": Incompatible types - expected "+partsFuncionRetorno[j]+".");
-                                else if(partsFuncionRetorno[j].equals(""))
+                                    error = true;
+                                }
+                                else if(partsFuncionRetorno[j].equals("")){
+                                    error = true;
                                     System.out.println("\u001B[31m" + "Function Call "+ partsFuncion[0].split(" ")[0] +" invalid in: "+partsParametros[j]+". Too much params.");
+     
+                                }
                             }
                         }
                     }// fin for
@@ -491,8 +521,18 @@ public class Compilador extends javax.swing.JFrame {
     
     private void genCuadruplos(Nodo nodo) {
         for (int i = 0; i < nodo.getHijos().size(); i++) {
-            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("funcion") || ((Nodo)nodo.getHijos().get(i)).getTipo().equals("main") ){
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("funcion")){
+                cuads.add(new Cuadruplo("func","","",((Nodo)nodo.getHijos().get(i)).getValue()));
             }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("return")){
+                cuads.add(new Cuadruplo("ret","","",((Nodo)nodo.getHijos().get(i)).getValue()));
+
+            }   
+             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("finFunc")){
+                cuads.add(new Cuadruplo("finFunc","","",((Nodo)nodo.getHijos().get(i)).getValue()));
+
+            }
+            
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("if")){
                 arregloEtiquetas = new ArrayList();
                 arregloEtiquetas.add(0);
@@ -700,9 +740,61 @@ public class Compilador extends javax.swing.JFrame {
         }
     }
     
+    int offset = 0;
+    String $s[] = new String[8];
+    
     private void genMIPS(){
-        
         for(int i = 0; i < cuads.size(); i++){
+            
+            if(cuads.get(i).getOperacion().equals("func")){
+                String nombreFun = cuads.get(i).getResultado();
+                textMIPS.add(nombreFun + ":\n\t");
+                offset += 4;
+                textMIPS.add("sw $fp, -" + offset + "($sp)");
+                offset += 4;
+                textMIPS.add("sw $ra, -" + offset + "($sp)");
+                int index = 0;
+                int paramsFound = 0;
+                nombreFun = "global." + nombreFun;
+                
+                //buscar params de funcion en tabla
+                for(int j = 0; j < tabla.size(); j++){
+                    if(nombreFun.equals(tabla.get(j).getAmbito()) && tabla.get(j).getParam() == 1){
+                        //reservo espacio en memoria
+                        offset += getSize(tabla.get(j).getTipo());
+                        textMIPS.add("sw $s" + index + ", -" + offset + ("($sp)"));
+                        $s[index] = tabla.get(j).getId();
+                        index++;
+                        paramsFound++;
+                    }
+                } 
+                
+                //asigna params
+                for(int j = 0; j < paramsFound ; j++){
+                    if($s[j] != null){
+                        textMIPS.add("move $s" + j + ", $a" + j);
+                    }
+                }                         
+            }
+            if(cuads.get(i).getOperacion().equals("finFunc")){
+                String amb = cuads.get(i).getResultado();
+                amb = "global." + amb;
+                System.out.println("el off ---> " + offset);
+                for(int j = 7 ; j >= 0; j--){
+                    if($s[j] != null){
+                        int size = getSize($s[j],amb);
+                        System.out.println("s[j] = " + $s[j] + "  tam: " + size);
+                        textMIPS.add("lw $s" + j + ", -" + offset + "($fp)");
+                        offset -= size;
+                    }
+                }    
+                textMIPS.add("sw $fp, -" + offset + "($sp)");
+                offset -= 4;
+                textMIPS.add("sw $ra, -" + offset + "($sp)");
+                offset -=4;
+                textMIPS.add("jr $ra");
+                
+            } 
             if(cuads.get(i).getOperacion().equals("in")){
                 
             }
@@ -760,6 +852,44 @@ public class Compilador extends javax.swing.JFrame {
         }
     }
     
+    private int getSize(String s, String amb){
+        for(int i = 0; i < tabla.size(); i++){
+            if(tabla.get(i).getAmbito().equals(amb) && tabla.get(i).getId().equals(s)){
+                s = tabla.get(i).getTipo();
+                break;
+            }
+        }
+        switch (s) {
+            case "int":
+                return 4;
+            case "char":
+                return 1;
+            case "bool":
+                return 1;
+            case "string":
+                return 4;
+            default:
+                return 0;
+        }
+    }
+    
+    private int getSize(String s){
+        switch (s) {
+            case "int":
+                return 4;
+            case "char":
+                return 1;
+            case "bool":
+                return 1;
+            case "string":
+                return 4;
+            default:
+                return 0;
+        }
+    }
+    
+    
+
    
    
     

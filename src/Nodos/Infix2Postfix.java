@@ -77,11 +77,10 @@ public class Infix2Postfix {
         
         public void CodigoIntermedio(){
             Stack st = new Stack();
-
             String id = "";
             for(int i = 0; i < finalString.length(); i++){
                 
-
+                
                 // concat to id
                 if(finalString.charAt(i) != ' ' && !isOperator(Character.toString(finalString.charAt(i)))){
                     id += finalString.charAt(i);
@@ -119,4 +118,5 @@ public class Infix2Postfix {
                     return 0;
             }
         }
+        
 }

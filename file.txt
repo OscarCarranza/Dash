@@ -1,10 +1,11 @@
-int[1] b-
+
 char c-
 int g-
 
-func suma => (int a){
-	char z-
-	ret a-
+func suma => (int s){
+	int r-
+	r = s + 1-
+	ret r-
 }-
 
 func hola => (int a, int b){
@@ -28,8 +29,8 @@ func hola => (int a, int b){
 		dash.print("HOLA MUNDO" + hello)-
 		int q-
 		int bandera-
-		q = q + q1 * 3 / 5-
-		a = suma(q)-
+		a = suma(bandera)-
+		q = q + q * 3 / 5 + suma(q)-
 		for (int a = 3; a<=1; i++){
 			int q2-
 		}
