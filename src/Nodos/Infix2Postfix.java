@@ -1,6 +1,7 @@
 package Nodos;
 
 
+import dash.Compilador;
 import dash.Sintactico;
 import java.util.Scanner;
 import java.util.Stack;
@@ -16,7 +17,6 @@ public class Infix2Postfix {
 		
 		String str = "";
 		infixExp = exp;
-                System.out.println("INF EXP = " + infixExp);
 		stack = new Stack<String>();
                 String id = "";
 		
@@ -50,7 +50,6 @@ public class Infix2Postfix {
 		while(!(stack.isEmpty()))
 			postfixExp += " " + stack.pop();
                 finalString = postfixExp;
-                System.out.println("POSTFIX = " + finalString);
 	}
 	
 	private boolean isOperator(String ch){
@@ -78,11 +77,10 @@ public class Infix2Postfix {
         
         public void CodigoIntermedio(){
             Stack st = new Stack();
-
             String id = "";
             for(int i = 0; i < finalString.length(); i++){
                 
-
+                
                 // concat to id
                 if(finalString.charAt(i) != ' ' && !isOperator(Character.toString(finalString.charAt(i)))){
                     id += finalString.charAt(i);
@@ -93,9 +91,9 @@ public class Infix2Postfix {
                    String s1 = st.pop().toString();
                    String s2 = st.pop().toString();
                    
-                   Cuadruplo c = new Cuadruplo(Character.toString(finalString.charAt(i)),s2,s1,"t_" + Sintactico.contTemp++);
-                   Sintactico.cuads.add(c);
-                   st.push("t_" + Sintactico.contTemp);
+                   Cuadruplo c = new Cuadruplo(Character.toString(finalString.charAt(i)),s2,s1,"t_" + Compilador.contTemp++);
+                   Compilador.cuads.add(c);
+                   st.push("t_" + (Compilador.contTemp-1));
                    
                 }
                 else if(finalString.charAt(i) == ' ' && !id.isEmpty()){
@@ -120,4 +118,5 @@ public class Infix2Postfix {
                     return 0;
             }
         }
+        
 }

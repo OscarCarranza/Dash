@@ -15,14 +15,26 @@ public class Tabla {
     String ambito;
     int profundidad;
     int direccion;
+    int param;
 
-    public Tabla(String id, String tipo, String ambito, int profundidad, int direccion) {
+    //param = 1 si es un parametro
+    public Tabla(String id, String tipo, String ambito, int profundidad, int direccion, int param) {
         this.id = id;
         this.tipo = tipo;
         this.ambito = ambito;
         this.profundidad = profundidad;
         this.direccion = direccion;
+        this.param = param;
     }
+
+    public int getParam() {
+        return param;
+    }
+
+    public void setParam(int param) {
+        this.param = param;
+    }
+    
 
     public String getId() {
         return id;
@@ -64,4 +76,9 @@ public class Tabla {
         this.direccion = direccion;
     }
     
+    @Override
+    public String toString() {
+        String form = "%-20s %-30s %-30s %-5s %-5s";
+        return String.format(form, id, tipo, ambito, profundidad, (param == 1) ? "X" : "");
+    }
 }
