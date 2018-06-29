@@ -1154,7 +1154,7 @@ parameters ::= parameters:params COMMA params_type:param ID:id  {:ArrayList arre
 ids ::= moreIds:ids          {:ArrayList idsArray = (ArrayList)ids;
                                 
                                 RESULT = idsArray; :}
-    | ;
+    | {:ArrayList idsArray = new ArrayList(); RESULT = idsArray; :};
 
 moreIds ::= moreIds:ids COMMA types:id     {: ArrayList idsArray = (ArrayList)ids;
                                             idsArray.add(id.toString());
@@ -1212,11 +1212,11 @@ term ::= factor:fact                         {: RESULT = fact.toString();
 
 factor ::=  func:f                              {: RESULT = f.toString(); :}
     | INTEGER:id                  {: RESULT = id.toString(); :}
-    | ID:id               {:   if( this.parser.buscarTipo(id.toString()).length() == 0 ){
+    | ID:id               {:   /*if( this.parser.buscarTipo(id.toString()).length() == 0 ){
                                                 System.out.println("\u001B[31m" + "Assigned variable "+ id.toString() +" does not exist.");
                                                 RESULT = "Error - "+id.toString();
                                             }
-                                            else
+                                            else*/
                                                 RESULT = id.toString(); :}
     | TRUE:id                          {: RESULT = id.toString(); :}
     | FALSE:id                         {: RESULT = id.toString(); :}

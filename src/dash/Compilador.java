@@ -76,7 +76,7 @@ public class Compilador extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         jLabel3.setText("DASH");
 
-        jButton1.setText("Calcular");
+        jButton1.setText("Compilar");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
@@ -180,6 +180,30 @@ public class Compilador extends javax.swing.JFrame {
             //ta_result.setText(sintactico.parse().toString());
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+            if( model.getChildCount(model.getRoot()) > 0 ){
+                root.removeAllChildren();
+                cuads = new ArrayList();
+                contTemp = 0;
+                contEtiq = 0;
+                genCuadruplosEsAND = false;
+                arregloEtiquetas = new ArrayList(); //cuenta cuantos nodos hojas hay por cada ||
+                posArregloEtiquetas = 0;
+                contadorArregloEtiquetas = 0;
+                padreEtiq = "";
+                generarOR = false;
+                banderaEtiqSalida = 0;
+                data = new ArrayList();
+                textMIPS = new ArrayList();
+                contPrints = 1;
+                tieneMain = false;
+                guardarNodoCondicionCheck = "";
+                System.out.println("");
+                System.out.println("");
+                System.out.println("--------------------------------------------------------------------------");
+                System.out.println("\t\t\tNueva Compilacion");
+                System.out.println("");
+                System.out.println("");
+            }
             DefaultMutableTreeNode nodoraiz = new DefaultMutableTreeNode(sintactico.raiz.getTipo());
             root.add(nodoraiz);
             print(sintactico.raiz, nodoraiz);
@@ -195,55 +219,58 @@ public class Compilador extends javax.swing.JFrame {
             genCuadruplos(sintactico.raiz);
             genMIPS();
             
-            //sin errores imprima tablas 
-            if(error == false){
-                 System.out.println(" ------------------------------------- Tabla de Simbolos --------------------------------------------");
-            for (int i = 0; i < sintactico.tabla.size(); i++) {
-                System.out.println(((Tabla)sintactico.tabla.get(i)).toString());
-                
-                //agregar al archivo mips vars globales
-                if(((Tabla)sintactico.tabla.get(i)).getAmbito().equals("global")){
-                    String tipo = ((Tabla)sintactico.tabla.get(i)).getTipo();
-                    switch(tipo){
-                            // falta si estan inicialiizados 
-                            case "int": data.add(((Tabla)sintactico.tabla.get(i)).getId() + " .WORD 0");
-                                break;
-                            case "int*":
-                                break;                                  
-                            case "char":data.add(((Tabla)sintactico.tabla.get(i)).getId() + ": .space '1'");
-                                break;
-                            case "char*":
-                                break;
-                            case "bool": data.add(((Tabla)sintactico.tabla.get(i)).getId() + " .WORD 0");
-                                break;
-                            case "bool*":
-                                break;           
-                            case "string":  data.add(((Tabla)sintactico.tabla.get(i)).getId() + ": .asciiz " + "");;
-                                break;  
-                            default: ;
-                    }
-                }
-            }
-            
+            //sin errores imprima tablas
+            //if(tieneMain) {
+                if(error == false) {
+                     System.out.println(" ------------------------------------- Tabla de Simbolos --------------------------------------------");
+                    for (int i = 0; i < sintactico.tabla.size(); i++) {
+                        System.out.println(((Tabla)sintactico.tabla.get(i)).toString());
 
-            System.out.println("\n" + " ---------------- CUADRUPLOS ---------------------- \n");
-            for(int i = 0; i < cuads.size(); i++){
-                System.out.println("\u001B[34m" + cuads.get(i).toString());
-            }
-            
-            System.out.println("\n" + "---------------- M I P S ------------------------\n");
-            System.out.println(".data");
-            for(int i = 0; i < data.size(); i++){
-                System.out.println(data.get(i));
-            }  
-            
-            System.out.println("\n" + ".text");
-            System.out.println("\n" + ".global main");
-            for(int i = 0; i < textMIPS.size(); i++){
-                System.out.println(textMIPS.get(i));
-            }  
-            
-            }
+                        //agregar al archivo mips vars globales
+                        if(((Tabla)sintactico.tabla.get(i)).getAmbito().equals("global")){
+                            String tipo = ((Tabla)sintactico.tabla.get(i)).getTipo();
+                            switch(tipo){
+                                    // falta si estan inicialiizados 
+                                    case "int": data.add(((Tabla)sintactico.tabla.get(i)).getId() + " .WORD 0");
+                                        break;
+                                    case "int*":
+                                        break;                                  
+                                    case "char":data.add(((Tabla)sintactico.tabla.get(i)).getId() + ": .space '1'");
+                                        break;
+                                    case "char*":
+                                        break;
+                                    case "bool": data.add(((Tabla)sintactico.tabla.get(i)).getId() + " .WORD 0");
+                                        break;
+                                    case "bool*":
+                                        break;           
+                                    case "string":  data.add(((Tabla)sintactico.tabla.get(i)).getId() + ": .asciiz " + "");;
+                                        break;  
+                                    default: ;
+                            }
+                        }
+                    }
+
+
+                    System.out.println("\n" + " ---------------- CUADRUPLOS ---------------------- \n");
+                    for(int i = 0; i < cuads.size(); i++){
+                        System.out.println("\u001B[34m" + cuads.get(i).toString());
+                    }
+
+                    System.out.println("\n" + "---------------- M I P S ------------------------\n");
+                    System.out.println(".data");
+                    for(int i = 0; i < data.size(); i++){
+                        System.out.println(data.get(i));
+                    }  
+
+                    System.out.println("\n" + ".text");
+                    System.out.println("\n" + ".global main");
+                    for(int i = 0; i < textMIPS.size(); i++){
+                        System.out.println(textMIPS.get(i));
+                    } 
+
+                }
+            //} else
+                    //System.out.println("\u001B[31m" + "No main method found.");
             error = false;
             
         } catch(Exception e){
@@ -304,6 +331,8 @@ public class Compilador extends javax.swing.JFrame {
     ArrayList <String> data = new ArrayList();
     ArrayList <String> textMIPS = new ArrayList();
     int contPrints = 1;
+    boolean tieneMain = false;
+    String guardarNodoCondicionCheck = "";
     
     private void print(Nodo nodo, DefaultMutableTreeNode arbolnodo){
         //System.out.print("\t");
@@ -322,28 +351,39 @@ public class Compilador extends javax.swing.JFrame {
                 profundidad = 0;
                 if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("funcion") )
                     ambito+="."+((Nodo)nodo.getHijos().get(i)).getValue();
-                else
+                else{
                     ambito+=".main";
+                    tieneMain =  true;
+                }
                 entro = true;
                 checkFunRet((Nodo)nodo.getHijos().get(i), ambito, profundidad);
                 //checkFunParams((Nodo)nodo.getHijos().get(i));
             }
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("if")){
+                guardarNodoCondicionCheck = "if";
+                checkCondicion((Nodo)nodo.getHijos().get(i).getHijoAt(0), ambito, profundidad);
                 ambito+=".if";
                 profundidad++;
                 entro = true;
             }
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("while")){
+                guardarNodoCondicionCheck = "while";
+                checkCondicion((Nodo)nodo.getHijos().get(i).getHijoAt(0), ambito, profundidad);
                 ambito+=".while";
                 profundidad++;
                 entro = true;
             }
-            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("dowhile")){
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("do while")){
+                guardarNodoCondicionCheck = "do while";
+                checkCondicion((Nodo)nodo.getHijos().get(i).getHijoAt(0), ambito, profundidad);
                 ambito+=".dowhile";
                 profundidad++;
                 entro = true;
             }
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("for")){
+                guardarNodoCondicionCheck = "for";
+                checkDeclaFor((Nodo)nodo.getHijos().get(i).getHijoAt(0).getHijoAt(0));
+                checkCondicion((Nodo)nodo.getHijos().get(i).getHijoAt(1), ambito, profundidad);
                 ambito+=".for";
                 profundidad++;
                 entro = true;
@@ -386,18 +426,18 @@ public class Compilador extends javax.swing.JFrame {
                 tipoAsignadores.add(getTipoVar(partsAritmetica[i], ambito, profundidad));
         }
         if( tipoAsignado.length() == 0 ){
-            System.out.println("\u001B[31m" + "Assigned variable  "+partsAsignacion[0]+" has not been declared.");
+            System.out.println("\u001B[31m" + "Assigned variable "+partsAsignacion[0]+" has not been declared.");
             error = true;
         }
         for (int i = 0; i < tipoAsignadores.size(); i++) {
             if(tipoAsignadores.get(i).equals("")){
                 if(partsAritmetica[i].contains("(")){
-                    System.out.println("\u001B[31m" + "Function "+partsAritmetica[i]+" has not been declared.");
+                    System.out.println("\u001B[31m" + "Function "+partsAritmetica[i]+" has not been declared in assignation "+partsAsignacion[0]+".");
                     probarParams[i] =  false;
                     error = true;
 
                 } else if(!isNumeric(partsAritmetica[i])){
-                    System.out.println("\u001B[31m" + " Variable "+partsAritmetica[i]+" has not been declared.");
+                    System.out.println("\u001B[31m" + " Variable "+partsAritmetica[i]+" has not been declared in assignation "+partsAsignacion[0]+".");
                     probarParams[i] =  false;
                     error = true;
 
@@ -409,14 +449,16 @@ public class Compilador extends javax.swing.JFrame {
                     String[] tipoRetFuncion = tipoFuncion.split(" x | -> ");
                     if(!tipoAsignado.equals(tipoRetFuncion[tipoRetFuncion.length-1]) && tipoAsignado.length() > 0){
                         error = true;
-                        System.out.println("\u001B[31m" + "Invalid assignation "+partsAsignacion[0]+" type: "+partsFuncion[0]+" - Expected "+tipoAsignado+".");
+                        System.out.println("\u001B[31m" + "Invalid assignation "+partsAsignacion[i]+" type: "+partsFuncion[0]+" - Expected "+tipoAsignado+".");
 
                     }
+                } else if (!tipoAsignadores.get(i).equals(tipoAsignado)){
+                    error = true;
+                    System.out.println("\u001B[31m" + "Invalid assignation "+partsAritmetica[i]+" type: "+tipoAsignadores.get(i)+" not compatible with "+tipoAsignado+"."); //por si se suma int a strings o char
                 }
             } else if(!tipoAsignado.equals("int")){
-                System.out.println(partsAsignacion[0]);
                 error = true;
-                System.out.println("\u001B[31m" + "Invalid assignation "+partsAsignacion[0]+" type: "+tipoAsignado+" not compatible with int."); //por si se suma int a strings o char
+                System.out.println("\u001B[31m" + "Invalid assignation "+partsAsignacion[i]+" type: "+tipoAsignado+" not compatible with int."); //por si se suma int a strings o char
             }
         }
         //si es funcion probar sus params
@@ -473,6 +515,27 @@ public class Compilador extends javax.swing.JFrame {
         }
     }
     
+    private void checkCondicion(Nodo nodo, String ambito, int profundidad){
+        if(nodo.hasHijos()){
+            for (int i = 0; i < nodo.getHijos().size(); i++) {
+                checkCondicion(nodo.getHijoAt(i), ambito, profundidad);
+            }
+        } else {
+            String tipoParam = getTipoVar(nodo.getTipo(), ambito, profundidad);;
+            if(tipoParam.length() == 0 && !tipoParam.equals("int") && !tipoParam.equals("char") && !tipoParam.equals("bool") && !tipoParam.equals("string") ){
+                System.out.println("\u001B[31m" + "Variable "+nodo.getTipo()+" has not been declared in: "+ guardarNodoCondicionCheck +".");
+                error = true;
+            }
+        }
+    }
+    
+    private void checkDeclaFor(Nodo nodo){
+        if(!isNumeric(nodo.getValue())){
+            System.out.println("\u001B[31m" + "Variable assignation "+nodo.getValue()+" has not been declared in: for.");
+            error = true;
+        }
+    }
+    
     private void checkFunParams(Nodo nodo){
         String tiposParametros = "";
         for (int i = 0; i < nodo.getHijos().get(0).getHijos().size(); i++) {
@@ -521,6 +584,7 @@ public class Compilador extends javax.swing.JFrame {
     
     private void genCuadruplos(Nodo nodo) {
         for (int i = 0; i < nodo.getHijos().size(); i++) {
+            boolean entroAlguno = false;
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("funcion")){
                 cuads.add(new Cuadruplo("func","","",((Nodo)nodo.getHijos().get(i)).getValue()));
             }
@@ -544,14 +608,28 @@ public class Compilador extends javax.swing.JFrame {
                 genCuadruplosIF(((Nodo)nodo.getHijos().get(i)).getHijoAt(0).getHijoAt(0));
                 Cuadruplo cuad = new Cuadruplo("etiq", "", "","etiq" + contEtiq++);
                 cuads.add(cuad);
-                genCuadruplos(((Nodo)nodo.getHijos().get(i)).getHijoAt(0));
+                //genCuadruplos(((Nodo)nodo.getHijos().get(i)).getHijoAt(0));
             }
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("while")){
+                entroAlguno = true;
+                genCuadruplosWHILE(((Nodo)nodo.getHijos().get(i)));
+                genCuadruplos((Nodo)nodo.getHijos().get(i));
+                llenarSalidas( "etiq"+Integer.toString(contEtiq) );
+                Cuadruplo cuadEtiq = new Cuadruplo("etiq", "", "","etiq" + contEtiq++);
+                cuads.add(cuadEtiq);
             }
-            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("dowhile")){
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("do while")){
+                entroAlguno = true;
+                genCuadruplosDOWHILE(((Nodo)nodo.getHijos().get(i)));
+                genCuadruplos((Nodo)nodo.getHijos().get(i));
+                llenarSalidas( "etiq"+Integer.toString(contEtiq) );
+                Cuadruplo cuadEtiq = new Cuadruplo("etiq", "", "","etiq" + contEtiq++);
+                cuads.add(cuadEtiq);
             }
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("for")){
+                entroAlguno = true;
                 genCuadruplosFOR(((Nodo)nodo.getHijos().get(i)));
+                genCuadruplos((Nodo)nodo.getHijos().get(i));
                 llenarSalidas( "etiq"+Integer.toString(contEtiq) );
                 Cuadruplo cuadEtiq = new Cuadruplo("etiq", "", "","etiq" + contEtiq++);
                 cuads.add(cuadEtiq);
@@ -564,6 +642,7 @@ public class Compilador extends javax.swing.JFrame {
                     cuads.add(new Cuadruplo("in","","",((Nodo)nodo.getHijos().get(i)).getValue()));
                 }
                 else{
+                    error = true;
                     System.out.println("\u001B[31m" + " Variable "+ ((Nodo)nodo.getHijos().get(i)).getValue() +" has not been declared.");
                 }
             }
@@ -582,6 +661,7 @@ public class Compilador extends javax.swing.JFrame {
                                 cuads.add(new Cuadruplo("out","","",values.substring(cont,j)));
                             }
                             else{
+                                error = true;
                                 System.out.println("\u001B[31m" + " Variable "+ values.substring(cont,j) +" has not been declared.");
 
                             }
@@ -596,8 +676,8 @@ public class Compilador extends javax.swing.JFrame {
                 inf.CodigoIntermedio();
                 cuads.add(new Cuadruplo("=",vars[0],"t_" + contTemp++));
             }
-            
-            genCuadruplos((Nodo)nodo.getHijos().get(i));
+            if(!entroAlguno)
+                genCuadruplos((Nodo)nodo.getHijos().get(i));
         }
     }
     
@@ -641,7 +721,7 @@ public class Compilador extends javax.swing.JFrame {
                     contadorArregloEtiquetas = 0;
                 }
             } else if( nodo.getTipo().matches("<|>|true|<=|>=|==|!=") && i < 1 ){
-                if(posArregloEtiquetas == arregloEtiquetas.size()-1)
+                if(posArregloEtiquetas == arregloEtiquetas.size()-1 && contadorArregloEtiquetas == 0)
                     banderaEtiqSalida = contEtiq;
                 Cuadruplo cuadEtiq = new Cuadruplo("etiq", "", "","etiq" + contEtiq++);
                 cuads.add(cuadEtiq);
@@ -651,7 +731,7 @@ public class Compilador extends javax.swing.JFrame {
                     arg2 = "";
                 else
                     arg2 = nodo.getHijoAt(1).getTipo();
-                if(contadorArregloEtiquetas == arregloEtiquetas.get(posArregloEtiquetas) ){
+                if(contadorArregloEtiquetas == arregloEtiquetas.get(posArregloEtiquetas) ){     //Ultima condicion a evaluar del OR o AND, solo si existe OR sera la ultima por ese OR
                     if(generarOR){
                         int sumaEntrarCuerpo = banderaEtiqSalida;
                         for (int j = posArregloEtiquetas; j < arregloEtiquetas.size(); j++) {
@@ -676,11 +756,16 @@ public class Compilador extends javax.swing.JFrame {
                 } else if(padreEtiq.equals("&&")){
                     Cuadruplo cuad = new Cuadruplo("if"+nodo.getTipo(), nodo.getHijoAt(0).getTipo(), arg2,"etiq" + contEtiq );
                     cuads.add(cuad);
-                    if(generarOR){
-                        Cuadruplo cuadGoto = new Cuadruplo("goto", "", "", "etiq" + (banderaEtiqSalida+arregloEtiquetas.get(posArregloEtiquetas)) );
-                        cuads.add(cuadGoto);
-                    } else {
-                        Cuadruplo cuadGoto = new Cuadruplo("goto", "", "", "etiqSALIDA" );
+                    if(posArregloEtiquetas != arregloEtiquetas.size()-1){
+                        if(generarOR){
+                            Cuadruplo cuadGoto = new Cuadruplo("goto", "", "", "etiq" + (banderaEtiqSalida+arregloEtiquetas.get(posArregloEtiquetas)) );
+                            cuads.add(cuadGoto);
+                        } else {
+                            Cuadruplo cuadGoto = new Cuadruplo("goto", "", "", "etiqSALIDA" );
+                            cuads.add(cuadGoto);
+                        }
+                    } else{
+                        Cuadruplo cuadGoto = new Cuadruplo("goto", "", "", "etiq-1" );
                         cuads.add(cuadGoto);
                     }
                 } else {
@@ -733,6 +818,39 @@ public class Compilador extends javax.swing.JFrame {
         }
     }
     
+    private void genCuadruplosWHILE(Nodo nodo) {
+        //System.out.println(nodo);
+        for (int i = 0; i < nodo.getHijos().size(); i++) {
+            if(i == 0){
+                arregloEtiquetas = new ArrayList();
+                arregloEtiquetas.add(0);
+                posArregloEtiquetas = 0;
+                contarHojas( ((Nodo)nodo.getHijos().get(i)).getHijoAt(0));
+         
+                posArregloEtiquetas = 0;
+                contadorArregloEtiquetas = 0;
+                genCuadruplosIF(((Nodo)nodo.getHijos().get(i)).getHijoAt(0));
+            } else{
+                Cuadruplo cuadEtiq = new Cuadruplo("etiq", "", "","etiq" + contEtiq++);
+                cuads.add(cuadEtiq);
+            }
+        }
+    }
+    
+    private void genCuadruplosDOWHILE(Nodo nodo) {
+        arregloEtiquetas = new ArrayList();
+        arregloEtiquetas.add(0);
+        posArregloEtiquetas = 0;
+        contarHojas( ((Nodo)nodo.getHijos().get(0)).getHijoAt(0));
+
+        posArregloEtiquetas = 0;
+        contadorArregloEtiquetas = 0;
+        genCuadruplosIF(((Nodo)nodo.getHijos().get(0)).getHijoAt(0));
+
+        Cuadruplo cuadEtiq = new Cuadruplo("etiq", "", "","etiq" + contEtiq++);
+        cuads.add(cuadEtiq);
+    }
+    
     private void llenarSalidas(String gotoEtiq){
         for (int i = 0; i < cuads.size(); i++) {
             if(cuads.get(i).getResultado().equals("etiq-1"))
@@ -779,11 +897,9 @@ public class Compilador extends javax.swing.JFrame {
             if(cuads.get(i).getOperacion().equals("finFunc")){
                 String amb = cuads.get(i).getResultado();
                 amb = "global." + amb;
-                System.out.println("el off ---> " + offset);
                 for(int j = 7 ; j >= 0; j--){
                     if($s[j] != null){
                         int size = getSize($s[j],amb);
-                        System.out.println("s[j] = " + $s[j] + "  tam: " + size);
                         textMIPS.add("lw $s" + j + ", -" + offset + "($fp)");
                         offset -= size;
                     }
