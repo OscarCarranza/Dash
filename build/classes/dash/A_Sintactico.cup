@@ -1081,7 +1081,7 @@ dec_function ::= FUNCTION ID:nombre {: this.parser.ambito+="."+nombre.toString()
                             RESULT = arregloFuncion; :};
 
 func ::= ID:id LPAR ids:ids RPAR        {:  ArrayList arreglo = new ArrayList();
-                                            Nodo func = new Nodo("FuncionCall",id.toString());
+                                            Nodo func = new Nodo("callFunc",id.toString());
                                             arreglo.add(func);
                                             ArrayList idsArray = (ArrayList)ids;
                                             String variables = "";
@@ -1157,7 +1157,7 @@ ids ::= moreIds:ids          {:ArrayList idsArray = (ArrayList)ids;
     | ;
 
 moreIds ::= moreIds:ids COMMA types:id     {: ArrayList idsArray = (ArrayList)ids;
-                                            idsArray.add(id.toString());
+                                            idsArray.add("," + id.toString());
                                             RESULT = idsArray; :}
     | types:id     {: ArrayList ids = new ArrayList();
                     ids.add(id.toString());

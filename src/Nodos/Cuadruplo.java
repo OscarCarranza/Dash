@@ -17,12 +17,15 @@ public class Cuadruplo {
     public Cuadruplo(String operacion, String argumento1, String resultado) {
         this.operacion = operacion;
         this.argumento1 = argumento1;
+        this.argumento2 = "";
         this.resultado = resultado;
     }
 
     public Cuadruplo(String operacion, String argumento1) {
         this.operacion = operacion;
         this.argumento1 = argumento1;
+        this.argumento2 = "";
+        this.resultado = "";
     }
 
     public String getOperacion() {

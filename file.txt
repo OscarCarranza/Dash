@@ -2,7 +2,7 @@
 char c-
 int g-
 
-func suma => (int s){
+func suma => (int s, int t){
 	int r-
 	r = s + 1-
 	ret r-
@@ -29,8 +29,8 @@ func hola => (int a, int b){
 		dash.print("HOLA MUNDO" + hello)-
 		int q-
 		int bandera-
-		a = suma(bandera)-
-		q = q + q * 3 / 5 + suma(q)-
+		a = suma(bandera,4)-
+		q = q + q * 3 / 5 + suma(q,2) + 1 * 4-
 		for (int a = 3; a<=1; i++){
 			int q2-
 		}

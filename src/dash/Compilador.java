@@ -238,7 +238,7 @@ public class Compilador extends javax.swing.JFrame {
             }  
             
             System.out.println("\n" + ".text");
-            System.out.println("\n" + ".global main");
+            System.out.println("\n" + ".global");
             for(int i = 0; i < textMIPS.size(); i++){
                 System.out.println(textMIPS.get(i));
             }  
@@ -425,10 +425,12 @@ public class Compilador extends javax.swing.JFrame {
                 if( partsAritmetica[i].contains("(") ){
                     String[] partsFuncion = partsAritmetica[i].split("\\(|\\)");
                     String[] partsParametros;
-                    if(partsFuncion.length > 1)
-                        partsParametros = partsFuncion[1].split(" ");
+                    if(partsFuncion.length > 1){
+                        partsParametros = partsFuncion[1].split(",");
+                    }
+                    
                     else
-                        partsParametros = new String[0];
+                    partsParametros = new String[0];
                     String tipoFuncion = getTipoVar(partsFuncion[0].split(" ")[0], ambito, profundidad);    //trayendo el tipo real de la funcion en la tabla de variables
                     String[] partsFuncionRetorno = tipoFuncion.split(" x | -> ");
                     
@@ -593,12 +595,36 @@ public class Compilador extends javax.swing.JFrame {
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("aritmetica")){
                 String vars[] = splitOperation(((Nodo)nodo.getHijos().get(i)).getValue());
                 Infix2Postfix inf = new Infix2Postfix(vars[1]);
-                inf.CodigoIntermedio();
-                cuads.add(new Cuadruplo("=",vars[0],"t_" + contTemp++));
+                if(vars[1].contains("+") || vars[1].contains("-") || vars[1].contains("*") || vars[1].contains("/")){
+                    inf.CodigoIntermedio();
+                    cuads.add(new Cuadruplo("=",vars[0],"t_" + (contTemp-1)));
+                }
+                else{
+                    cuads.add(new Cuadruplo("=",vars[0],vars[1],""));
+                }
+               
             }
             
             genCuadruplos((Nodo)nodo.getHijos().get(i));
+        } 
+        
+        ArrayList <Cuadruplo> temp = new ArrayList(); 
+        for (int i = 0; i < cuads.size(); i++) {                 
+            if((cuads.get(i).getArgumento2().contains("(") && cuads.get(i).getArgumento2().contains(")") && cuads.get(i).getOperacion().equals("="))){              
+                    String params[] = getParams(cuads.get(i).getArgumento2());
+                    temp.add(new Cuadruplo("callFunc",params[0],params[1], cuads.get(i).getArgumento1()));    
+                             
+            }
+            else{
+               temp.add(cuads.get(i));
+            }
         }
+        
+        cuads.clear();
+        for(int i = 0; i < temp.size(); i++){
+            cuads.add(temp.get(i));
+        } 
+
     }
     
     private String[] splitOperation(String s){
@@ -742,8 +768,18 @@ public class Compilador extends javax.swing.JFrame {
     
     int offset = 0;
     String $s[] = new String[8];
+    String $t[] = new String[10];
+    String ambitoMips = "global";
     
+    private void llenarVacios(){
+        for(int i = 0; i < 10; i++){
+            $t[i] = "#";
+        }
+    }
     private void genMIPS(){
+        
+        llenarVacios();
+        
         for(int i = 0; i < cuads.size(); i++){
             
             if(cuads.get(i).getOperacion().equals("func")){
@@ -758,6 +794,8 @@ public class Compilador extends javax.swing.JFrame {
                 nombreFun = "global." + nombreFun;
                 
                 //buscar params de funcion en tabla
+                int cont_locales = 0;
+                
                 for(int j = 0; j < tabla.size(); j++){
                     if(nombreFun.equals(tabla.get(j).getAmbito()) && tabla.get(j).getParam() == 1){
                         //reservo espacio en memoria
@@ -767,6 +805,9 @@ public class Compilador extends javax.swing.JFrame {
                         index++;
                         paramsFound++;
                     }
+                    else if(nombreFun.equals(tabla.get(j).getAmbito()) && tabla.get(j).getParam() == 0){
+                        offset += getSize(tabla.get(j).getTipo());
+                    }
                 } 
                 
                 //asigna params
@@ -774,16 +815,29 @@ public class Compilador extends javax.swing.JFrame {
                     if($s[j] != null){
                         textMIPS.add("move $s" + j + ", $a" + j);
                     }
-                }                         
+                }  
+                textMIPS.add("move $fp, $sp");
+                
+                //variables locales
+                for(int j = 0; j < tabla.size(); j++){
+                    if(nombreFun.equals(tabla.get(j).getAmbito()) && tabla.get(j).getParam() == 0){
+                        offset += getSize(tabla.get(j).getTipo());
+                    }
+                } 
+                
+                textMIPS.add("sub $sp, $sp, " + offset); 
+                String s = "." + nombreFun;
+                ambitoMips += s;
+                
             }
             if(cuads.get(i).getOperacion().equals("finFunc")){
+                
+                textMIPS.add("add $sp, $sp, " + offset);
                 String amb = cuads.get(i).getResultado();
                 amb = "global." + amb;
-                System.out.println("el off ---> " + offset);
                 for(int j = 7 ; j >= 0; j--){
                     if($s[j] != null){
                         int size = getSize($s[j],amb);
-                        System.out.println("s[j] = " + $s[j] + "  tam: " + size);
                         textMIPS.add("lw $s" + j + ", -" + offset + "($fp)");
                         offset -= size;
                     }
@@ -793,9 +847,73 @@ public class Compilador extends javax.swing.JFrame {
                 textMIPS.add("sw $ra, -" + offset + "($sp)");
                 offset -=4;
                 textMIPS.add("jr $ra");
+                quitarAmbito();
                 
             } 
+            
+            //-------------------OPERACIONES ARITMETICAS--------------------------------
+            
+            //suma
+            if(cuads.get(i).getOperacion().equals("+")){
+                //first operation
+                if(!cuads.get(i).getArgumento1().startsWith("t_") || !cuads.get(i).getArgumento2().startsWith("t_")){
+                    
+                }
+                    
+            }
+            
+            //resta
+            if(cuads.get(i).getOperacion().equals("-")){
+                            
+            }
+            
+            //mult
+            if(cuads.get(i).getOperacion().equals("*")){
+                            
+            }
+            
+            //div
+            if(cuads.get(i).getOperacion().equals("/")){
+                            
+            }
+            //llamado de funciones
+            if(cuads.get(i).getOperacion().equals("callFunc")){
+                String params = cuads.get(i).getArgumento2();
+                String p = "";
+                ArrayList <Integer> posiciones = new ArrayList();
+                int cont = 0;
+                for(int j = 0; j < params.length(); j++){
+                    if(params.charAt(j) == '|'){
+                        p = params.substring(cont,j);
+                        int currentAvailablePos = Integer.parseInt(nextTPos());
+                        $t[currentAvailablePos] = p;
+                        textMIPS.add("lw $t" + currentAvailablePos + ", " + p);
+                        posiciones.add(currentAvailablePos);
+                        cont = j+1;
+                    }
+                }
+                
+                //no funciona con mas de 4 params
+                
+                for(int j = 0; j < posiciones.size(); j++){
+                    textMIPS.add("move $a" + j + ", $t" + posiciones.get(j));
+                    $t[posiciones.get(j)] = "#";
+                    
+                }
+                textMIPS.add("jal " + cuads.get(i).getArgumento1());
+            }
+            
+            //entrada
             if(cuads.get(i).getOperacion().equals("in")){
+                String readVar = cuads.get(i).getResultado();
+                for(int j = 0; j < tabla.size(); j++){
+                    if(tabla.get(j).getAmbito().equals(ambitoMips) && tabla.get(j).getId().equals(readVar)){
+                        int num_op = sysCall_in(tabla.get(j).getTipo());
+                        textMIPS.add("li $v0 ," + num_op);
+                        textMIPS.add("syscall");
+                        textMIPS.add("sw $v0," + readVar);
+                    }
+                }
                 
             }
             //salida
@@ -818,31 +936,31 @@ public class Compilador extends javax.swing.JFrame {
                         }
                     }  
                     switch(tipo){
-                            case "int": textMIPS.add("lw $t0, " + id);
+                            case "int": textMIPS.add("lw $t" + nextTPos() + ", " + id);
                                         textMIPS.add("li $v0 ,1");
-                                        textMIPS.add("move $a0, $t0");
+                                        textMIPS.add("move $a0, $t" + nextTPos());
                                         textMIPS.add("syscall");
                                 break;
                             case "int*":
                                 break;
-                            case "char":textMIPS.add("lw $t0, " + id);
+                            case "char":textMIPS.add("lw $t" + nextTPos() + ", " + id);
                                         textMIPS.add("li $v0 ,4");
-                                        textMIPS.add("move $a0, $t0");
+                                        textMIPS.add("move $a0, $t" + nextTPos());
                                         textMIPS.add("syscall");
                                 break;
                             case "char*":
                                 break;
-                            case "bool":textMIPS.add("lw $t0, " + id);
+                            case "bool":textMIPS.add("lw $t" + nextTPos() + ", " + id);
                                         textMIPS.add("li $v0 ,1");
-                                        textMIPS.add("move $a0, $t0");
+                                        textMIPS.add("move $a0, $t" + nextTPos());
                                         textMIPS.add("syscall");
                                 break;
                             case "bool*":
                                 break;
-                            case "string":  textMIPS.add("lw $t0, " + id);
-                                            textMIPS.add("li $v0 ,4");
-                                            textMIPS.add("move $a0, $t0");
-                                            textMIPS.add("syscall");
+                            case "string": textMIPS.add("lw $t" + nextTPos() + ", " + id);
+                                        textMIPS.add("li $v0 ,4");
+                                        textMIPS.add("move $a0, $t" + nextTPos());
+                                        textMIPS.add("syscall");
                                 break; 
                             default: System.out.println(tipo + " no es nada");
                         }
@@ -886,6 +1004,63 @@ public class Compilador extends javax.swing.JFrame {
             default:
                 return 0;
         }
+    }
+    
+    private String[] getParams(String func){
+         String params[] = new String[2];
+         int contParams = 0;
+         String pars = "";
+         for(int i = 0; i < func.length(); i++){
+             switch (func.charAt(i)) {
+                 case '(':
+                     params[0] = (func.substring(0, i));
+                     contParams = i+1;
+                     break;
+                 case ',':
+                     pars += func.substring(contParams,i);
+                     pars += "|";
+                     contParams = i+1;
+                     break;
+                 case ')':
+                     pars += func.substring(contParams,i);
+                     pars += "|";
+                     break;
+                 default:
+                     break;
+             }
+         }
+         params[1] = pars;
+         return params;
+    }
+    
+    private String nextTPos(){
+        for(int i = 0; i < 10; i++){
+            if($t[i].equals("#")){
+                return Integer.toString(i);
+            }
+        }
+        return "";
+    }
+    
+    private int sysCall_in(String tipo){
+        int s = 0;
+        switch (tipo) {
+            case "int":
+                return 1;
+            case "char":
+                return 4;
+            case "bool":
+                return 1;
+            case "string":
+                return 4;
+            default:
+                return 0;
+        }
+    }
+    
+    public void quitarAmbito() {
+        int index = ambitoMips.lastIndexOf('.');
+        ambitoMips = ambitoMips.substring(0, index);
     }
     
     
