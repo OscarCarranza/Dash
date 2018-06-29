@@ -207,6 +207,14 @@ multFor = "**"
                                 //System.out.println("<break> " + yytext());
                                 return new Symbol(Simbolos.BREAK, yycolumn, yyline, yytext());
                             }
+    {true}                  {
+                                //System.out.println("<true> " + yytext());
+                                return new Symbol(Simbolos.TRUE, yycolumn, yyline, yytext());
+                            }
+    {false}                 {
+                                //System.out.println("<false> " + yytext());
+                                return new Symbol(Simbolos.FALSE, yycolumn, yyline, yytext());
+                            }
     {id}                    {
                                 //System.out.println("<id> " + yytext());
                                 return new Symbol(Simbolos.ID, yycolumn, yyline, yytext());
@@ -342,14 +350,6 @@ multFor = "**"
     {number}                {
                                 //System.out.println("<number> " + yytext());
                                 return new Symbol(Simbolos.INTEGER, yycolumn, yyline, yytext());
-                            }
-    {true}                  {
-                                //System.out.println("<true> " + yytext());
-                                return new Symbol(Simbolos.TRUE, yycolumn, yyline, yytext());
-                            }
-    {false}                 {
-                                //System.out.println("<false> " + yytext());
-                                return new Symbol(Simbolos.FALSE, yycolumn, yyline, yytext());
                             }
     {short_comment}         {
                             }

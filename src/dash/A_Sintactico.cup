@@ -269,6 +269,8 @@ non terminal while, doWhile, for, autoAssign, declaracionFor, instanciacionInteg
 non terminal dec_function, parameters, params_type, varRet, dec_main, arithmetic_exp, term, factor, var_type, read, func, assign_var, entry, salida;
 non terminal content_print, more_content, var_entry, id_text, declaracion_ptrs_iniciacion, dec_id, ids, moreIds;
 
+non terminal content_printASIG, more_contentASIG, id_textASIG;
+
 non terminal linea, programa;
 
 //---------> Precedencia de menor a mayor
@@ -373,33 +375,34 @@ declaracion ::= asignacionInteger:a DASH {: ArrayList declaracionArreglo = new A
 /*------------------- INT GRAMATICA -----------------------*/
 asignacionInteger ::= asignacionInteger:b COMMA instanciacionInteger:id {:  if(b != null){
                                                                                 ArrayList arregloNodos = (ArrayList) b;
-                                                                                Nodo newID = new Nodo((String)id, "");
+                                                                                Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                                 arregloNodos.add( newID );
-                                                                                Tabla nuevaVar = new Tabla((String)id, "int", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                                Tabla nuevaVar = new Tabla( ((Nodo)id).getTipo(), "int", this.parser.ambito, this.parser.profundidad, 0, 0);
                                                                                 this.parser.tabla.add( nuevaVar );
                                                                                 RESULT = arregloNodos;
                                                                              } else {
                                                                                 ArrayList arregloInstancias = new ArrayList();
-                                                                                Nodo newID = new Nodo((String)id, "");
+                                                                                Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                                 arregloInstancias.add(newID);
-                                                                                Tabla nuevaVar = new Tabla((String)id, "int", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                                Tabla nuevaVar = new Tabla( ((Nodo)id).getTipo(), "int", this.parser.ambito, this.parser.profundidad, 0, 0);
                                                                                 this.parser.tabla.add( nuevaVar );
                                                                                 RESULT = arregloInstancias;} :} 
     | INT instanciacionInteger:id {:ArrayList arregloInstancias = new ArrayList();
                                     Nodo newInt = new Nodo("int", "");
-                                    Nodo newID = new Nodo((String)id, "");
+                                    Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                     arregloInstancias.add(newInt);
                                     arregloInstancias.add(newID);
-                                    Tabla nuevaVar = new Tabla((String)id, "int", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                    Tabla nuevaVar = new Tabla( ((Nodo)id).getTipo(), "int", this.parser.ambito, this.parser.profundidad, 0, 0);
                                     this.parser.tabla.add( nuevaVar );
                                     RESULT = arregloInstancias; :} ;
 
-instanciacionInteger ::= ID:id iniciacionInteger {: RESULT = id.toString(); :}
+instanciacionInteger ::= ID:id iniciacionInteger:integer {: Nodo var = new Nodo(id.toString(), integer.toString());
+                                                            RESULT = var; :}
     | error iniciacionInteger {: System.out.println("Expected an id."); :};
 
-iniciacionInteger ::= ASSIGN INTEGER
-    | ASSIGN error {: System.out.println("\u001B[31m" + "Expected a number."); :}
-    | ;
+iniciacionInteger ::= ASSIGN content_printASIG:integer {: RESULT = integer; :}
+    /*| ASSIGN error {: System.out.println("\u001B[31m" + "Expected a number."); :}*/
+    | {: RESULT = ""; :};
 
 integerLista ::= INTEGER {::}
     | integerLista COMMA INTEGER
@@ -441,38 +444,39 @@ instanciacionIntPtr ::= LBRAC RBRAC {::}
 /*------------------- CHAR GRAMATICA -----------------------*/
 asignacionChar ::= asignacionChar:b COMMA instanciacionChar:id {: if(b != null){
                                                                     ArrayList arregloNodos = (ArrayList) b;
-                                                                    Nodo newID = new Nodo((String)id, "");
+                                                                    Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloNodos.add( newID );
-                                                                    Tabla nuevaVar = new Tabla((String)id, "char", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "char", this.parser.ambito, this.parser.profundidad, 0, 0);
                                                                     this.parser.tabla.add( nuevaVar );
                                                                     RESULT = arregloNodos;
                                                                  } else {
                                                                     ArrayList arregloInstancias = new ArrayList();
-                                                                    Nodo newID = new Nodo((String)id, "");
+                                                                    Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloInstancias.add(newID);
-                                                                    Tabla nuevaVar = new Tabla((String)id, "char", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "char", this.parser.ambito, this.parser.profundidad, 0, 0);
                                                                     this.parser.tabla.add( nuevaVar );
                                                                     RESULT = arregloInstancias;} :} 
     | CHAR instanciacionChar:id {:ArrayList arregloInstancias = new ArrayList();
                                     Nodo newChar = new Nodo("char", "");
-                                    Nodo newID = new Nodo((String)id, "");
+                                    Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                     arregloInstancias.add(newChar);
                                     arregloInstancias.add(newID);
-                                    Tabla nuevaVar = new Tabla((String)id, "char", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "char", this.parser.ambito, this.parser.profundidad, 0, 0);
                                     this.parser.tabla.add( nuevaVar );
                                     RESULT = arregloInstancias; :};
 
-instanciacionChar ::= ID:id iniciacionChar {: RESULT = id.toString(); :}
+instanciacionChar ::= ID:id iniciacionChar:integer {: Nodo var = new Nodo(id.toString(), integer.toString());
+                                                            RESULT = var; :}
     | error iniciacionChar {: System.out.println("\u001B[31m" + "Expected an id."); :};
 
-iniciacionChar ::= ASSIGN charComillas
-    | ;
+iniciacionChar ::= ASSIGN charComillas:letter {: RESULT = letter.toString(); :}
+    | {: RESULT = ""; :};
 
-charComillas ::= SIMCOM LETTER SIMCOM
+charComillas ::= SIMCOM LETTER:letter SIMCOM {: RESULT = letter.toString(); :}
     | error LETTER SIMCOM {: System.out.println("\u001B[31m" + "Expected a '.'"); :}
     | SIMCOM LETTER error {: System.out.println("\u001B[31m" + "Expected a '.'"); :}
     | SIMCOM error SIMCOM {: System.out.println("\u001B[31m" + "Expected a char."); :}
-    | DOBCOM LETTER DOBCOM 
+    | DOBCOM LETTER:letter DOBCOM  {: RESULT = letter.toString(); :}
     | error LETTER DOBCOM {: System.out.println("\u001B[31m" + "Expected a '.'"); :}
     | DOBCOM LETTER error {: System.out.println("\u001B[31m" + "Expected a '.'"); :}
     | DOBCOM error DOBCOM {: System.out.println("\u001B[31m" + "Expected a char."); :};
@@ -517,34 +521,35 @@ instanciacionCharPtr ::= LBRAC RBRAC {::}
 /*------------------- BOOL GRAMATICA -----------------------*/
 asignacionBool ::= asignacionBool:b COMMA instanciacionBool:id {:if(b != null){
                                                                     ArrayList arregloNodos = (ArrayList) b;
-                                                                    Nodo newID = new Nodo((String)id, "");
+                                                                    Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloNodos.add( newID );
-                                                                    Tabla nuevaVar = new Tabla((String)id, "bool", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "bool", this.parser.ambito, this.parser.profundidad, 0, 0);
                                                                     this.parser.tabla.add( nuevaVar );
                                                                     RESULT = arregloNodos;
                                                                  } else {
                                                                     ArrayList arregloInstancias = new ArrayList();
-                                                                    Nodo newID = new Nodo((String)id, "");
+                                                                    Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloInstancias.add(newID);
-                                                                    Tabla nuevaVar = new Tabla((String)id, "bool", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "bool", this.parser.ambito, this.parser.profundidad, 0, 0);
                                                                     this.parser.tabla.add( nuevaVar );
                                                                     RESULT = arregloInstancias;}:}
     | BOOL instanciacionBool:id {:ArrayList arregloInstancias = new ArrayList();
                                 Nodo newChar = new Nodo("bool", "");
-                                Nodo newID = new Nodo((String)id, "");
+                                Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                 arregloInstancias.add(newChar);
                                 arregloInstancias.add(newID);
-                                Tabla nuevaVar = new Tabla((String)id, "bool", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "bool", this.parser.ambito, this.parser.profundidad, 0, 0);
                                 this.parser.tabla.add( nuevaVar );
                                 RESULT = arregloInstancias; :};
 
-instanciacionBool ::= ID:id iniciacionBool {: RESULT = id.toString(); :}
+instanciacionBool ::= ID:id iniciacionBool:integer {: Nodo var = new Nodo(id.toString(), integer.toString());
+                                                            RESULT = var; :}
     | error iniciacionBool {: System.out.println("\u001B[31m" + "Expected an id."); :};
 
-iniciacionBool ::= ASSIGN bool
-    | ;
+iniciacionBool ::= ASSIGN bool:letter {: RESULT = letter.toString(); :}
+    | {: RESULT = ""; :};
 
-bool ::= TRUE | FALSE
+bool ::= TRUE {: RESULT = "true"; :} | FALSE {: RESULT = "false"; :}
     | error {: System.out.println("\u001B[31m" + "Expected either true/false."); :};
 
 asignacionBoolPtr ::= asignacionBoolPtr:b COMMA instanciacionBoolPtr:id {:if(b != null){
@@ -585,35 +590,36 @@ boolLista ::= bool {::}
 /*------------------- STRING GRAMATICA -----------------------*/
 asignacionString ::= asignacionString:b COMMA instanciacionString:id {:if(b != null){
                                                                         ArrayList arregloNodos = (ArrayList) b;
-                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                         arregloNodos.add( newID );
-                                                                        Tabla nuevaVar = new Tabla((String)id, "string", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                        Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "string", this.parser.ambito, this.parser.profundidad, 0, 0);
                                                                         this.parser.tabla.add( nuevaVar );
                                                                         RESULT = arregloNodos;
                                                                      } else {
                                                                         ArrayList arregloInstancias = new ArrayList();
-                                                                        Nodo newID = new Nodo((String)id, "");
+                                                                        Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                         arregloInstancias.add(newID);
-                                                                        Tabla nuevaVar = new Tabla((String)id, "string", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                        Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "string", this.parser.ambito, this.parser.profundidad, 0, 0);
                                                                         this.parser.tabla.add( nuevaVar );
                                                                         RESULT = arregloInstancias;}:}
     | STRING instanciacionString:id {:ArrayList arregloInstancias = new ArrayList();
                                         Nodo newChar = new Nodo("string", "");
-                                        Nodo newID = new Nodo((String)id, "");
+                                        Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                         arregloInstancias.add(newChar);
                                         arregloInstancias.add(newID);
-                                        Tabla nuevaVar = new Tabla((String)id, "string", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                        Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "string", this.parser.ambito, this.parser.profundidad, 0, 0);
                                         this.parser.tabla.add( nuevaVar );
                                         RESULT = arregloInstancias; :};
 
-instanciacionString ::= ID:id iniciacionString {: RESULT = id.toString(); :}
+instanciacionString ::= ID:id iniciacionString:integer {: Nodo var = new Nodo(id.toString(), integer.toString());
+                                                            RESULT = var; :}
     | error iniciacionString {: System.out.println("\u001B[31m" + "Expected an id."); :};
 
-iniciacionString ::= ASSIGN DOBCOM contenidoString DOBCOM
-    | ;
+iniciacionString ::= ASSIGN DOBCOM contenidoString:cont DOBCOM {: RESULT = cont.toString(); :}
+    | {: RESULT = ""; :};
 
-contenidoString ::= contenidoString ID
-    | ID
+contenidoString ::= contenidoString:cont ID:id  {: RESULT = cont.toString() + " " + id.toString(); :}
+    | ID:id  {: RESULT = id.toString(); :}
     | contenidoString COMMA error {: System.out.println("\u001B[31m" + "Expected an id."); :}
     | error {: System.out.println("\u001B[31m" + "Expected an id."); :};
 
@@ -1258,5 +1264,18 @@ more_content ::= ADD_OP id_text:a more_content:b    {: String s = a + "|" + b;
 id_text ::= ID:id       {: RESULT = id.toString();  :}
 
     | TEXT:id           {: RESULT = id.toString();  :}
+    | error             {: System.out.println("\u001B[31m" + "Expected printing content"); :};
 
+content_printASIG ::= id_textASIG:a more_contentASIG:b {: String s = a + "|" + b;
+                                                RESULT = s; 
+                                           :};
+
+more_contentASIG ::= ADD_OP id_textASIG:a more_contentASIG:b    {: String s = a + "|" + b;
+                                                        RESULT = s;                                                      
+                                                    :}
+    |                                               {: RESULT = ""; :};
+
+id_textASIG ::= ID:id       {: RESULT = id.toString();  :}
+    | TEXT:id           {: RESULT = id.toString();  :}
+    | INTEGER:id           {: RESULT = id.toString();  :}
     | error             {: System.out.println("\u001B[31m" + "Expected printing content"); :};

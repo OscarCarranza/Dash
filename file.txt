@@ -5,6 +5,9 @@ int[1] m1-
 
 func suma => (int s){
 	int r-
+	int bq = 2 + 2-
+	bool ho = false-
+	string sas-
 	r = s + 1-
 	while (s && s > r){
 		dash.print("ferferf")-
@@ -32,7 +35,7 @@ func hola => (int a, int b){
 			}
 	}
 	int d, f, a2, m-
-	a = b / suma(a, b) + 1-
+	a = b / f + 1-
 	if(a <= b && c <= d || f > 2 && a && b > 2 || 1 > 2 && a){
 		char a33-
 		string hello-
