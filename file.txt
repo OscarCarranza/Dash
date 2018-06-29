@@ -1,19 +1,28 @@
 
 char c-
 int g-
+int[1] m1-
 
 func suma => (int s){
 	int r-
 	r = s + 1-
+	while (s && s > r){
+		dash.print("ferferf")-
+	}
+	do {
+		dash.print("ferferf")-
+	} while(s)-
 	ret r-
 }-
 
 func hola => (int a, int b){
 	switch(valor){
-		case 1: if(a <= b){
+		case 1: if(a <= c && a || b < a && a > b){
 				int a1-
 				for (int a = 1; a<=1; i++){
 					int q-
+					if(a && a > b && b <= a){
+					}
 				}
 			}
 			for (int a = 2; a<=1; i++){
@@ -22,7 +31,9 @@ func hola => (int a, int b){
 
 			}
 	}
-	if(a <= b && c <= d || f > 2 && a && b > 2 || 1 > 2){
+	int d, f, a2, m-
+	a = b / suma(a, b) + 1-
+	if(a <= b && c <= d || f > 2 && a && b > 2 || 1 > 2 && a){
 		char a33-
 		string hello-
 		dash.in(hello)-
