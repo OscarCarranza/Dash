@@ -20,6 +20,9 @@ import javax.swing.ImageIcon;
 
 import Nodos.Nodo;
 import Nodos.Tabla;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -231,19 +234,19 @@ public class Compilador extends javax.swing.JFrame {
                             String tipo = ((Tabla)sintactico.tabla.get(i)).getTipo();
                             switch(tipo){
                                     // falta si estan inicialiizados 
-                                    case "int": data.add(((Tabla)sintactico.tabla.get(i)).getId() + " .WORD 0");
+                                    case "int": data.add(((Tabla)sintactico.tabla.get(i)).getId() + "\t\t\t.WORD 0");
                                         break;
                                     case "int*":
                                         break;                                  
-                                    case "char":data.add(((Tabla)sintactico.tabla.get(i)).getId() + ": .space '1'");
+                                    case "char":data.add(((Tabla)sintactico.tabla.get(i)).getId() + ":\t\t\t.space '1'");
                                         break;
                                     case "char*":
                                         break;
-                                    case "bool": data.add(((Tabla)sintactico.tabla.get(i)).getId() + " .WORD 0");
+                                    case "bool": data.add(((Tabla)sintactico.tabla.get(i)).getId() + "\t\t\t.WORD 0");
                                         break;
                                     case "bool*":
                                         break;           
-                                    case "string":  data.add(((Tabla)sintactico.tabla.get(i)).getId() + ": .asciiz " + "");;
+                                    case "string":  data.add(((Tabla)sintactico.tabla.get(i)).getId() + ":\t\t\t.asciiz " + "");;
                                         break;  
                                     default: ;
                             }
@@ -261,12 +264,20 @@ public class Compilador extends javax.swing.JFrame {
                     for(int i = 0; i < data.size(); i++){
                         System.out.println(data.get(i));
                     }  
+                    System.out.println("");
+                    System.out.println("FIN DATA");
+                    System.out.println("");
 
                     System.out.println("\n" + ".text");
                     System.out.println("\n" + ".global main");
+                    System.out.println("");
+                    System.out.println("LLLLL");
+                    System.out.println("");
                     for(int i = 0; i < textMIPS.size(); i++){
                         System.out.println(textMIPS.get(i));
-                    } 
+                    }
+                    
+                    print();
 
                 }
             //} else
@@ -394,8 +405,17 @@ public class Compilador extends javax.swing.JFrame {
                 entro = true;
             }
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("aritmetica")){
-                checkAritmetica((Nodo)nodo.getHijos().get(i), ambito, profundidad);
-                
+                checkAritmetica((Nodo)nodo.getHijos().get(i), ambito, profundidad);   
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("declaracion")){
+                //checkAritmetica((Nodo)nodo.getHijos().get(i), ambito, profundidad);
+                for (int j = 1; j < ((Nodo)nodo.getHijos().get(i)).getHijos().size(); j++) {
+                    if(((Nodo)nodo.getHijos().get(i)).getHijoAt(j).getValue().length() > 0){
+                        String inicializacion = ((Nodo)nodo.getHijos().get(i)).getHijoAt(j).getTipo() + " = " + ((Nodo)nodo.getHijos().get(i)).getHijoAt(j).getValue();
+                        Nodo node = new Nodo("", inicializacion);
+                        checkAritmetica(node, ambito, profundidad);
+                    }
+                }
             }
             //ambito = quitarAmbito(ambito);
             checkTypes(nodo.getHijos().get(i), ambito);
@@ -413,9 +433,10 @@ public class Compilador extends javax.swing.JFrame {
     }
     
     private void checkAritmetica(Nodo nodo, String ambito, int profundidad){
+        System.out.println(nodo);
         String[] partsAsignacion = nodo.getValue().split("=");
-        String[] partsAritmetica = partsAsignacion[partsAsignacion.length-1].split("\\+|-|\\*|\\/");
-        String tipoAsignado = getTipoVar(partsAsignacion[0], ambito, profundidad);
+        String[] partsAritmetica = partsAsignacion[partsAsignacion.length-1].split("\\+|-|\\*|\\/|\\|");
+        String tipoAsignado = getTipoVar(partsAsignacion[0].replaceAll(" ", ""), ambito, profundidad);
         Boolean[] probarParams = new Boolean[partsAritmetica.length];
         Arrays.fill(probarParams, true);
         ArrayList<String> tipoAsignadores = new ArrayList<String>();
@@ -423,7 +444,7 @@ public class Compilador extends javax.swing.JFrame {
             if(partsAritmetica[i].contains("("))
                 tipoAsignadores.add(getTipoVar(partsAritmetica[i].split(("\\("))[0], ambito, profundidad));
             else
-                tipoAsignadores.add(getTipoVar(partsAritmetica[i], ambito, profundidad));
+                tipoAsignadores.add(getTipoVar(partsAritmetica[i].replaceAll(" ", ""), ambito, profundidad));
         }
         if( tipoAsignado.length() == 0 ){
             System.out.println("\u001B[31m" + "Assigned variable "+partsAsignacion[0]+" has not been declared.");
@@ -436,7 +457,7 @@ public class Compilador extends javax.swing.JFrame {
                     probarParams[i] =  false;
                     error = true;
 
-                } else if(!isNumeric(partsAritmetica[i])){
+                } else if(!isNumeric(partsAritmetica[i].replaceAll(" ", "")) && !partsAritmetica[i].replaceAll(" ", "").equals("true") && !partsAritmetica[i].replaceAll(" ", "").equals("false")){
                     System.out.println("\u001B[31m" + " Variable "+partsAritmetica[i]+" has not been declared in assignation "+partsAsignacion[0]+".");
                     probarParams[i] =  false;
                     error = true;
@@ -917,7 +938,7 @@ public class Compilador extends javax.swing.JFrame {
             //salida
             if(cuads.get(i).getOperacion().equals("out")){
                 if(cuads.get(i).getResultado().startsWith("\"") && cuads.get(i).getResultado().endsWith("\"")){
-                    data.add("msg_" + contPrints + ": .asciiz" + cuads.get(i).getResultado());
+                    data.add("msg_" + contPrints + ":\t\t.asciiz" + cuads.get(i).getResultado());
                     textMIPS.add("li $v0 ,4");
                     textMIPS.add("la $a0, msg_" + contPrints);
                     textMIPS.add("syscall");
@@ -1004,7 +1025,40 @@ public class Compilador extends javax.swing.JFrame {
         }
     }
     
-    
+    public void print() throws FileNotFoundException, IOException {
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        try {
+            fw = new FileWriter(new File("./program.asm"));
+            bw = new BufferedWriter(fw);
+            bw.write("\t\t\t.data\n");
+            for(int i = 0; i < data.size(); i++){
+                bw.write(data.get(i)+"\n");
+            }  
+
+            bw.write("\n\t\t\t" + ".text");
+            bw.write("\n\t\t\t" + ".global main\n");
+            for(int i = 0; i < textMIPS.size(); i++){
+                if(textMIPS.get(i).contains(":"))
+                    bw.write(textMIPS.get(i)+"\n");
+                else
+                    bw.write("\t"+textMIPS.get(i)+"\n");
+            }
+        }  catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+                try {
+
+                    if (bw != null)
+                            bw.close();
+                    if (fw != null)
+                            fw.close();
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+        }
+    }
 
    
    
