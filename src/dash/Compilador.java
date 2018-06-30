@@ -938,31 +938,218 @@ public class Compilador extends javax.swing.JFrame {
                 
             } 
             
-            //-------------------OPERACIONES ARITMETICAS--------------------------------
+             //-------------------OPERACIONES ARITMETICAS--------------------------------
             
             //suma
             if(cuads.get(i).getOperacion().equals("+")){
-                //first operation
-                if(!cuads.get(i).getArgumento1().startsWith("t_") || !cuads.get(i).getArgumento2().startsWith("t_")){
+                boolean id1found = false, id2found = false;
+                //agregar argumentos a los temporales                
+                for(int j = 0; j < tabla.size(); j++){
                     
+                    if(id1found == false){
+                        if(tabla.get(j).getId().equals(cuads.get(i).getArgumento1()) && tabla.get(j).getParam() == 1){
+                            //es un parametro y esta en $s
+                        }
+                        else{
+                           $t[Integer.parseInt(nextTPos())] = cuads.get(i).getArgumento1();
+                        }
+                        id1found = true;
+                    }
+                     
+                    if(id2found == false){
+                        if(tabla.get(j).getId().equals(cuads.get(i).getArgumento2()) && tabla.get(j).getParam() == 1){
+                        // es un parametro y esta en $s
+
+                        }
+                        else{
+                            $t[Integer.parseInt(nextTPos())] = cuads.get(i).getArgumento2();
+                        } 
+                        id2found = true;
+                    }
+                                                        
                 }
-                    
-            }
+                
+                //buscar en registros
+                
+                String op1 = searchVar(cuads.get(i).getArgumento1());
+                String op2 = searchVar(cuads.get(i).getArgumento2());
+                
+                
+                if(!op1.equals("") && !op2.equals("")){
+                    textMIPS.add("add $t" + nextTPos() + ", " + op1 + ", " + op2);
+                    $t[Integer.parseInt(nextTPos())] = cuads.get(i).getResultado();
+                    $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
+                    $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
+                }
+                
+                else if(op1.equals("") && !op2.equals("")){
+                    textMIPS.add("add $t" + nextTPos() + ", " + cuads.get(i).getArgumento1() + ", " + op2);
+                    $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
+                }
+                else if(!op1.equals("") && op2.equals("")){
+                    textMIPS.add("add $t" + nextTPos() + ", " + op1 + ", " + cuads.get(i).getArgumento2());
+                    $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
+                }
+                 
+            } 
             
             //resta
             if(cuads.get(i).getOperacion().equals("-")){
-                            
+                
+                boolean id1found = false, id2found = false;
+                //agregar argumentos a los temporales                
+                for(int j = 0; j < tabla.size(); j++){
+                    
+                    if(id1found == false){
+                        if(tabla.get(j).getId().equals(cuads.get(i).getArgumento1()) && tabla.get(j).getParam() == 1){
+                            //es un parametro y esta en $s
+                        }
+                        else{
+                           $t[Integer.parseInt(nextTPos())] = cuads.get(i).getArgumento1();
+                        }
+                        id1found = true;
+                    }
+                     
+                    if(id2found == false){
+                        if(tabla.get(j).getId().equals(cuads.get(i).getArgumento2()) && tabla.get(j).getParam() == 1){
+                        // es un parametro y esta en $s
+
+                        }
+                        else{
+                            $t[Integer.parseInt(nextTPos())] = cuads.get(i).getArgumento2();
+                        } 
+                        id2found = true;
+                    }
+                                                        
+                }
+                
+                //buscar en registros
+                
+                String op1 = searchVar(cuads.get(i).getArgumento1());
+                String op2 = searchVar(cuads.get(i).getArgumento2());
+                
+                
+                if(!op1.equals("") && !op2.equals("")){
+                    textMIPS.add("sub $t" + nextTPos() + ", " + op1 + ", " + op2);
+                    $t[Integer.parseInt(nextTPos())] = cuads.get(i).getResultado();
+                    $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
+                    $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
+                }
+                
+                else if(op1.equals("") && !op2.equals("")){
+                    textMIPS.add("sub $t" + nextTPos() + ", " + cuads.get(i).getArgumento1() + ", " + op2);
+                    $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
+                }
+                else if(!op1.equals("") && op2.equals("")){
+                    textMIPS.add("sub $t" + nextTPos() + ", " + op1 + ", " + cuads.get(i).getArgumento2());
+                    $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
+                }         
             }
             
             //mult
             if(cuads.get(i).getOperacion().equals("*")){
-                            
+                    boolean id1found = false, id2found = false;
+                //agregar argumentos a los temporales                
+                for(int j = 0; j < tabla.size(); j++){
+                    
+                    if(id1found == false){
+                        if(tabla.get(j).getId().equals(cuads.get(i).getArgumento1()) && tabla.get(j).getParam() == 1){
+                            //es un parametro y esta en $s
+                        }
+                        else{
+                           $t[Integer.parseInt(nextTPos())] = cuads.get(i).getArgumento1();
+                        }
+                        id1found = true;
+                    }
+                     
+                    if(id2found == false){
+                        if(tabla.get(j).getId().equals(cuads.get(i).getArgumento2()) && tabla.get(j).getParam() == 1){
+                        // es un parametro y esta en $s
+
+                        }
+                        else{
+                            $t[Integer.parseInt(nextTPos())] = cuads.get(i).getArgumento2();
+                        } 
+                        id2found = true;
+                    }
+                                                        
+                }
+                
+                //buscar en registros
+                
+                String op1 = searchVar(cuads.get(i).getArgumento1());
+                String op2 = searchVar(cuads.get(i).getArgumento2());
+                
+                
+                if(!op1.equals("") && !op2.equals("")){
+                    textMIPS.add("mul $t" + nextTPos() + ", " + op1 + ", " + op2);
+                    $t[Integer.parseInt(nextTPos())] = cuads.get(i).getResultado();
+                    $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
+                    $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
+                }
+                
+                else if(op1.equals("") && !op2.equals("")){
+                    textMIPS.add("add $t" + nextTPos() + ", " + cuads.get(i).getArgumento1() + ", " + op2);
+                    $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
+                }
+                else if(!op1.equals("") && op2.equals("")){
+                    textMIPS.add("add $t" + nextTPos() + ", " + op1 + ", " + cuads.get(i).getArgumento2());
+                    $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
+                }        
             }
             
             //div
             if(cuads.get(i).getOperacion().equals("/")){
-                            
+                    boolean id1found = false, id2found = false;
+                //agregar argumentos a los temporales                
+                for(int j = 0; j < tabla.size(); j++){
+                    
+                    if(id1found == false){
+                        if(tabla.get(j).getId().equals(cuads.get(i).getArgumento1()) && tabla.get(j).getParam() == 1){
+                            //es un parametro y esta en $s
+                        }
+                        else{
+                           $t[Integer.parseInt(nextTPos())] = cuads.get(i).getArgumento1();
+                        }
+                        id1found = true;
+                    }
+                     
+                    if(id2found == false){
+                        if(tabla.get(j).getId().equals(cuads.get(i).getArgumento2()) && tabla.get(j).getParam() == 1){
+                        // es un parametro y esta en $s
+
+                        }
+                        else{
+                            $t[Integer.parseInt(nextTPos())] = cuads.get(i).getArgumento2();
+                        } 
+                        id2found = true;
+                    }
+                                                        
+                }
+                
+                //buscar en registros
+                
+                String op1 = searchVar(cuads.get(i).getArgumento1());
+                String op2 = searchVar(cuads.get(i).getArgumento2());
+                
+                
+                if(!op1.equals("") && !op2.equals("")){
+                    textMIPS.add("div $t" + nextTPos() + ", " + op1 + ", " + op2);
+                    $t[Integer.parseInt(nextTPos())] = cuads.get(i).getResultado();
+                    $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
+                    $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
+                }
+                
+                else if(op1.equals("") && !op2.equals("")){
+                    textMIPS.add("add $t" + nextTPos() + ", " + cuads.get(i).getArgumento1() + ", " + op2);
+                    $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
+                }
+                else if(!op1.equals("") && op2.equals("")){
+                    textMIPS.add("add $t" + nextTPos() + ", " + op1 + ", " + cuads.get(i).getArgumento2());
+                    $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
+                }            
             }
+            
             //llamado de funciones
             if(cuads.get(i).getOperacion().equals("callFunc")){
                 String params = cuads.get(i).getArgumento2();
@@ -1256,7 +1443,7 @@ public class Compilador extends javax.swing.JFrame {
         guardarNodoCondicionCheck = "";
         offset = 0;
         ambitoMips = "global";
-        llenarVacios();          
+        llenarVacios();
     }
     
     private String searchVar(String id){
