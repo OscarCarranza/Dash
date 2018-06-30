@@ -1,14 +1,12 @@
 			.data
-msg_1:		.asciiz"ferferf"
-msg_2:		.asciiz"ferferf"
-msg_3:		.asciiz"ferferf"
-msg_4:		.asciiz"HELLO"
+msg_1:		.asciiz "ferferf"
+msg_2:		.asciiz "ferferf"
+msg_3:		.asciiz "ferferf"
+msg_4:		.asciiz "HELLO"
 c:			.space '1'
-g			.WORD 0
+g:			.word 0
 
-			.text
-			
-suma:
+			.textsuma:
 	
 	sw $fp, -4($sp)
 	sw $ra, -8($sp)
@@ -17,11 +15,8 @@ suma:
 	move $fp, $sp
 	sub $sp, $sp, 25
 	add $t2, $s0, $t1
-<<<<<<< HEAD
-=======
 	
 	
->>>>>>> b847eea20e9fc452319b47d169b8e2934cbb3cde
 	li $v0 ,4
 	la $a0, msg_1
 	syscall
@@ -59,8 +54,6 @@ hola:
 	syscall
 	div $t4, $s1, $t3
 	add $t6, $t4, $t5
-<<<<<<< HEAD
-=======
 	
 	
 	
@@ -71,7 +64,6 @@ hola:
 	
 	
 	
->>>>>>> b847eea20e9fc452319b47d169b8e2934cbb3cde
 	li $v0 ,4
 	la $a0, msg_4
 	syscall
