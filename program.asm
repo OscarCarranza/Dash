@@ -6,7 +6,9 @@ msg_4:		.asciiz "HELLO"
 c:			.space '1'
 g:			.word 0
 
-			.textsuma:
+			.text
+			.global main
+suma:
 	
 	sw $fp, -4($sp)
 	sw $ra, -8($sp)
@@ -15,6 +17,7 @@ g:			.word 0
 	move $fp, $sp
 	sub $sp, $sp, 25
 	add $t2, $s0, $t1
+	sw $t2, r
 	
 	
 	li $v0 ,4
@@ -44,16 +47,19 @@ hola:
 	
 	
 	
+	sw $t2, 1
 	
 	
 	
 	
+	sw $t2, 2
 	
 	li $v0 ,4
 	la $a0, msg_3
 	syscall
 	div $t4, $s1, $t3
 	add $t6, $t4, $t5
+	sw $t6, a
 	
 	
 	
@@ -61,6 +67,7 @@ hola:
 	
 	
 	
+	sw $t6, 4
 	
 	
 	

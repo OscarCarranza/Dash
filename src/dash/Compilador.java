@@ -883,7 +883,6 @@ public class Compilador extends javax.swing.JFrame {
                         offset += getSize(tabla.get(j).getTipo());
                         textMIPS.add("sw $s" + index + ", -" + offset + ("($sp)"));
                         $s[index] = tabla.get(j).getId();
-                        tabla.get(j).setRegister("$s" + index);
                         index++;
                         paramsFound++;
                     }
@@ -900,8 +899,6 @@ public class Compilador extends javax.swing.JFrame {
                 for(int j = 0; j < tabla.size(); j++){
                  
                     if(nombreFun.equals(tabla.get(j).getAmbito()) && tabla.get(j).getParam() == 0){
-                        $t[Integer.parseInt(nextTPos())] = tabla.get(j).getId();
-                        tabla.get(j).setRegister("$t" + Integer.parseInt(nextTPos()));
                         offset += getSize(tabla.get(j).getTipo());
                     }
                 } 
@@ -981,7 +978,8 @@ public class Compilador extends javax.swing.JFrame {
                 
                 if(!op1.equals("") && !op2.equals("")){
                     textMIPS.add("add $t" + nextTPos() + ", " + op1 + ", " + op2);
-                    lastOp = "$t" + nextTPos();
+                    String s = "$t" + nextTPos();
+                    lastOp = s;
                     $t[Integer.parseInt(nextTPos())] = cuads.get(i).getResultado();
                     $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
                     $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
@@ -995,7 +993,7 @@ public class Compilador extends javax.swing.JFrame {
                     textMIPS.add("add $t" + nextTPos() + ", " + op1 + ", " + cuads.get(i).getArgumento2());
                     $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
                 }
-                quitarTemps();
+                 
             } 
             
             //resta
@@ -1036,7 +1034,8 @@ public class Compilador extends javax.swing.JFrame {
                 
                 if(!op1.equals("") && !op2.equals("")){
                     textMIPS.add("sub $t" + nextTPos() + ", " + op1 + ", " + op2);
-                    lastOp = "$t" + nextTPos();
+                    String s = "$t" + nextTPos();
+                    lastOp = s;
                     $t[Integer.parseInt(nextTPos())] = cuads.get(i).getResultado();
                     $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
                     $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
@@ -1049,8 +1048,7 @@ public class Compilador extends javax.swing.JFrame {
                 else if(!op1.equals("") && op2.equals("")){
                     textMIPS.add("sub $t" + nextTPos() + ", " + op1 + ", " + cuads.get(i).getArgumento2());
                     $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
-                } 
-                quitarTemps();
+                }         
             }
             
             //mult
@@ -1090,7 +1088,8 @@ public class Compilador extends javax.swing.JFrame {
                 
                 if(!op1.equals("") && !op2.equals("")){
                     textMIPS.add("mul $t" + nextTPos() + ", " + op1 + ", " + op2);
-                    lastOp = "$t" + nextTPos();
+                    String s = "$t" + nextTPos();
+                    lastOp = s;
                     $t[Integer.parseInt(nextTPos())] = cuads.get(i).getResultado();
                     $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
                     $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
@@ -1103,8 +1102,7 @@ public class Compilador extends javax.swing.JFrame {
                 else if(!op1.equals("") && op2.equals("")){
                     textMIPS.add("add $t" + nextTPos() + ", " + op1 + ", " + cuads.get(i).getArgumento2());
                     $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
-                }     
-                quitarTemps();
+                }        
             }
             
             //div
@@ -1144,7 +1142,8 @@ public class Compilador extends javax.swing.JFrame {
                 
                 if(!op1.equals("") && !op2.equals("")){
                     textMIPS.add("div $t" + nextTPos() + ", " + op1 + ", " + op2);
-                    lastOp = "$t" + nextTPos();
+                    String s = "$t" + nextTPos();
+                    lastOp = s;
                     $t[Integer.parseInt(nextTPos())] = cuads.get(i).getResultado();
                     $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
                     $t[Character.getNumericValue(op1.charAt(op2.length()-1))] = "#";
@@ -1157,8 +1156,7 @@ public class Compilador extends javax.swing.JFrame {
                 else if(!op1.equals("") && op2.equals("")){
                     textMIPS.add("add $t" + nextTPos() + ", " + op1 + ", " + cuads.get(i).getArgumento2());
                     $t[Character.getNumericValue(op1.charAt(op1.length()-1))] = "#";
-                }  
-                quitarTemps();
+                }            
             }
             
             //asignacion
@@ -1338,6 +1336,7 @@ public class Compilador extends javax.swing.JFrame {
             }  
 
             bw.write("\n\t\t\t" + ".text");
+            bw.write("\n\t\t\t" + ".global main\n");
             for(int i = 0; i < textMIPS.size(); i++){
                 if(textMIPS.get(i).contains(":"))
                     bw.write(textMIPS.get(i)+"\n");
@@ -1390,6 +1389,15 @@ public class Compilador extends javax.swing.JFrame {
     private String nextTPos(){
         for(int i = 0; i < 10; i++){
             if($t[i].equals("#")){
+                return Integer.toString(i);
+            }
+        }
+        return "";
+    }
+    
+    private String survivor(){
+        for(int i = 0; i < 10; i++){
+            if(!$t[i].equals("#")){
                 return Integer.toString(i);
             }
         }
@@ -1495,14 +1503,6 @@ public class Compilador extends javax.swing.JFrame {
         }
         for(int i = 0; i < 8; i++){
             System.out.println("$s[" + i + "]: " + $s[i]);
-        }
-    }
-    
-    private void quitarTemps(){
-        for(int i = 0; i < 10; i++){
-            if($t[i].startsWith("t_")){
-                $t[i] = "#";
-            }
         }
     }
     
