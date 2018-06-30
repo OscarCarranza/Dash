@@ -217,7 +217,7 @@ public class Compilador extends javax.swing.JFrame {
                             String tipo = ((Tabla)sintactico.tabla.get(i)).getTipo();
                             switch(tipo){
                                     // falta si estan inicialiizados 
-                                    case "int": data.add(((Tabla)sintactico.tabla.get(i)).getId() + "\t\t\t.WORD 0");
+                                    case "int": data.add(((Tabla)sintactico.tabla.get(i)).getId() + "\t\t\t.word 0");
                                         break;
                                     case "int*":
                                         break;                                  
@@ -225,7 +225,7 @@ public class Compilador extends javax.swing.JFrame {
                                         break;
                                     case "char*":
                                         break;
-                                    case "bool": data.add(((Tabla)sintactico.tabla.get(i)).getId() + "\t\t\t.WORD 0");
+                                    case "bool": data.add(((Tabla)sintactico.tabla.get(i)).getId() + ":\t\t\t.word 0");
                                         break;
                                     case "bool*":
                                         break;           
@@ -1193,7 +1193,7 @@ public class Compilador extends javax.swing.JFrame {
             //salida
             if(cuads.get(i).getOperacion().equals("out")){
                 if(cuads.get(i).getResultado().startsWith("\"") && cuads.get(i).getResultado().endsWith("\"")){
-                    data.add("msg_" + contPrints + ":\t\t.asciiz" + cuads.get(i).getResultado());
+                    data.add("msg_" + contPrints + ":\t\t.asciiz " + cuads.get(i).getResultado());
                     textMIPS.add("li $v0 ,4");
                     textMIPS.add("la $a0, msg_" + contPrints);
                     textMIPS.add("syscall");
