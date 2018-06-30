@@ -32,7 +32,7 @@ func hola => (int a, int b){
 			}
 	}
 	int d, f, a2, m-
-	a = b / suma(a, b) + 1-
+	a = b / suma(a) + 1-
 	if(a <= b && c <= d || f > 2 && a && b > 2 || 1 > 2 && a){
 		char a33-
 		string hello-
