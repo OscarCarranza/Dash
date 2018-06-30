@@ -588,13 +588,18 @@ public class Compilador extends javax.swing.JFrame {
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("funcion")){
                 cuads.add(new Cuadruplo("func","","",((Nodo)nodo.getHijos().get(i)).getValue()));
             }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("main")){
+                cuads.add(new Cuadruplo("main","","","main"));
+            }
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("return")){
                 cuads.add(new Cuadruplo("ret","","",((Nodo)nodo.getHijos().get(i)).getValue()));
 
             }   
-             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("finFunc")){
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("finFunc")){
                 cuads.add(new Cuadruplo("finFunc","","",((Nodo)nodo.getHijos().get(i)).getValue()));
-
+            }
+            if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("finMain")){
+                cuads.add(new Cuadruplo("finMain","","",((Nodo)nodo.getHijos().get(i)).getValue()));
             }
             if ( ((Nodo)nodo.getHijos().get(i)).getTipo().equals("if")){
                 arregloEtiquetas = new ArrayList();
@@ -863,7 +868,7 @@ public class Compilador extends javax.swing.JFrame {
         
         for(int i = 0; i < cuads.size(); i++){
             
-            if(cuads.get(i).getOperacion().equals("func")){
+            if(cuads.get(i).getOperacion().equals("func") || cuads.get(i).getOperacion().equals("main")){
                 String nombreFun = cuads.get(i).getResultado();
                 textMIPS.add(nombreFun + ":\n\t");
                 offset += 4;
@@ -1283,6 +1288,14 @@ public class Compilador extends javax.swing.JFrame {
                 System.out.println(searchVar(cuads.get(i).getArgumento2()));
                 String branch, operacion;
                 textMIPS.add("");
+                System.out.println("\t\t\t$t0");
+                for (int j = 0; j < $t.length; j++) {
+                    System.out.println($t[j]);
+                }
+                System.out.println("\t\t\t$s0");
+                for (int j = 0; j < $s.length; j++) {
+                    System.out.println($s[j]);
+                }
             }
             
         }
@@ -1336,7 +1349,7 @@ public class Compilador extends javax.swing.JFrame {
             }  
 
             bw.write("\n\t\t\t" + ".text");
-            bw.write("\n\t\t\t" + ".global main\n");
+            bw.write("\n\t\t\t" + ".globl main\n");
             for(int i = 0; i < textMIPS.size(); i++){
                 if(textMIPS.get(i).contains(":"))
                     bw.write(textMIPS.get(i)+"\n");

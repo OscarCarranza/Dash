@@ -1,20 +1,28 @@
 			.data
 msg_1:		.asciiz "ferferf"
-msg_2:		.asciiz "ferferf"
-msg_3:		.asciiz "ferferf"
-msg_4:		.asciiz "HELLO"
-c:			.space '1'
-g:			.word 0
 
 			.text
+<<<<<<< HEAD
+			.globl main
+main:
+=======
 			.global main
 suma:
+>>>>>>> a019231c85608e40de1bb8bf23f6c646946aa1f9
 	
 	sw $fp, -4($sp)
 	sw $ra, -8($sp)
 	sw $s0, -12($sp)
 	move $s0, $a0
 	move $fp, $sp
+<<<<<<< HEAD
+	sub $sp, $sp, 16
+	li $v0 ,4
+	la $a0, msg_1
+	syscall
+finFunc_main: 
+	add $sp, $sp, 16
+=======
 	sub $sp, $sp, 25
 	add $t2, $s0, $t1
 	sw $t2, r
@@ -77,6 +85,7 @@ hola:
 finFunc_hola: 
 	add $sp, $sp, 32
 	lw $s1, -16($fp)
+>>>>>>> a019231c85608e40de1bb8bf23f6c646946aa1f9
 	lw $s0, -12($fp)
 	sw $fp, -8($sp)
 	sw $ra, -4($sp)

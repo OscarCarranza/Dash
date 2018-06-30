@@ -379,6 +379,8 @@ asignacionInteger ::= asignacionInteger:b COMMA instanciacionInteger:id {:  if(b
                                                                                 ArrayList arregloNodos = (ArrayList) b;
                                                                                 Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                                 arregloNodos.add( newID );
+                                                                                if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                    this.parser.direccion = 1;
                                                                                 int temp = this.parser.direccion;
                                                                                 if(this.parser.esMetodo)
                                                                                     this.parser.direccion++;
@@ -391,6 +393,8 @@ asignacionInteger ::= asignacionInteger:b COMMA instanciacionInteger:id {:  if(b
                                                                                 ArrayList arregloInstancias = new ArrayList();
                                                                                 Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                                 arregloInstancias.add(newID);
+                                                                                if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                    this.parser.direccion = 1;
                                                                                 int temp = this.parser.direccion;
                                                                                 if(this.parser.esMetodo)
                                                                                     this.parser.direccion++;
@@ -404,6 +408,8 @@ asignacionInteger ::= asignacionInteger:b COMMA instanciacionInteger:id {:  if(b
                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                     arregloInstancias.add(newInt);
                                     arregloInstancias.add(newID);
+                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                        this.parser.direccion = 1;
                                     int temp = this.parser.direccion;
                                     if(this.parser.esMetodo)
                                         this.parser.direccion++;
@@ -430,6 +436,8 @@ asignacionIntegerPtr ::= asignacionIntegerPtr:b COMMA instanciacionIntegerPtr:id
                                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                                     Nodo newID = new Nodo((String)id, "");
                                                                                     arregloNodos.add( newID );
+                                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                        this.parser.direccion = 1;
                                                                                     int temp = this.parser.direccion;
                                                                                     if(this.parser.esMetodo)
                                                                                         this.parser.direccion++;
@@ -442,6 +450,8 @@ asignacionIntegerPtr ::= asignacionIntegerPtr:b COMMA instanciacionIntegerPtr:id
                                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                                     Nodo newID = new Nodo((String)id, "");
                                                                                     arregloInstancias.add(newID);
+                                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                        this.parser.direccion = 1;
                                                                                     int temp = this.parser.direccion;
                                                                                     if(this.parser.esMetodo)
                                                                                         this.parser.direccion++;
@@ -455,6 +465,8 @@ asignacionIntegerPtr ::= asignacionIntegerPtr:b COMMA instanciacionIntegerPtr:id
                                     Nodo newID = new Nodo((String)id, "");
                                     arregloInstancias.add(newInt);
                                     arregloInstancias.add(newID);
+                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                        this.parser.direccion = 1;
                                     int temp = this.parser.direccion;
                                     if(this.parser.esMetodo)
                                         this.parser.direccion++;
@@ -478,6 +490,8 @@ asignacionChar ::= asignacionChar:b COMMA instanciacionChar:id {: if(b != null){
                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloNodos.add( newID );
+                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                        this.parser.direccion = 1;
                                                                     int temp = this.parser.direccion;
                                                                     if(this.parser.esMetodo)
                                                                         this.parser.direccion++;
@@ -490,6 +504,8 @@ asignacionChar ::= asignacionChar:b COMMA instanciacionChar:id {: if(b != null){
                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloInstancias.add(newID);
+                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                        this.parser.direccion = 1;
                                                                     int temp = this.parser.direccion;
                                                                     if(this.parser.esMetodo)
                                                                         this.parser.direccion++;
@@ -503,6 +519,8 @@ asignacionChar ::= asignacionChar:b COMMA instanciacionChar:id {: if(b != null){
                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                     arregloInstancias.add(newChar);
                                     arregloInstancias.add(newID);
+                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                        this.parser.direccion = 1;
                                     int temp = this.parser.direccion;
                                     if(this.parser.esMetodo)
                                         this.parser.direccion++;
@@ -537,6 +555,8 @@ asignacionCharPtr ::= asignacionCharPtr:b COMMA instanciacionCharPointer:id {: i
                                                                             ArrayList arregloNodos = (ArrayList) b;
                                                                             Nodo newID = new Nodo((String)id, "");
                                                                             arregloNodos.add( newID );
+                                                                            if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                this.parser.direccion = 1;
                                                                             int temp = this.parser.direccion;
                                                                             if(this.parser.esMetodo)
                                                                                 this.parser.direccion++;
@@ -549,6 +569,8 @@ asignacionCharPtr ::= asignacionCharPtr:b COMMA instanciacionCharPointer:id {: i
                                                                             ArrayList arregloInstancias = new ArrayList();
                                                                             Nodo newID = new Nodo((String)id, "");
                                                                             arregloInstancias.add(newID);
+                                                                            if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                this.parser.direccion = 1;
                                                                             int temp = this.parser.direccion;
                                                                             if(this.parser.esMetodo)
                                                                                 this.parser.direccion++;
@@ -562,6 +584,8 @@ asignacionCharPtr ::= asignacionCharPtr:b COMMA instanciacionCharPointer:id {: i
                                             Nodo newID = new Nodo((String)id, "");
                                             arregloInstancias.add(newChar);
                                             arregloInstancias.add(newID);
+                                            if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                this.parser.direccion = 1;
                                             int temp = this.parser.direccion;
                                             if(this.parser.esMetodo)
                                                 this.parser.direccion++;
@@ -585,6 +609,8 @@ asignacionBool ::= asignacionBool:b COMMA instanciacionBool:id {:if(b != null){
                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloNodos.add( newID );
+                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                        this.parser.direccion = 1;
                                                                     int temp = this.parser.direccion;
                                                                     if(this.parser.esMetodo)
                                                                         this.parser.direccion++;
@@ -597,6 +623,8 @@ asignacionBool ::= asignacionBool:b COMMA instanciacionBool:id {:if(b != null){
                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloInstancias.add(newID);
+                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                        this.parser.direccion = 1;
                                                                     int temp = this.parser.direccion;
                                                                     if(this.parser.esMetodo)
                                                                         this.parser.direccion++;
@@ -610,6 +638,8 @@ asignacionBool ::= asignacionBool:b COMMA instanciacionBool:id {:if(b != null){
                                 Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                 arregloInstancias.add(newChar);
                                 arregloInstancias.add(newID);
+                                if(this.parser.esMetodo && this.parser.direccion == -1)
+                                    this.parser.direccion = 1;
                                 int temp = this.parser.direccion;
                                 if(this.parser.esMetodo)
                                     this.parser.direccion++;
@@ -633,6 +663,8 @@ asignacionBoolPtr ::= asignacionBoolPtr:b COMMA instanciacionBoolPtr:id {:if(b !
                                                                         ArrayList arregloNodos = (ArrayList) b;
                                                                         Nodo newID = new Nodo((String)id, "");
                                                                         arregloNodos.add( newID );
+                                                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                            this.parser.direccion = 1;
                                                                         int temp = this.parser.direccion;
                                                                         if(this.parser.esMetodo)
                                                                             this.parser.direccion++;
@@ -645,6 +677,8 @@ asignacionBoolPtr ::= asignacionBoolPtr:b COMMA instanciacionBoolPtr:id {:if(b !
                                                                         ArrayList arregloInstancias = new ArrayList();
                                                                         Nodo newID = new Nodo((String)id, "");
                                                                         arregloInstancias.add(newID);
+                                                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                            this.parser.direccion = 1;
                                                                         int temp = this.parser.direccion;
                                                                         if(this.parser.esMetodo)
                                                                             this.parser.direccion++;
@@ -658,6 +692,8 @@ asignacionBoolPtr ::= asignacionBoolPtr:b COMMA instanciacionBoolPtr:id {:if(b !
                                         Nodo newID = new Nodo((String)id, "");
                                         arregloInstancias.add(newChar);
                                         arregloInstancias.add(newID);
+                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                            this.parser.direccion = 1;
                                         int temp = this.parser.direccion;
                                         if(this.parser.esMetodo)
                                             this.parser.direccion++;
@@ -684,6 +720,8 @@ asignacionString ::= asignacionString:b COMMA instanciacionString:id {:if(b != n
                                                                         ArrayList arregloNodos = (ArrayList) b;
                                                                         Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                         arregloNodos.add( newID );
+                                                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                            this.parser.direccion = 1;
                                                                         int temp = this.parser.direccion;
                                                                         if(this.parser.esMetodo)
                                                                             this.parser.direccion++;
@@ -696,6 +734,8 @@ asignacionString ::= asignacionString:b COMMA instanciacionString:id {:if(b != n
                                                                         ArrayList arregloInstancias = new ArrayList();
                                                                         Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                         arregloInstancias.add(newID);
+                                                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                            this.parser.direccion = 1;
                                                                         int temp = this.parser.direccion;
                                                                         if(this.parser.esMetodo)
                                                                             this.parser.direccion++;
@@ -709,6 +749,8 @@ asignacionString ::= asignacionString:b COMMA instanciacionString:id {:if(b != n
                                         Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                         arregloInstancias.add(newChar);
                                         arregloInstancias.add(newID);
+                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                            this.parser.direccion = 1;
                                         int temp = this.parser.direccion;
                                         if(this.parser.esMetodo)
                                             this.parser.direccion++;
@@ -1242,6 +1284,8 @@ dec_main ::= MAIN ARROW LPAR {: this.parser.ambito+=".main"; this.parser.profund
                                                                                     }
                                                                                     Nodo nodoRet = new Nodo("return", ret.toString());
                                                                                     nodo.addHijo(nodoRet);
+                                                                                    Nodo fin = new Nodo("finFunc", "main");
+                                                                                    nodo.addHijo(fin);
                                                                                     ArrayList arregloFuncion = new ArrayList();
                                                                                     arregloFuncion.add(nodo);
                                                                                     this.parser.esMetodo = false;
@@ -1258,7 +1302,7 @@ dec_main ::= MAIN ARROW LPAR {: this.parser.ambito+=".main"; this.parser.profund
 parameters ::= parameters:params COMMA params_type:param ID:id  {:ArrayList arregloParams = (ArrayList)params;
                                                 arregloParams.add(param.toString());
                                                 RESULT = arregloParams;
-                                                Tabla nuevaVar = new Tabla((String)id, param.toString(), this.parser.ambito , 0, 0, 1,"");
+                                                Tabla nuevaVar = new Tabla((String)id, param.toString(), this.parser.ambito , 0, -1, 1, "");
                                                 this.parser.tabla.add( nuevaVar ); :}
     | params_type:param ID:id    {:ArrayList arregloParams = new ArrayList();
                                 arregloParams.add(param.toString());
