@@ -23,6 +23,8 @@ parser code
     public int profundidad = 0;
     public static int contTemp = 0;
     public static ArrayList<Cuadruplo> cuads = new ArrayList();
+    public int direccion = 0;
+    public boolean esMetodo = false;
 
     public boolean noExiste(String id) {
         boolean esValido = true;
@@ -377,14 +379,24 @@ asignacionInteger ::= asignacionInteger:b COMMA instanciacionInteger:id {:  if(b
                                                                                 ArrayList arregloNodos = (ArrayList) b;
                                                                                 Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                                 arregloNodos.add( newID );
-                                                                                Tabla nuevaVar = new Tabla( ((Nodo)id).getTipo(), "int", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                                int temp = this.parser.direccion;
+                                                                                if(esMetodo)
+                                                                                    this.parser.direccion++;
+                                                                                else
+                                                                                    temp = -1;
+                                                                                Tabla nuevaVar = new Tabla( ((Nodo)id).getTipo(), "int", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                                 this.parser.tabla.add( nuevaVar );
                                                                                 RESULT = arregloNodos;
                                                                              } else {
                                                                                 ArrayList arregloInstancias = new ArrayList();
                                                                                 Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                                 arregloInstancias.add(newID);
-                                                                                Tabla nuevaVar = new Tabla( ((Nodo)id).getTipo(), "int", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                                int temp = this.parser.direccion;
+                                                                                if(esMetodo)
+                                                                                    this.parser.direccion++;
+                                                                                else
+                                                                                    temp = -1;
+                                                                                Tabla nuevaVar = new Tabla( ((Nodo)id).getTipo(), "int", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                                 this.parser.tabla.add( nuevaVar );
                                                                                 RESULT = arregloInstancias;} :} 
     | INT instanciacionInteger:id {:ArrayList arregloInstancias = new ArrayList();
@@ -392,7 +404,12 @@ asignacionInteger ::= asignacionInteger:b COMMA instanciacionInteger:id {:  if(b
                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                     arregloInstancias.add(newInt);
                                     arregloInstancias.add(newID);
-                                    Tabla nuevaVar = new Tabla( ((Nodo)id).getTipo(), "int", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                    int temp = this.parser.direccion;
+                                    if(esMetodo)
+                                        this.parser.direccion++;
+                                    else
+                                        temp = -1;
+                                    Tabla nuevaVar = new Tabla( ((Nodo)id).getTipo(), "int", this.parser.ambito, this.parser.profundidad, temp, 0);
                                     this.parser.tabla.add( nuevaVar );
                                     RESULT = arregloInstancias; :} ;
 
@@ -413,14 +430,24 @@ asignacionIntegerPtr ::= asignacionIntegerPtr:b COMMA instanciacionIntegerPtr:id
                                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                                     Nodo newID = new Nodo((String)id, "");
                                                                                     arregloNodos.add( newID );
-                                                                                    Tabla nuevaVar = new Tabla((String)id, "int*", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                                    int temp = this.parser.direccion;
+                                                                                    if(esMetodo)
+                                                                                        this.parser.direccion++;
+                                                                                    else
+                                                                                        temp = -1;
+                                                                                    Tabla nuevaVar = new Tabla((String)id, "int*", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                                     this.parser.tabla.add( nuevaVar );
                                                                                     RESULT = arregloNodos;
                                                                                  } else {
                                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                                     Nodo newID = new Nodo((String)id, "");
                                                                                     arregloInstancias.add(newID);
-                                                                                    Tabla nuevaVar = new Tabla((String)id, "int*", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                                    int temp = this.parser.direccion;
+                                                                                    if(esMetodo)
+                                                                                        this.parser.direccion++;
+                                                                                    else
+                                                                                        temp = -1;
+                                                                                    Tabla nuevaVar = new Tabla((String)id, "int*", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                                     this.parser.tabla.add( nuevaVar );
                                                                                     RESULT = arregloInstancias;}:} 
     | INTPTR instanciacionIntegerPtr:id {:ArrayList arregloInstancias = new ArrayList();
@@ -428,7 +455,12 @@ asignacionIntegerPtr ::= asignacionIntegerPtr:b COMMA instanciacionIntegerPtr:id
                                     Nodo newID = new Nodo((String)id, "");
                                     arregloInstancias.add(newInt);
                                     arregloInstancias.add(newID);
-                                    Tabla nuevaVar = new Tabla((String)id, "int*", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                    int temp = this.parser.direccion;
+                                    if(esMetodo)
+                                        this.parser.direccion++;
+                                    else
+                                        temp = -1;
+                                    Tabla nuevaVar = new Tabla((String)id, "int*", this.parser.ambito, this.parser.profundidad, temp, 0);
                                     this.parser.tabla.add( nuevaVar );
                                     RESULT = arregloInstancias; :} ;
 
@@ -446,14 +478,24 @@ asignacionChar ::= asignacionChar:b COMMA instanciacionChar:id {: if(b != null){
                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloNodos.add( newID );
-                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "char", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                    int temp = this.parser.direccion;
+                                                                    if(esMetodo)
+                                                                        this.parser.direccion++;
+                                                                    else
+                                                                        temp = -1;
+                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "char", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                     this.parser.tabla.add( nuevaVar );
                                                                     RESULT = arregloNodos;
                                                                  } else {
                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloInstancias.add(newID);
-                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "char", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                    int temp = this.parser.direccion;
+                                                                    if(esMetodo)
+                                                                        this.parser.direccion++;
+                                                                    else
+                                                                        temp = -1;
+                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "char", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                     this.parser.tabla.add( nuevaVar );
                                                                     RESULT = arregloInstancias;} :} 
     | CHAR instanciacionChar:id {:ArrayList arregloInstancias = new ArrayList();
@@ -461,7 +503,12 @@ asignacionChar ::= asignacionChar:b COMMA instanciacionChar:id {: if(b != null){
                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                     arregloInstancias.add(newChar);
                                     arregloInstancias.add(newID);
-                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "char", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                    int temp = this.parser.direccion;
+                                    if(esMetodo)
+                                        this.parser.direccion++;
+                                    else
+                                        temp = -1;
+                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "char", this.parser.ambito, this.parser.profundidad, temp, 0);
                                     this.parser.tabla.add( nuevaVar );
                                     RESULT = arregloInstancias; :};
 
@@ -490,14 +537,24 @@ asignacionCharPtr ::= asignacionCharPtr:b COMMA instanciacionCharPointer:id {: i
                                                                             ArrayList arregloNodos = (ArrayList) b;
                                                                             Nodo newID = new Nodo((String)id, "");
                                                                             arregloNodos.add( newID );
-                                                                            Tabla nuevaVar = new Tabla((String)id, "char*", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                            int temp = this.parser.direccion;
+                                                                            if(esMetodo)
+                                                                                this.parser.direccion++;
+                                                                            else
+                                                                                temp = -1;
+                                                                            Tabla nuevaVar = new Tabla((String)id, "char*", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                             this.parser.tabla.add( nuevaVar );
                                                                             RESULT = arregloNodos;
                                                                          } else {
                                                                             ArrayList arregloInstancias = new ArrayList();
                                                                             Nodo newID = new Nodo((String)id, "");
                                                                             arregloInstancias.add(newID);
-                                                                            Tabla nuevaVar = new Tabla((String)id, "char*", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                            int temp = this.parser.direccion;
+                                                                            if(esMetodo)
+                                                                                this.parser.direccion++;
+                                                                            else
+                                                                                temp = -1;
+                                                                            Tabla nuevaVar = new Tabla((String)id, "char*", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                             this.parser.tabla.add( nuevaVar );
                                                                             RESULT = arregloInstancias;}:} 
     | CHARPTR instanciacionCharPointer:id {:ArrayList arregloInstancias = new ArrayList();
@@ -505,7 +562,12 @@ asignacionCharPtr ::= asignacionCharPtr:b COMMA instanciacionCharPointer:id {: i
                                             Nodo newID = new Nodo((String)id, "");
                                             arregloInstancias.add(newChar);
                                             arregloInstancias.add(newID);
-                                            Tabla nuevaVar = new Tabla((String)id, "char*", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                            int temp = this.parser.direccion;
+                                            if(esMetodo)
+                                                this.parser.direccion++;
+                                            else
+                                                temp = -1;
+                                            Tabla nuevaVar = new Tabla((String)id, "char*", this.parser.ambito, this.parser.profundidad, temp, 0);
                                             this.parser.tabla.add( nuevaVar );
                                             RESULT = arregloInstancias; :};
 
@@ -523,14 +585,24 @@ asignacionBool ::= asignacionBool:b COMMA instanciacionBool:id {:if(b != null){
                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloNodos.add( newID );
-                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "bool", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                    int temp = this.parser.direccion;
+                                                                    if(esMetodo)
+                                                                        this.parser.direccion++;
+                                                                    else
+                                                                        temp = -1;
+                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "bool", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                     this.parser.tabla.add( nuevaVar );
                                                                     RESULT = arregloNodos;
                                                                  } else {
                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloInstancias.add(newID);
-                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "bool", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                    int temp = this.parser.direccion;
+                                                                    if(esMetodo)
+                                                                        this.parser.direccion++;
+                                                                    else
+                                                                        temp = -1;
+                                                                    Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "bool", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                     this.parser.tabla.add( nuevaVar );
                                                                     RESULT = arregloInstancias;}:}
     | BOOL instanciacionBool:id {:ArrayList arregloInstancias = new ArrayList();
@@ -538,7 +610,12 @@ asignacionBool ::= asignacionBool:b COMMA instanciacionBool:id {:if(b != null){
                                 Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                 arregloInstancias.add(newChar);
                                 arregloInstancias.add(newID);
-                                Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "bool", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                int temp = this.parser.direccion;
+                                if(esMetodo)
+                                    this.parser.direccion++;
+                                else
+                                    temp = -1;
+                                Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "bool", this.parser.ambito, this.parser.profundidad, temp, 0);
                                 this.parser.tabla.add( nuevaVar );
                                 RESULT = arregloInstancias; :};
 
@@ -556,14 +633,24 @@ asignacionBoolPtr ::= asignacionBoolPtr:b COMMA instanciacionBoolPtr:id {:if(b !
                                                                         ArrayList arregloNodos = (ArrayList) b;
                                                                         Nodo newID = new Nodo((String)id, "");
                                                                         arregloNodos.add( newID );
-                                                                        Tabla nuevaVar = new Tabla((String)id, "bool*", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                        int temp = this.parser.direccion;
+                                                                        if(esMetodo)
+                                                                            this.parser.direccion++;
+                                                                        else
+                                                                            temp = -1;
+                                                                        Tabla nuevaVar = new Tabla((String)id, "bool*", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                         this.parser.tabla.add( nuevaVar );
                                                                         RESULT = arregloNodos;
                                                                      } else {
                                                                         ArrayList arregloInstancias = new ArrayList();
                                                                         Nodo newID = new Nodo((String)id, "");
                                                                         arregloInstancias.add(newID);
-                                                                        Tabla nuevaVar = new Tabla((String)id, "bool*", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                        int temp = this.parser.direccion;
+                                                                        if(esMetodo)
+                                                                            this.parser.direccion++;
+                                                                        else
+                                                                            temp = -1;
+                                                                        Tabla nuevaVar = new Tabla((String)id, "bool*", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                         this.parser.tabla.add( nuevaVar );
                                                                         RESULT = arregloInstancias;}:}
     | BOOLPTR instanciacionBoolPtr:id {:ArrayList arregloInstancias = new ArrayList();
@@ -571,7 +658,12 @@ asignacionBoolPtr ::= asignacionBoolPtr:b COMMA instanciacionBoolPtr:id {:if(b !
                                         Nodo newID = new Nodo((String)id, "");
                                         arregloInstancias.add(newChar);
                                         arregloInstancias.add(newID);
-                                        Tabla nuevaVar = new Tabla((String)id, "bool*", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                        int temp = this.parser.direccion;
+                                        if(esMetodo)
+                                            this.parser.direccion++;
+                                        else
+                                            temp = -1;
+                                        Tabla nuevaVar = new Tabla((String)id, "bool*", this.parser.ambito, this.parser.profundidad, temp, 0);
                                         this.parser.tabla.add( nuevaVar );
                                         RESULT = arregloInstancias; :};
 
@@ -592,14 +684,24 @@ asignacionString ::= asignacionString:b COMMA instanciacionString:id {:if(b != n
                                                                         ArrayList arregloNodos = (ArrayList) b;
                                                                         Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                         arregloNodos.add( newID );
-                                                                        Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "string", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                        int temp = this.parser.direccion;
+                                                                        if(esMetodo)
+                                                                            this.parser.direccion++;
+                                                                        else
+                                                                            temp = -1;
+                                                                        Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "string", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                         this.parser.tabla.add( nuevaVar );
                                                                         RESULT = arregloNodos;
                                                                      } else {
                                                                         ArrayList arregloInstancias = new ArrayList();
                                                                         Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                         arregloInstancias.add(newID);
-                                                                        Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "string", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                                                        int temp = this.parser.direccion;
+                                                                        if(esMetodo)
+                                                                            this.parser.direccion++;
+                                                                        else
+                                                                            temp = -1;
+                                                                        Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "string", this.parser.ambito, this.parser.profundidad, temp, 0);
                                                                         this.parser.tabla.add( nuevaVar );
                                                                         RESULT = arregloInstancias;}:}
     | STRING instanciacionString:id {:ArrayList arregloInstancias = new ArrayList();
@@ -607,7 +709,12 @@ asignacionString ::= asignacionString:b COMMA instanciacionString:id {:if(b != n
                                         Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                         arregloInstancias.add(newChar);
                                         arregloInstancias.add(newID);
-                                        Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "string", this.parser.ambito, this.parser.profundidad, 0, 0);
+                                        int temp = this.parser.direccion;
+                                        if(esMetodo)
+                                            this.parser.direccion++;
+                                        else
+                                            temp = -1;
+                                        Tabla nuevaVar = new Tabla(((Nodo)id).getTipo(), "string", this.parser.ambito, this.parser.profundidad, temp, 0);
                                         this.parser.tabla.add( nuevaVar );
                                         RESULT = arregloInstancias; :};
 
@@ -1051,7 +1158,7 @@ body ::= body:b declaracion:a {: if(b != null){
         :};
 
 /*------------------- Declaracion de funciones -----------------------*/
-dec_function ::= FUNCTION ID:nombre {: this.parser.ambito+="."+nombre.toString(); this.parser.profundidad=0; :} ARROW LPAR parameters:params RPAR LKEY body:body RETURN varRet:ret DASH RKEY DASH {: Nodo nodo = new Nodo("funcion", nombre.toString());
+dec_function ::= FUNCTION ID:nombre {: this.parser.ambito+="."+nombre.toString(); this.parser.profundidad=0; :} ARROW LPAR parameters:params RPAR {: esMetodo = true; :} LKEY body:body RETURN varRet:ret DASH RKEY DASH {: Nodo nodo = new Nodo("funcion", nombre.toString());
                             String tipoRetorno = "";
                             if(this.parser.isNumeric(ret.toString()))
                                 tipoRetorno = "int";
@@ -1084,6 +1191,7 @@ dec_function ::= FUNCTION ID:nombre {: this.parser.ambito+="."+nombre.toString()
                             nodo.addHijo(fin);
                             ArrayList arregloFuncion = new ArrayList();
                             arregloFuncion.add(nodo);
+                            esMetodo = false;
                             RESULT = arregloFuncion; :};
 
 func ::= ID:id LPAR ids:ids RPAR        {:  ArrayList arreglo = new ArrayList();
@@ -1106,7 +1214,7 @@ func ::= ID:id LPAR ids:ids RPAR        {:  ArrayList arreglo = new ArrayList();
 ;
 
 
-dec_main ::= MAIN ARROW LPAR {: this.parser.ambito+=".main"; this.parser.profundidad=0; :} parameters:params RPAR LKEY body:body RETURN varRet:ret DASH RKEY {: Nodo nodo = new Nodo("main", "");
+dec_main ::= MAIN ARROW LPAR {: this.parser.ambito+=".main"; this.parser.profundidad=0; :} parameters:params RPAR {: esMetodo = true; :} LKEY body:body RETURN varRet:ret DASH RKEY {: Nodo nodo = new Nodo("main", "");
                                                                                     String tipoRetorno = "";
                                                                                     if(this.parser.isNumeric(ret.toString()))
                                                                                         tipoRetorno = "int";
@@ -1136,6 +1244,7 @@ dec_main ::= MAIN ARROW LPAR {: this.parser.ambito+=".main"; this.parser.profund
                                                                                     nodo.addHijo(nodoRet);
                                                                                     ArrayList arregloFuncion = new ArrayList();
                                                                                     arregloFuncion.add(nodo);
+                                                                                    esMetodo = false;
                                                                                     RESULT = arregloFuncion;:}
     /*| MAIN error LPAR parameters RPAR LKEY body RETURN varRet DASH RKEY       {: System.out.println("\u001B[31m" + "Expected '=>'"); :}
     | MAIN ARROW error parameters RPAR LKEY body RETURN varRet DASH RKEY      {: System.out.println("\u001B[31m" + "Expected '('"); :}

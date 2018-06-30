@@ -1241,6 +1241,23 @@ public class Compilador extends javax.swing.JFrame {
                     }
             }
             
+            ///--------------------_Dario
+            if(cuads.get(i).getOperacion().startsWith("if", 0)){
+                //
+            }
+            
+            if(cuads.get(i).getOperacion().startsWith("if", 0)){
+                System.out.println("HOES");
+                System.out.println(cuads.get(i));
+                System.out.println("");
+                System.out.println(cuads.get(i).getArgumento1());
+                System.out.println(searchVar(cuads.get(i).getArgumento1()));
+                System.out.println(cuads.get(i).getArgumento2());
+                System.out.println(searchVar(cuads.get(i).getArgumento2()));
+                String branch, operacion;
+                textMIPS.add("");
+            }
+            
         }
     }
     
@@ -1337,9 +1354,9 @@ public class Compilador extends javax.swing.JFrame {
                  default:
                      break;
              }
-         }
-         params[1] = pars;
-         return params;
+        }
+        params[1] = pars;
+        return params;
     }
     
     private String nextTPos(){
@@ -1426,7 +1443,7 @@ public class Compilador extends javax.swing.JFrame {
         guardarNodoCondicionCheck = "";
         offset = 0;
         ambitoMips = "global";
-        llenarVacios();            
+        llenarVacios();
     }
     
     private String searchVar(String id){
@@ -1443,9 +1460,15 @@ public class Compilador extends javax.swing.JFrame {
         }
         return pos;        
     }
-   
-        
-        
+    
+    private void printST(){
+        for(int i = 0; i < 10; i++){
+            System.out.println("$t[" + i + "]: " + $t[i]);
+        }
+        for(int i = 0; i < 8; i++){
+            System.out.println("$s[" + i + "]: " + $s[i]);
+        }
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
