@@ -4,7 +4,7 @@ int g-
 int[1] m1-
 
 func suma => (int s){
-	int r-
+	int r = 1 + 1-
 	int bq = 2 + 2-
 	bool ho = false-
 	string sas-

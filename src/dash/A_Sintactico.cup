@@ -1284,6 +1284,8 @@ dec_main ::= MAIN ARROW LPAR {: this.parser.ambito+=".main"; this.parser.profund
                                                                                     }
                                                                                     Nodo nodoRet = new Nodo("return", ret.toString());
                                                                                     nodo.addHijo(nodoRet);
+                                                                                    Nodo fin = new Nodo("finFunc", "main");
+                                                                                    nodo.addHijo(fin);
                                                                                     ArrayList arregloFuncion = new ArrayList();
                                                                                     arregloFuncion.add(nodo);
                                                                                     this.parser.esMetodo = false;
