@@ -1,14 +1,12 @@
 			.data
-msg_1:		.asciiz"ferferf"
-msg_2:		.asciiz"ferferf"
-msg_3:		.asciiz"ferferf"
-msg_4:		.asciiz"HELLO"
+msg_1:		.asciiz "ferferf"
+msg_2:		.asciiz "ferferf"
+msg_3:		.asciiz "ferferf"
+msg_4:		.asciiz "HELLO"
 c:			.space '1'
-g			.WORD 0
+g:			.word 0
 
-			.text
-			.global main
-suma:
+			.textsuma:
 	
 	sw $fp, -4($sp)
 	sw $ra, -8($sp)
