@@ -78,7 +78,7 @@ public class Tabla {
     
     @Override
     public String toString() {
-        String form = "%-20s %-30s %-30s %-5s %-5s";
-        return String.format(form, id, tipo, ambito, profundidad, (param == 1) ? "X" : "");
+        String form = "%-20s %-30s %-30s %-5s %-5s %-5s";
+        return String.format(form, id, tipo, ambito, profundidad, (param == 1) ? "X" : "", direccion);
     }
 }

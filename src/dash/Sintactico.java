@@ -1625,6 +1625,8 @@ class CUP$Sintactico$actions {
                                                                                 ArrayList arregloNodos = (ArrayList) b;
                                                                                 Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                                 arregloNodos.add( newID );
+                                                                                if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                    this.parser.direccion = 1;
                                                                                 int temp = this.parser.direccion;
                                                                                 if(esMetodo)
                                                                                     this.parser.direccion++;
@@ -1637,6 +1639,8 @@ class CUP$Sintactico$actions {
                                                                                 ArrayList arregloInstancias = new ArrayList();
                                                                                 Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                                 arregloInstancias.add(newID);
+                                                                                if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                    this.parser.direccion = 1;
                                                                                 int temp = this.parser.direccion;
                                                                                 if(esMetodo)
                                                                                     this.parser.direccion++;
@@ -1661,6 +1665,8 @@ class CUP$Sintactico$actions {
                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                     arregloInstancias.add(newInt);
                                     arregloInstancias.add(newID);
+                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                        this.parser.direccion = 1;
                                     int temp = this.parser.direccion;
                                     if(esMetodo)
                                         this.parser.direccion++;
@@ -1769,6 +1775,8 @@ class CUP$Sintactico$actions {
                                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                                     Nodo newID = new Nodo((String)id, "");
                                                                                     arregloNodos.add( newID );
+                                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                        this.parser.direccion = 1;
                                                                                     int temp = this.parser.direccion;
                                                                                     if(esMetodo)
                                                                                         this.parser.direccion++;
@@ -1781,6 +1789,8 @@ class CUP$Sintactico$actions {
                                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                                     Nodo newID = new Nodo((String)id, "");
                                                                                     arregloInstancias.add(newID);
+                                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                        this.parser.direccion = 1;
                                                                                     int temp = this.parser.direccion;
                                                                                     if(esMetodo)
                                                                                         this.parser.direccion++;
@@ -1805,6 +1815,8 @@ class CUP$Sintactico$actions {
                                     Nodo newID = new Nodo((String)id, "");
                                     arregloInstancias.add(newInt);
                                     arregloInstancias.add(newID);
+                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                        this.parser.direccion = 1;
                                     int temp = this.parser.direccion;
                                     if(esMetodo)
                                         this.parser.direccion++;
@@ -1888,6 +1900,8 @@ class CUP$Sintactico$actions {
                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloNodos.add( newID );
+                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                        this.parser.direccion = 1;
                                                                     int temp = this.parser.direccion;
                                                                     if(esMetodo)
                                                                         this.parser.direccion++;
@@ -1900,6 +1914,8 @@ class CUP$Sintactico$actions {
                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloInstancias.add(newID);
+                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                        this.parser.direccion = 1;
                                                                     int temp = this.parser.direccion;
                                                                     if(esMetodo)
                                                                         this.parser.direccion++;
@@ -1924,6 +1940,8 @@ class CUP$Sintactico$actions {
                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                     arregloInstancias.add(newChar);
                                     arregloInstancias.add(newID);
+                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                        this.parser.direccion = 1;
                                     int temp = this.parser.direccion;
                                     if(esMetodo)
                                         this.parser.direccion++;
@@ -2110,6 +2128,8 @@ class CUP$Sintactico$actions {
                                                                             ArrayList arregloNodos = (ArrayList) b;
                                                                             Nodo newID = new Nodo((String)id, "");
                                                                             arregloNodos.add( newID );
+                                                                            if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                this.parser.direccion = 1;
                                                                             int temp = this.parser.direccion;
                                                                             if(esMetodo)
                                                                                 this.parser.direccion++;
@@ -2122,6 +2142,8 @@ class CUP$Sintactico$actions {
                                                                             ArrayList arregloInstancias = new ArrayList();
                                                                             Nodo newID = new Nodo((String)id, "");
                                                                             arregloInstancias.add(newID);
+                                                                            if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                                this.parser.direccion = 1;
                                                                             int temp = this.parser.direccion;
                                                                             if(esMetodo)
                                                                                 this.parser.direccion++;
@@ -2146,6 +2168,8 @@ class CUP$Sintactico$actions {
                                             Nodo newID = new Nodo((String)id, "");
                                             arregloInstancias.add(newChar);
                                             arregloInstancias.add(newID);
+                                            if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                this.parser.direccion = 1;
                                             int temp = this.parser.direccion;
                                             if(esMetodo)
                                                 this.parser.direccion++;
@@ -2229,6 +2253,8 @@ class CUP$Sintactico$actions {
                                                                     ArrayList arregloNodos = (ArrayList) b;
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloNodos.add( newID );
+                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                        this.parser.direccion = 1;
                                                                     int temp = this.parser.direccion;
                                                                     if(esMetodo)
                                                                         this.parser.direccion++;
@@ -2241,6 +2267,8 @@ class CUP$Sintactico$actions {
                                                                     ArrayList arregloInstancias = new ArrayList();
                                                                     Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                     arregloInstancias.add(newID);
+                                                                    if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                        this.parser.direccion = 1;
                                                                     int temp = this.parser.direccion;
                                                                     if(esMetodo)
                                                                         this.parser.direccion++;
@@ -2265,6 +2293,8 @@ class CUP$Sintactico$actions {
                                 Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                 arregloInstancias.add(newChar);
                                 arregloInstancias.add(newID);
+                                if(this.parser.esMetodo && this.parser.direccion == -1)
+                                    this.parser.direccion = 1;
                                 int temp = this.parser.direccion;
                                 if(esMetodo)
                                     this.parser.direccion++;
@@ -2364,6 +2394,8 @@ class CUP$Sintactico$actions {
                                                                         ArrayList arregloNodos = (ArrayList) b;
                                                                         Nodo newID = new Nodo((String)id, "");
                                                                         arregloNodos.add( newID );
+                                                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                            this.parser.direccion = 1;
                                                                         int temp = this.parser.direccion;
                                                                         if(esMetodo)
                                                                             this.parser.direccion++;
@@ -2376,6 +2408,8 @@ class CUP$Sintactico$actions {
                                                                         ArrayList arregloInstancias = new ArrayList();
                                                                         Nodo newID = new Nodo((String)id, "");
                                                                         arregloInstancias.add(newID);
+                                                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                            this.parser.direccion = 1;
                                                                         int temp = this.parser.direccion;
                                                                         if(esMetodo)
                                                                             this.parser.direccion++;
@@ -2400,6 +2434,8 @@ class CUP$Sintactico$actions {
                                         Nodo newID = new Nodo((String)id, "");
                                         arregloInstancias.add(newChar);
                                         arregloInstancias.add(newID);
+                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                            this.parser.direccion = 1;
                                         int temp = this.parser.direccion;
                                         if(esMetodo)
                                             this.parser.direccion++;
@@ -2501,6 +2537,8 @@ class CUP$Sintactico$actions {
                                                                         ArrayList arregloNodos = (ArrayList) b;
                                                                         Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                         arregloNodos.add( newID );
+                                                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                            this.parser.direccion = 1;
                                                                         int temp = this.parser.direccion;
                                                                         if(esMetodo)
                                                                             this.parser.direccion++;
@@ -2513,6 +2551,8 @@ class CUP$Sintactico$actions {
                                                                         ArrayList arregloInstancias = new ArrayList();
                                                                         Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                                                         arregloInstancias.add(newID);
+                                                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                                                            this.parser.direccion = 1;
                                                                         int temp = this.parser.direccion;
                                                                         if(esMetodo)
                                                                             this.parser.direccion++;
@@ -2537,6 +2577,8 @@ class CUP$Sintactico$actions {
                                         Nodo newID = new Nodo( ((Nodo)id).getTipo(), ((Nodo)id).getValue());
                                         arregloInstancias.add(newChar);
                                         arregloInstancias.add(newID);
+                                        if(this.parser.esMetodo && this.parser.direccion == -1)
+                                            this.parser.direccion = 1;
                                         int temp = this.parser.direccion;
                                         if(esMetodo)
                                             this.parser.direccion++;
@@ -4244,7 +4286,7 @@ class CUP$Sintactico$actions {
 		ArrayList arregloParams = (ArrayList)params;
                                                 arregloParams.add(param.toString());
                                                 RESULT = arregloParams;
-                                                Tabla nuevaVar = new Tabla((String)id, param.toString(), this.parser.ambito , 0, 0, 1);
+                                                Tabla nuevaVar = new Tabla((String)id, param.toString(), this.parser.ambito , 0, -1, 1);
                                                 this.parser.tabla.add( nuevaVar ); 
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("parameters",61, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
