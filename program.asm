@@ -16,9 +16,12 @@ suma:
 	move $s0, $a0
 	move $fp, $sp
 	sub $sp, $sp, 25
+	
+	
 	li $v0 ,4
 	la $a0, msg_1
 	syscall
+	
 	li $v0 ,4
 	la $a0, msg_2
 	syscall
@@ -38,9 +41,28 @@ hola:
 	move $s1, $a1
 	move $fp, $sp
 	sub $sp, $sp, 32
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	li $v0 ,4
 	la $a0, msg_3
 	syscall
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	li $v0 ,4
 	la $a0, msg_4
 	syscall
